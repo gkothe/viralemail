@@ -13,12 +13,16 @@ $(document).ready(function() {
 
 	});
 
+	$("#cadastro").click(function() {
+		window.location = "?acao=cadastro";
+	});
+
 });
 
 function limpaModal() {
 
 	$("#r_desc_mail").val("");
- 
+
 }
 
 function sendEmail() {
@@ -27,9 +31,9 @@ function sendEmail() {
 
 	$.blockUI({
 		message : 'Enviando, aguarde...',
-		 baseZ: 2000
+		baseZ : 2000
 	});
-	
+
 	$.ajax({
 		type : 'POST',
 		url : "",
@@ -41,39 +45,35 @@ function sendEmail() {
 		dataType : 'json',
 		success : function(data) {
 			if (data.msg == 'ok') {
-				
-				sysMsg("Email enviado!",'M')
-				
+
+				sysMsg("Email enviado!", 'M')
+
 				$("#modal_ajuda").modal("hide");
 			} else {
-				 sysMsg(data.erro,'E')
+				sysMsg(data.erro, 'E')
 			}
 
 			$.unblockUI();
 		},
 		error : function(data) {
 			$.unblockUI();
-			
+
 		}
 	});
 
 }
 
+function sysMsg(text, tipo) {
 
-function sysMsg(text,tipo){
-	
-	if(tipo=='E'){
-		$("#msg_erro_aviso").html("<label style=\"font-size: 20px; color: red\" > ERRO!</label>");	
-	}else if(tipo=='A'){
-		$("#msg_erro_aviso").html("<label style=\"font-size: 20px; color:#ff9900\" > Aviso!</label>");	
-	}else if(tipo=='M'){
+	if (tipo == 'E') {
+		$("#msg_erro_aviso").html("<label style=\"font-size: 20px; color: red\" > ERRO!</label>");
+	} else if (tipo == 'A') {
+		$("#msg_erro_aviso").html("<label style=\"font-size: 20px; color:#ff9900\" > Aviso!</label>");
+	} else if (tipo == 'M') {
 		$("#msg_erro_aviso").html("<label style=\"font-size: 20px; color:green\" > Mensagem</label>");
 	}
-	
-	
-	
-	
+
 	$("#modal_erros").modal('show');
 	$("#msg_erro").html(text);
-	
+
 }

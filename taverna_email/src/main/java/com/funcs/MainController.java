@@ -33,11 +33,9 @@ public class MainController extends javax.servlet.http.HttpServlet {
 
 		try {
 
-			
 			 System.out.println("----------entro main");
 			  
 			Map map = request.getParameterMap(); for (Iterator iterator = map.keySet().iterator(); iterator.hasNext();) { String type = (String) iterator.next(); System.out.println(type + " : " + request.getParameter(type)); }
-			 
 
 			SysController controller = null;
 
@@ -49,6 +47,9 @@ public class MainController extends javax.servlet.http.HttpServlet {
 				}
 			} else if (identAcao.toLowerCase().equalsIgnoreCase("senha_email")) {
 				recuperaSenha(request, response);
+			} else if (identAcao.toLowerCase().equalsIgnoreCase("cadastro")) {
+				request.getSession().invalidate();
+				request.getRequestDispatcher("/WEB-INF/cadastro.html").forward(request, response);
 			} else if (request.getSession().getAttribute("username") == null) {
 				request.getSession().invalidate();
 				request.getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);

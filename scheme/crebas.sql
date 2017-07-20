@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     17/7/2017 11:01:15 AM                        */
+/* Created on:     17/7/2017 4:38:04 PM                         */
 /*==============================================================*/
 
 
@@ -153,7 +153,6 @@ auto_increment = 1;
 create table USUARIO
 (
    ID_USUARIO           bigint not null auto_increment,
-   ID_CAMPANHA          bigint,
    COD_CIDADE           integer,
    DESC_NOME            TEXT,
    DESC_TELEFONE        VARCHAR(50),
@@ -173,6 +172,9 @@ create table USUARIO
    CHAVE_ATIVACAO_NOVOEMAIL varchar(100),
    primary key (ID_USUARIO)
 );
+
+alter table CAMPANHA add constraint FK_REFERENCE_13 foreign key (ID_USUARIO)
+      references USUARIO (ID_USUARIO) on delete restrict on update restrict;
 
 alter table CAMPANHA_EMAIL add constraint FK_REFERENCE_6 foreign key (ID_CAMPANHA)
       references CAMPANHA (ID_CAMPANHA) on delete restrict on update restrict;
@@ -199,9 +201,6 @@ alter table CAMPANHA_PREMIOS add constraint FK_REFERENCE_5 foreign key (ID_CAMPA
       references CAMPANHA (ID_CAMPANHA) on delete restrict on update restrict;
 
 alter table CAMPANHA_THANKSPAGE add constraint FK_REFERENCE_4 foreign key (ID_CAMPANHA)
-      references CAMPANHA (ID_CAMPANHA) on delete restrict on update restrict;
-
-alter table USUARIO add constraint FK_REFERENCE_10 foreign key (ID_CAMPANHA)
       references CAMPANHA (ID_CAMPANHA) on delete restrict on update restrict;
 
 alter table USUARIO add constraint FK_REFERENCE_11 foreign key (COD_CIDADE)

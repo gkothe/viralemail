@@ -10,13 +10,10 @@
 <title>TragoAqui!</title>
 <script type="text/javascript" src="JavaScript/httpsredirect.js"></script>
 <script src="gentelella-master/vendors/jquery/dist/jquery.min.js"></script>
-<script
-	src="gentelella-master/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="gentelella-master/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="JavaScript/index.js"></script>
-<script type="text/javascript"
-	src="JavaScript/jquery-ui-1.10.4.custom/js/jquery.blockUI.js"></script>
-<link href="gentelella-master/vendors/bootstrap/dist/css/bootstrap.css"
-	rel="stylesheet">
+<script type="text/javascript" src="JavaScript/jquery-ui-1.10.4.custom/js/jquery.blockUI.js"></script>
+<link href="gentelella-master/vendors/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
 
 
 
@@ -60,8 +57,9 @@ body {
 									<label for="inputPassword" class="sr-only">Password</label> <input
 										type="password" name="password" id="password"
 										class="form-control" placeholder="Senha" required> <br>
-									<button class="btn btn-lg btn-primary btn-block" type="submit"
+									<button class="btn btn-lg btn-primary btn-block" type="submit" 
 										name="submit">Entrar</button>
+										<button class="btn btn-lg btn-primary btn-block"  type="button" id="cadastro">Cadastrar-se</button>
 									<br>
 									<%
 										if (error != null && error != "") {
