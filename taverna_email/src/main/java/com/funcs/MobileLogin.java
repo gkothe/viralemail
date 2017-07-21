@@ -34,7 +34,7 @@ public class MobileLogin {
 
 	private static long tempotoken = 604800000; // 1 semana ou 1 mes, nao lembro
 
-	public static void setCidadeVisitante(HttpServletRequest request, HttpServletResponse response, Connection conn, Sys_parametros sys) throws Exception {
+	public static void setCidadeVisitante(HttpServletRequest request, HttpServletResponse response, Connection conn, Sys_Parametros sys) throws Exception {
 
 		String cidade = request.getParameter("cidade") == null ? "" : request.getParameter("cidade");
 
@@ -55,7 +55,7 @@ public class MobileLogin {
 
 	}
 
-	public static void loginMobile(HttpServletRequest request, HttpServletResponse response, Connection conn, String user, String pass, Sys_parametros sys) throws Exception {
+	public static void loginMobile(HttpServletRequest request, HttpServletResponse response, Connection conn, String user, String pass, Sys_Parametros sys) throws Exception {
 
 		PrintWriter out = response.getWriter();
 
@@ -112,7 +112,7 @@ public class MobileLogin {
 
 	}
 
-	public static void loginMobileFace(HttpServletRequest request, HttpServletResponse response, Connection conn, Sys_parametros sys, boolean nativo) throws Exception {
+	public static void loginMobileFace(HttpServletRequest request, HttpServletResponse response, Connection conn, Sys_Parametros sys, boolean nativo) throws Exception {
 
 		PrintWriter out = response.getWriter();
 		JSONObject objRetorno = new JSONObject();
@@ -254,7 +254,7 @@ public class MobileLogin {
 
 	}
 
-	private static void atualizaFaceUser(HttpServletRequest request, HttpServletResponse response, String tokentest, Connection conn, Sys_parametros sys, long useridface) throws Exception {
+	private static void atualizaFaceUser(HttpServletRequest request, HttpServletResponse response, String tokentest, Connection conn, Sys_Parametros sys, long useridface) throws Exception {
 
 		String url = "https://graph.facebook.com/me?fields=name,id,email&access_token=" + tokentest;
 		URL obj = new URL(url);
@@ -295,7 +295,7 @@ public class MobileLogin {
 
 	}
 
-	private static JSONObject cadastrausuario(HttpServletRequest request, HttpServletResponse response, String tokentest, Connection conn, Sys_parametros sys) throws Exception {
+	private static JSONObject cadastrausuario(HttpServletRequest request, HttpServletResponse response, String tokentest, Connection conn, Sys_Parametros sys) throws Exception {
 		JSONObject objjson = new JSONObject();
 
 		String latitude = request.getParameter("latitude") == null ? "" : request.getParameter("latitude");
@@ -415,7 +415,7 @@ public class MobileLogin {
 		long nowMillis = System.currentTimeMillis();
 		Date now = new Date(nowMillis);
 
-		Sys_parametros sys = new Sys_parametros(conn);
+		Sys_Parametros sys = new Sys_Parametros(conn);
 
 		// We will sign our JWT with our ApiKey secret
 		byte[] apiKeySecretBytes = DatatypeConverter.parseBase64Binary(sys.getDesc_key());
@@ -438,7 +438,7 @@ public class MobileLogin {
 		return builder.compact();
 	}
 
-	public static JSONObject parseJWT(HttpServletRequest request, HttpServletResponse response, Connection conn, String jwt, Sys_parametros sys) throws Exception {
+	public static JSONObject parseJWT(HttpServletRequest request, HttpServletResponse response, Connection conn, String jwt, Sys_Parametros sys) throws Exception {
 
 		try {
 			Claims claims = Jwts.parser().setSigningKey(DatatypeConverter.parseBase64Binary(sys.getDesc_key())).parseClaimsJws(jwt).getBody();
@@ -576,7 +576,7 @@ public class MobileLogin {
 			}
 
 			String sql = "select * from usuario where Binary chave_ativacao = ?   ";
-			Sys_parametros sys = new Sys_parametros(conn);
+			Sys_Parametros sys = new Sys_Parametros(conn);
 			PreparedStatement st = conn.prepareStatement(sql);
 			st.setString(1, token);
 			ResultSet rs = st.executeQuery();

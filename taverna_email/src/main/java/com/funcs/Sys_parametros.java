@@ -5,7 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 public class Sys_parametros {
-	int cod_cidade = 0;
+	int id_param = 0;
 	long id_usuario_admin = 0;
 	String flag_manutencao = "";
 	String desc_key = "";
@@ -250,10 +250,6 @@ public class Sys_parametros {
 		this.sys_tls = sys_tls;
 	}
 
-	public int getCod_cidade() {
-		return cod_cidade;
-	}
-
 	public long getFACE_APP_ID() {
 		return FACE_APP_ID;
 	}
@@ -284,10 +280,6 @@ public class Sys_parametros {
 
 	public void setFACE_REDIRECT_URI(String fACE_REDIRECT_URI) {
 		FACE_REDIRECT_URI = fACE_REDIRECT_URI;
-	}
-
-	public void setCod_cidade(int cod_cidade) {
-		this.cod_cidade = cod_cidade;
 	}
 
 	public long getId_usuario_admin() {
@@ -337,15 +329,8 @@ public class Sys_parametros {
 			ResultSet rs = st.executeQuery();
 			if (rs.next()) {
 
-				this.setCod_cidade(rs.getInt("cod_cidade"));
-				this.setId_usuario_admin(rs.getLong("ID_USUARIO_ADMIN"));
+				this.setId_param(rs.getInt("id_param"));
 				this.setFlag_manutencao(rs.getString("FLAG_MANUTENCAO"));
-				this.setDesc_key(rs.getString("DESC_KEY"));
-				this.setSegs_teste_ajax(rs.getLong("SEGS_TESTE_AJAX"));
-				this.setFACE_APP_ID(rs.getLong("FACE_APP_ID"));
-				this.setFACE_APP_SECRETKEY(rs.getString("FACE_APP_SECRETKEY"));
-				this.setFACE_APP_TOKEN(rs.getString("FACE_APP_TOKEN"));
-				this.setFACE_REDIRECT_URI(rs.getString("FACE_REDIRECT_URI"));
 				this.setUrl_system(rs.getString("url_system"));
 				this.setSys_host_name_smtp(rs.getString("sys_host_name_smtp"));
 				this.setSys_smtp_port(rs.getInt("sys_smtp_port"));
@@ -354,25 +339,33 @@ public class Sys_parametros {
 				this.setSys_fromemail(rs.getString("sys_fromemail"));
 				this.setSys_fromdesc(rs.getString("sys_fromdesc"));
 				this.setSys_tls(rs.getString("sys_tls").equalsIgnoreCase("S") ? true : false);
-				this.setSys_id_visistante(rs.getLong("id_visitante"));
-				this.setPED_HORASOKEY(rs.getInt("PED_HORASOKEY"));
-				this.setNUM_TEMPOMAXCANC_MINUTO(rs.getInt("NUM_TEMPOMAXCANC_MINUTO"));
-				this.setCod_recusa_estoque(rs.getInt("COD_RECUSA"));
-				this.setOnesignal_key(rs.getString("onesignal_key"));
-				this.setOnesignal_url(rs.getString("onesignal_url"));
-				this.setOnesignal_appid(rs.getString("onesignal_appid"));
-				this.setNum_minutos_not_final(rs.getInt("num_minutos_not_final"));
-				this.setNum_segs_not_final_exec(rs.getInt("num_segs_not_final_exec"));
-				this.setCod_cancelamentosys(rs.getInt("cod_cancelamentosys"));
-				this.setDesc_webappfolder(rs.getString("desc_webappfolder"));
-				this.setIgnorar_regramaior18(rs.getString("ignorar_regramaior18"));
-				this.setPath(System.getProperty( "catalina.base" )+"/webapps/"+this.getDesc_webappfolder());
-				this.setFace_redirect_uri_webapp(rs.getString("face_redirect_uri_webapp"));
-				this.setTragoaqui_num_telefone(rs.getString("tragoaqui_num_telefone"));
-				this.setTragoaqui_pag_facebook(rs.getString("tragoaqui_pag_facebook"));
-				this.setApplicacao(rs.getString("applicacao"));
-				this.setSys_minutes_agen_not_resp(rs.getInt("SYS_MINUTES_AGEN_NOT_RESP"));
-				this.setUrl_websocket(rs.getString("url_websocket"));
+				
+//				this.setId_usuario_admin(rs.getLong("ID_USUARIO_ADMIN"));
+//				this.setDesc_key(rs.getString("DESC_KEY"));
+//				this.setSegs_teste_ajax(rs.getLong("SEGS_TESTE_AJAX"));
+//				this.setFACE_APP_ID(rs.getLong("FACE_APP_ID"));
+//				this.setFACE_APP_SECRETKEY(rs.getString("FACE_APP_SECRETKEY"));
+//				this.setFACE_APP_TOKEN(rs.getString("FACE_APP_TOKEN"));
+//				this.setFACE_REDIRECT_URI(rs.getString("FACE_REDIRECT_URI"));
+//				this.setSys_id_visistante(rs.getLong("id_visitante"));
+//				this.setPED_HORASOKEY(rs.getInt("PED_HORASOKEY"));
+//				this.setNUM_TEMPOMAXCANC_MINUTO(rs.getInt("NUM_TEMPOMAXCANC_MINUTO"));
+//				this.setCod_recusa_estoque(rs.getInt("COD_RECUSA"));
+//				this.setOnesignal_key(rs.getString("onesignal_key"));
+//				this.setOnesignal_url(rs.getString("onesignal_url"));
+//				this.setOnesignal_appid(rs.getString("onesignal_appid"));
+//				this.setNum_minutos_not_final(rs.getInt("num_minutos_not_final"));
+//				this.setNum_segs_not_final_exec(rs.getInt("num_segs_not_final_exec"));
+//				this.setCod_cancelamentosys(rs.getInt("cod_cancelamentosys"));
+//				this.setDesc_webappfolder(rs.getString("desc_webappfolder"));
+//				this.setIgnorar_regramaior18(rs.getString("ignorar_regramaior18"));
+//				this.setPath(System.getProperty( "catalina.base" )+"/webapps/"+this.getDesc_webappfolder());
+//				this.setFace_redirect_uri_webapp(rs.getString("face_redirect_uri_webapp"));
+//				this.setTragoaqui_num_telefone(rs.getString("tragoaqui_num_telefone"));
+//				this.setTragoaqui_pag_facebook(rs.getString("tragoaqui_pag_facebook"));
+//				this.setApplicacao(rs.getString("applicacao"));
+//				this.setSys_minutes_agen_not_resp(rs.getInt("SYS_MINUTES_AGEN_NOT_RESP"));
+//				this.setUrl_websocket(rs.getString("url_websocket"));
 				
 			}
 
@@ -380,6 +373,14 @@ public class Sys_parametros {
 			// TODO: handle exception
 		}
 
+	}
+
+	public int getId_param() {
+		return id_param;
+	}
+
+	public void setId_param(int id_param) {
+		this.id_param = id_param;
 	}
 
 

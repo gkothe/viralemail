@@ -10,6 +10,8 @@ import javax.servlet.http.HttpSession;
 
 import com.funcs.Sys_parametros;
 
+
+
 public class AcessoController implements SysController {
 	Connection connCliente = null;
 	Connection connMaster = null;

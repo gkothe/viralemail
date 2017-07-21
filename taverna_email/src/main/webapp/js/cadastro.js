@@ -1,19 +1,15 @@
 //@ sourceURL=cadastro.js
 
 $(document).ready(function() {
-
-
-	$("#btn_cadastrar").click(function(){
-		alert("aaa");
-		salvarCadastro();
-		
-	});
 	
+	$("#btn_cadastrar").click(function() {
+		salvarCadastro();
+	});
+
 });
 
+function salvarCadastro() {
 
-function salvarCadastro(){
-	
 	var data = {}
 	data["cmd"] = "doCadastro";
 	data["desc_nome"] = $("#desc_nome").val();
@@ -24,33 +20,42 @@ function salvarCadastro(){
 	data["desc_complemento"] = $("#desc_complemento").val();
 	data["desc_cep"] = $("#desc_cep").val();
 	data["desc_email"] = $("#desc_email").val();
-	data["desc_user"] = $("#desc_user").val();
+	data["desc_login"] = $("#desc_login").val();
 	data["desc_senha"] = $("#desc_senha").val();
 	data["desc_senha_repita"] = $("#desc_senha_repita").val();
-		
-		$.blockUI({
-			message : 'Salvando...'
-		});
+	data["num_cpf"] = $("#num_cpf").val();
 
-		$.ajax({
-			type : "POST",
-			url : "cadastro/doCadastro",
-			//url : "home?ac=ajax",
-			dataType : "json",
-			async : true,
-			data : data,
-			success : function(data) {
-				
-				console.log(data);
-				
-				
+	$.blockUI({
+		message : 'Salvando...'
+	});
+
+	$.ajax({
+		type : "POST",
+		url : "home?ac=ajax_w",
+		data : data,
+		// url : "home?ac=ajax",
+		dataType : "json",
+		async : true,
+		data : data,
+		success : function(data) {
+			if (data.msgok == 'ok') {
+				sysMsg(data.msg,'M')
+				setTimeout(function() {
+					$.unblockUI();
+					window.location = "?";
+				}, 3000);
+
+			} else {
 				$.unblockUI();
-				
-			},
-			error : function(msg) {
-				$.unblockUI();
+				sysMsg(data.erro, 'E')
 			}
-		});
-		
-	
+
+			$.unblockUI();
+
+		},
+		error : function(msg) {
+			$.unblockUI();
+		}
+	});
+
 };

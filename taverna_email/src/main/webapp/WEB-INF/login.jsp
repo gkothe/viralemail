@@ -3,29 +3,7 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-<meta charset="utf-8" />
-<title>Login</title>
-<link rel="shortcut icon" href="images/favicon.png" type="image/x-icon">
-<meta content="width=device-width, initial-scale=1.0" name="viewport" />
-<title>TragoAqui!</title>
-<script type="text/javascript" src="JavaScript/httpsredirect.js"></script>
-<script src="gentelella-master/vendors/jquery/dist/jquery.min.js"></script>
-<script src="gentelella-master/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="JavaScript/index.js"></script>
-<script type="text/javascript" src="JavaScript/jquery-ui-1.10.4.custom/js/jquery.blockUI.js"></script>
-<link href="gentelella-master/vendors/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
-
-
-
-<style type="text/css">
-body {
-	background: url(images/back3.png) no-repeat center center fixed;
-	-webkit-background-size: cover;
-	-moz-background-size: cover;
-	-o-background-size: cover;
-	background-size: cover;
-}
-</style>
+	<link rel="import" href="resources.html">
 </head>
 <%
 	String error = "";
@@ -41,33 +19,24 @@ body {
 				<div class="container">
 					<input type="hidden" name="acao" id="acao" value="log">
 					<div class="row">
-						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
-							align="center">
+						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" align="center">
 							<div class="panel panel-default" style="width: 400px">
-
 								<div class="panel-heading">
-									<img src="images/logo.png"
-										style="max-width: 350px; padding-left: 10px;">
+									<img src="images/logo.png" style="max-width: 350px; padding-left: 10px;">
 								</div>
 								<div class="panel-body">
-
-									<label for="" class="">Usuário</label> <input id="username"
-										class="form-control" placeholder="Usuário" name="username"
-										required autofocus> <br> <label for="" class="">Senha</label>
-									<label for="inputPassword" class="sr-only">Password</label> <input
-										type="password" name="password" id="password"
+									<label for="" class="">Usuário</label> <input id="username" class="form-control" placeholder="Usuário"
+										name="username" required autofocus> <br> <label for="" class="">Senha</label> <label
+										for="inputPassword" class="sr-only">Password</label> <input type="password" name="password" id="password"
 										class="form-control" placeholder="Senha" required> <br>
-									<button class="btn btn-lg btn-primary btn-block" type="submit" 
-										name="submit">Entrar</button>
-										<button class="btn btn-lg btn-primary btn-block"  type="button" id="cadastro">Cadastrar-se</button>
+									<button class="btn btn-lg btn-primary btn-block" type="submit" name="submit">Entrar</button>
+									<button class="btn btn-lg btn-primary btn-block" type="button" id="cadastro">Cadastrar-se</button>
 									<br>
 									<%
 										if (error != null && error != "") {
 									%>
-									<div class="alert alert-danger alert-dismissible fade in"
-										role="alert">
-										<button type="button" class="close" data-dismiss="alert"
-											aria-label="Close">
+									<div class="alert alert-danger alert-dismissible fade in" role="alert">
+										<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 											<span aria-hidden="true">×</span>
 										</button>
 										<%=error%>
@@ -75,29 +44,19 @@ body {
 									<%
 										}
 									%>
-
-									<br> <label for="" class="">Esqueceu sua senha \
-										usuário? Clique abaixo.</label>
-									<button class="btn btn-lg btn-primary btn-block" type="button"
-										onclick="showTrocaEmail();">Recuperar Senha \
-										Usuário</button>
-
+									<br> <label for="" class="">Esqueceu sua senha \ usuário? Clique abaixo.</label>
+									<button class="btn btn-lg btn-primary btn-block" type="button" onclick="showTrocaEmail();">Recuperar
+										Senha \ Usuário</button>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
 				<!-- /container -->
-
-
 			</form>
 		</div>
-
 	</div>
-
-
-	<div class="modal fade bs-example-modal-lg" tabindex="-50"
-		role="dialog" id="modal_ajuda" aria-hidden="true">
+	<div class="modal fade bs-example-modal-lg" tabindex="-50" role="dialog" id="modal_ajuda" aria-hidden="true">
 		<div class="modal-dialog modal-lg">
 			<div class="modal-content">
 				<div class="modal-header" align="center">
@@ -105,46 +64,36 @@ body {
 						<span aria-hidden="true">×</span>
 					</button>
 					<h4 class="modal-title" id="">
-						<label style="font-size: 20px; color: black">Recuperar
-							Senha \ Usuário. </label>
+						<label style="font-size: 20px; color: black">Recuperar Senha \ Usuário. </label>
 					</h4>
 				</div>
 				<div class="modal-body" style="max-height: 800px; overflow: auto;">
 					<div class="row">
 						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
-
 							<div class="form-group">
-								<label for="desc_mail">Preencha o seu e-mail cadastrado
-									abaixo:</label> <input type="text" class="form-control warn-change"
-									id="r_desc_mail" />
+								<label for="desc_mail">Preencha o seu e-mail cadastrado abaixo:</label> <input type="text"
+									class="form-control warn-change" id="r_desc_mail" />
 							</div>
-
 						</div>
 					</div>
 					<div class="modal-footer">
 						<div class="row">
 							<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 " align="left">
-								<button type="button" class="btn btn-primary"
-									data-dismiss="modal">Fechar</button>
+								<button type="button" class="btn btn-primary" data-dismiss="modal">Fechar</button>
 							</div>
-
 							<div class="col-xs-8 col-sm-8 col-md-8 col-lg-8 "></div>
 							<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 " align="right">
-								<button type="button" id="btn_envia_email"
-									class="btn btn-primary">Enviar</button>
+								<button type="button" id="btn_envia_email" class="btn btn-primary">Enviar</button>
 							</div>
-
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-	<div class="modal fade bs-example-modal-lg" tabindex="-5" role="dialog"
-		id="modal_erros" aria-hidden="true">
+	<div class="modal fade bs-example-modal-lg" tabindex="-5" role="dialog" id="modal_erros" aria-hidden="true">
 		<div class="modal-dialog modal-lg">
 			<div class="modal-content">
-
 				<div class="modal-header" align="center">
 					<button type="button" class="close" data-dismiss="modal">
 						<span aria-hidden="true">×</span>
@@ -154,29 +103,18 @@ body {
 					</h4>
 				</div>
 				<div class="modal-body" style="max-height: 800px; overflow: auto;">
-
 					<div class="row">
-
 						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
 							<strong>Mensagem:</strong>&nbsp;<label id="msg_erro"></label>
 						</div>
-
-
 					</div>
-
 				</div>
 				<div class="modal-footer">
-
 					<div class="row">
-
 						<div class="col-xs-10 col-sm-10 col-md-10 col-lg-10 "></div>
-
-
 						<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 " align="right">
-							<button type="button" class="btn btn-primary"
-								data-dismiss="modal">Fechar</button>
+							<button type="button" class="btn btn-primary" data-dismiss="modal">Fechar</button>
 						</div>
-
 					</div>
 				</div>
 			</div>
@@ -184,3 +122,4 @@ body {
 	</div>
 </body>
 </html>
+<script type="text/javascript" src="js/index.js"></script>
