@@ -20,7 +20,7 @@ import com.configs.Conexao;
 @SuppressWarnings("unchecked")
 @WebServlet(urlPatterns = { "/home/*" })
 public class HomeController extends javax.servlet.http.HttpServlet {
-	;
+	
 	private final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) {
@@ -33,13 +33,13 @@ public class HomeController extends javax.servlet.http.HttpServlet {
 
 	public void processaRequisicoes(HttpServletRequest request, HttpServletResponse response) {
 		//
-		System.out.println("--------entro home");
-		Map map = request.getParameterMap();
-		for (Iterator iterator = map.keySet().iterator(); iterator.hasNext();) {
-			String type = (String) iterator.next();
-			System.out.println(type + " : " + request.getParameter(type));
-		}
-		System.out.println(request.getParameter("cmd") + " - " + new Date());
+		// System.out.println("--------entro home");
+		// Map map = request.getParameterMap();
+		// for (Iterator iterator = map.keySet().iterator(); iterator.hasNext();) {
+		// String type = (String) iterator.next();
+		// System.out.println(type + " : " + request.getParameter(type));
+		// }
+		// System.out.println(request.getParameter("cmd") + " - " + new Date());
 
 		try {
 
@@ -50,11 +50,7 @@ public class HomeController extends javax.servlet.http.HttpServlet {
 
 			request.setCharacterEncoding("UTF-8");
 
-			if (strTipo.equalsIgnoreCase("ajax_w")) {
-				ajax_w(request, response);
-			} else if (strTipo.equalsIgnoreCase("validarEmail")) {
-				Ajax_w.validarConta(request, response);
-			}else if (request.getSession().getAttribute("username") == null) {
+			if (request.getSession().getAttribute("username") == null) {
 				if (strTipo.equalsIgnoreCase("ajax")) {
 					ajaxErro(request, response);
 				} else {
@@ -63,6 +59,11 @@ public class HomeController extends javax.servlet.http.HttpServlet {
 				}
 			} else {
 
+				if (strTipo.equalsIgnoreCase("home")) {
+					home(request, response);
+				} else if (strTipo.equalsIgnoreCase("listaped")) {
+					dashpedidos(request, response);
+				}
 				if (strTipo.equalsIgnoreCase("listaped")) {
 					dashpedidos(request, response);
 				} else if (strTipo.equalsIgnoreCase("logout")) {
@@ -105,49 +106,6 @@ public class HomeController extends javax.servlet.http.HttpServlet {
 			ex.printStackTrace();
 			out.print(objRetorno.toJSONString());
 
-		}
-	}
-
-	private void ajax_w(HttpServletRequest request, HttpServletResponse response) throws Exception {// ajax que nao precisam de login
-		PrintWriter out = response.getWriter();
-
-		response.setContentType("text/x-json; charset=UTF-8");
-		response.setDateHeader("Expires", 0);
-		response.setDateHeader("Last-Modified", new java.util.Date().getTime());
-		response.setHeader("Cache-Control", "no-cache, must-revalidate");
-		response.setHeader("Pragma", "no-cache");
-		request.setCharacterEncoding("UTF-8");
-
-		Connection conn = null;
-		JSONObject objRetorno = new JSONObject();
-
-		try {
-			conn = Conexao.getConexao();
-			conn.setAutoCommit(false);
-			String cmd = request.getParameter("cmd");
-
-			if (cmd.equalsIgnoreCase("doCadastro")) {
-				Ajax_w.Cadastro(request, response, conn);
-			}
-			conn.commit();
-		} catch (Exception ex) {
-			if (ex.getMessage() == null || ex.getMessage().equals("")) {
-				objRetorno.put("erro", "Erro, por favor entrar em contato com suporte.");
-			} else {
-				objRetorno.put("erro", ex.getMessage());
-			}
-
-			ex.printStackTrace();
-			out.print(objRetorno.toJSONString());
-			try {
-				conn.rollback();
-			} catch (Exception exr) {
-			}
-		} finally {
-			try {
-				conn.close();
-			} catch (Exception ex) {
-			}
 		}
 	}
 
@@ -196,13 +154,14 @@ public class HomeController extends javax.servlet.http.HttpServlet {
 		}
 	}
 
-	public static void atualizaLastAjax(int coddistr, Connection conn) throws Exception {
-
-		String sql = " update distribuidora set date_lastajax = now() where id_distribuidora = ? ";
-		PreparedStatement st = conn.prepareStatement(sql.toString());
-		st.setLong(1, (coddistr));
-		st.executeUpdate();
-
+	private void home(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		try {
+			request.getRequestDispatcher("/WEB-INF/home.jsp").forward(request, response);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+		}
 	}
 
 	private void dashpedidos(HttpServletRequest request, HttpServletResponse response) throws Exception {

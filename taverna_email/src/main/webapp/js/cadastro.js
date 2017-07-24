@@ -31,7 +31,7 @@ function salvarCadastro() {
 
 	$.ajax({
 		type : "POST",
-		url : "home?ac=ajax_w",
+		url : "?acao=ajax_w",
 		data : data,
 		// url : "home?ac=ajax",
 		dataType : "json",

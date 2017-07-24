@@ -230,7 +230,7 @@ public class Ajax_w {
 
 		st.executeUpdate();
 
-		String texto = "Olá, <br>  Bem vindo ao " + sys.getSys_fromdesc() + ", para validar sua conta clique <a href='" + sys.getUrl_system() + "home/?ac=validarEmail&token=" + validacao + "'> AQUI </a> e você estará pronto para utilizar nossos serviços. <br> Suas informações de login são: <br> Usuário: " + param.get("desc_login").toString() + " <br> Senha: " + param.get("desc_senha").toString();
+		String texto = "Olá, <br>  Bem vindo ao " + sys.getSys_fromdesc() + ", para validar sua conta clique <a href='" + sys.getUrl_system() + "?acao=validarEmail&token=" + validacao + "'> AQUI </a> e você estará pronto para utilizar nossos serviços. <br> Suas informações de login são: <br> Usuário: " + param.get("desc_login").toString() + " <br> Senha: " + param.get("desc_senha").toString();
 		Utilitario.sendEmail(param.get("desc_email").toString(), texto, sys.getSys_fromdesc() + " - Criação de conta!", conn);
 
 		objRetorno.put("msgok", "ok");

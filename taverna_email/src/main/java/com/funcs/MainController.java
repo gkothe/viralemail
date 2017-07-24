@@ -33,16 +33,21 @@ public class MainController extends javax.servlet.http.HttpServlet {
 
 		try {
 
-			Map map = request.getParameterMap();
-			for (Iterator iterator = map.keySet().iterator(); iterator.hasNext();) {
-				String type = (String) iterator.next();
-				System.out.println(type + " : " + request.getParameter(type));
-			}
+//			Map map = request.getParameterMap();
+//			for (Iterator iterator = map.keySet().iterator(); iterator.hasNext();) {
+//				String type = (String) iterator.next();
+//				System.out.println(type + " : " + request.getParameter(type));
+//			}
 
 			SysController controller = null;
 
 			String identAcao = request.getParameter("acao") == null ? "" : request.getParameter("acao").toString().trim();
-			if (identAcao.toLowerCase().equalsIgnoreCase("log")) {
+
+			if (identAcao.equalsIgnoreCase("ajax_w")) {
+				ajax_w(request, response);
+			} else if (identAcao.equalsIgnoreCase("validarEmail")) {
+				Ajax_w.validarConta(request, response);
+			} else if (identAcao.toLowerCase().equalsIgnoreCase("log")) {
 				controller = new AcessoController();
 				if (controller != null) {
 					controller.processaRequisicoes(request, response);
@@ -63,6 +68,49 @@ public class MainController extends javax.servlet.http.HttpServlet {
 			e.printStackTrace();
 		}
 
+	}
+
+	private void ajax_w(HttpServletRequest request, HttpServletResponse response) throws Exception {// ajax que nao precisam de login
+		PrintWriter out = response.getWriter();
+
+		response.setContentType("text/x-json; charset=UTF-8");
+		response.setDateHeader("Expires", 0);
+		response.setDateHeader("Last-Modified", new java.util.Date().getTime());
+		response.setHeader("Cache-Control", "no-cache, must-revalidate");
+		response.setHeader("Pragma", "no-cache");
+		request.setCharacterEncoding("UTF-8");
+
+		Connection conn = null;
+		JSONObject objRetorno = new JSONObject();
+
+		try {
+			conn = Conexao.getConexao();
+			conn.setAutoCommit(false);
+			String cmd = request.getParameter("cmd");
+
+			if (cmd.equalsIgnoreCase("doCadastro")) {
+				Ajax_w.Cadastro(request, response, conn);
+			}
+			conn.commit();
+		} catch (Exception ex) {
+			if (ex.getMessage() == null || ex.getMessage().equals("")) {
+				objRetorno.put("erro", "Erro, por favor entrar em contato com suporte.");
+			} else {
+				objRetorno.put("erro", ex.getMessage());
+			}
+
+			ex.printStackTrace();
+			out.print(objRetorno.toJSONString());
+			try {
+				conn.rollback();
+			} catch (Exception exr) {
+			}
+		} finally {
+			try {
+				conn.close();
+			} catch (Exception ex) {
+			}
+		}
 	}
 
 	public void recuperaSenha(HttpServletRequest request, HttpServletResponse response) throws Exception {
