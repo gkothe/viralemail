@@ -3,13 +3,26 @@
 <head>
 <link rel="import" href="resources.html">
 <script type="text/javascript" src="js/upload_image.js"></script>
+ <style>
+        #gallery .thumbnail{
+            width:150px;
+            height: 150px;
+            float:left;
+            margin:2px;
+        }
+        #gallery .thumbnail img{
+            width:150px;
+            height: 150px;
+        }
+
+    </style>
 </head>
 <body>
 	<div class="x_title">
 		<div class="row">
 			<div class="col-xs-12 col-md-12 col-lg-12">
 				<div class="form-group">
-					<label style="font-size: 30px" for="">Cadastro de usuário</label>&nbsp;&nbsp;
+					<label style="font-size: 30px" for="">Upload de Imagem</label>&nbsp;&nbsp;
 				</div>
 			</div>
 		</div>
@@ -26,97 +39,23 @@
 			<div class="row">
 				<div class=" col-xs-6 col-md-6 col-lg-6">
 					<div class="form-group">
-						<label>Telefone</label> <input type="text" class="form-control warn-change" maxlength="50"
-							onkeypress="mascara(this, '## # ####-####')" placeholder="xx x xxxx-xxxx" id="desc_telefone" />
+						<label>Arquivo</label> <input type="file" id="fileinput" multiple="multiple" enctype="multipart/form-data" accept="image/*" />
 					</div>
 				</div>
 			</div>
 			<div class="row">
-				<div class=" col-xs-4 col-md-4 col-lg-4">
-					<div class="form-group">
-						<label>Município</label>
-						<div style="width: 100%" class="input-group">
-							<select id="cod_cidade">
-								<option value="1">Santa Cruz do Sul</option>
-							</select>
-						</div>
-					</div>
-				</div>
+				<div id="gallery"></div>
 			</div>
+			
+			
 			<div class="row">
 				<div class=" col-xs-6 col-md-6 col-lg-6">
-					<div class="form-group">
-						<label>Endereço</label> <input type="text" class="form-control warn-change" id="desc_endereco" />
-					</div>
-				</div>
-			</div>
-			<div class="row">
-				<div class=" col-xs-6 col-md-6 col-lg-6">
-					<div class="form-group">
-						<label>Número</label> <input type="number" class="form-control warn-change" id="num_endereco" maxlength="10" />
-					</div>
-				</div>
-			</div>
-			<div class="row">
-				<div class=" col-xs-6 col-md-6 col-lg-6">
-					<div class="form-group">
-						<label>Complemento</label> <input type="text" class="form-control warn-change" id="desc_complemento" />
-					</div>
-				</div>
-			</div>
-			<div class="row">
-				<div class=" col-xs-6 col-md-6 col-lg-6">
-					<div class="form-group">
-						<label>CEP</label> <input type="text" placeholder="xxxxx-xxx" class="form-control warn-change" id="desc_cep"
-							onkeypress="mascara(this, '#####-###')" maxlength="9" />
-					</div>
-				</div>
-			</div>
-			<div class="row">
-				<div class=" col-xs-6 col-md-6 col-lg-6">
-					<div class="form-group">
-						<label>CPF</label> <input type="text" onKeyPress="MascaraCPF(this);" placeholder="xxx.xxx.xxx-xx" class="form-control warn-change" id="num_cpf"
-							maxlength="14" />
-					</div>
-				</div>
-			</div>
-			<div class="row">
-				<div class=" col-xs-6 col-md-6 col-lg-6">
-					<div class="form-group">
-						<label>E-Mail</label> <input type="text" class="form-control warn-change" id="desc_email" />
-					</div>
-				</div>
-			</div>
-			<div class="row">
-				<div class=" col-xs-6 col-md-6 col-lg-6">
-					<div class="form-group">
-						<label>Usuário</label> <input type="text" class="form-control warn-change" id="desc_login" maxlength="45" />
-					</div>
-				</div>
-			</div>
-			<div class="row">
-				<div class=" col-xs-6 col-md-6 col-lg-6">
-					<div class="form-group">
-						<label>Senha</label> <input type="password" class="form-control warn-change" id="desc_senha" maxlength="45" />
-					</div>
-				</div>
-			</div>
-			<div class="row">
-				<div class=" col-xs-6 col-md-6 col-lg-6">
-					<div class="form-group">
-						<label>Repita Senha</label> <input type="password" class="form-control warn-change" id="desc_senha_repita"
-							maxlength="45" />
-					</div>
-				</div>
-			</div>
-			<div class="row">
-				<div class=" col-xs-6 col-md-6 col-lg-6">
-					<button class="btn btn-lg btn-primary btn-block" type="button" id="btn_cadastrar">Cadastrar-se</button>
+					<button class="btn btn-lg btn-primary btn-block" type="button" id="btn_uparimg">Cadastrar-se</button>
 				</div>
 			</div>
 		</div>
 	</div>
 	<input id="sys_formatador" type="hidden">
-	<div id="resources_html"> </div>
+	<div id="resources_html"></div>
 </body>
 </html>

@@ -339,6 +339,9 @@ public class Sys_parametros {
 				this.setSys_fromemail(rs.getString("sys_fromemail"));
 				this.setSys_fromdesc(rs.getString("sys_fromdesc"));
 				this.setSys_tls(rs.getString("sys_tls").equalsIgnoreCase("S") ? true : false);
+				this.setDesc_webappfolder(rs.getString("desc_webappfolder"));
+				this.setPath(System.getProperty( "catalina.base" )+"/webapps/"+this.getDesc_webappfolder());
+				
 				
 //				this.setId_usuario_admin(rs.getLong("ID_USUARIO_ADMIN"));
 //				this.setDesc_key(rs.getString("DESC_KEY"));
@@ -357,9 +360,9 @@ public class Sys_parametros {
 //				this.setNum_minutos_not_final(rs.getInt("num_minutos_not_final"));
 //				this.setNum_segs_not_final_exec(rs.getInt("num_segs_not_final_exec"));
 //				this.setCod_cancelamentosys(rs.getInt("cod_cancelamentosys"));
-//				this.setDesc_webappfolder(rs.getString("desc_webappfolder"));
+
 //				this.setIgnorar_regramaior18(rs.getString("ignorar_regramaior18"));
-//				this.setPath(System.getProperty( "catalina.base" )+"/webapps/"+this.getDesc_webappfolder());
+				
 //				this.setFace_redirect_uri_webapp(rs.getString("face_redirect_uri_webapp"));
 //				this.setTragoaqui_num_telefone(rs.getString("tragoaqui_num_telefone"));
 //				this.setTragoaqui_pag_facebook(rs.getString("tragoaqui_pag_facebook"));

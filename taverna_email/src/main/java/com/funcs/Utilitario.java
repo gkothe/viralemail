@@ -1,18 +1,9 @@
 package com.funcs;
 
-import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.io.PrintWriter;
 import java.math.BigInteger;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.security.SecureRandom;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -27,28 +18,15 @@ import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Scanner;
 
-import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.mail.DefaultAuthenticator;
 import org.apache.commons.mail.HtmlEmail;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.DataFormatter;
-import org.apache.poi.ss.usermodel.Row;
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-
-import com.configs.Conexao;
 
 public class Utilitario {
-
-
 
 	public static JSONObject getJsonFromRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		JSONObject obj = new JSONObject();
@@ -60,29 +38,6 @@ public class Utilitario {
 		}
 
 		return obj;
-
-	}
-
-	public static JSONArray FlagEntreRet() {
-		JSONArray payids = new JSONArray();
-		JSONObject obj = new JSONObject();
-
-		obj = new JSONObject();
-		obj.put("flag_entre_ret", "L");
-		obj.put("desc", "Retirada no local");
-		payids.add(obj);
-
-		obj = new JSONObject();
-		obj.put("flag_entre_ret", "T");
-		obj.put("desc", "Tele-entrega");
-		payids.add(obj);
-
-		obj = new JSONObject();
-		obj.put("flag_entre_ret", "A");
-		obj.put("desc", "Agendamento");
-		payids.add(obj);
-
-		return payids;
 
 	}
 
@@ -119,7 +74,6 @@ public class Utilitario {
 		SecureRandom random = new SecureRandom();
 		return new BigInteger(a, random).toString(b);
 	}
-
 
 	public static String getDescMes(int mes) {
 
@@ -182,13 +136,7 @@ public class Utilitario {
 		return 0;
 	}
 
-
 	//
-
-
-
-
-	
 
 	public static int retornaIdinsert(String tabela, String coluna, Connection conn) throws Exception {
 		String varname1 = "";
@@ -288,8 +236,6 @@ public class Utilitario {
 
 	}
 
-	
-
 	public static Date testeHora(String mask, String hora, String msg) throws Exception {
 
 		Date datatempoentregateste2;// tempo de entrega do usuario
@@ -331,13 +277,6 @@ public class Utilitario {
 		return datatempoentregateste2;
 
 	}
-
-
-
-
-
-	
-
 
 	public static java.sql.Timestamp getTimeStamp(Date data) {
 		return new java.sql.Timestamp(data.getTime());
@@ -396,223 +335,15 @@ public class Utilitario {
 
 	private static final int maxsize = 1000;
 
-	public static void sizeimage(String cod) {
-		try {
-			// mudei direitorio para o m16_/***/produtos
-			BufferedImage originalImage = ImageIO.read(new File("D:\\phonegap_projects\\tragoaqui_contextos\\m_16\\src\\main\\webapp\\images\\produtos\\" + cod + "_1.jpg"));
-
-			int type = originalImage.getType() == 0 ? BufferedImage.TYPE_INT_ARGB : originalImage.getType();
-			Double IMG_WIDTH = new Double(maxsize);
-			Double IMG_HEIGHT = new Double(maxsize);
-
-			BufferedImage resizedImage = ImageIO.read(new File("D:\\phonegap_projects\\tragoaqui_contextos\\m_16\\src\\main\\webapp\\images\\produtos\\" + cod + "_1.jpg"));
-			int width = resizedImage.getWidth();
-			int height = resizedImage.getHeight();
-
-			if (width > maxsize || height > maxsize) {
-				if (height > width) {
-
-					double perc = (width * 100) / height;
-					IMG_WIDTH = (maxsize * perc) / 100;
-
-				} else if (height < width) {
-
-					double perc = (height * 100) / width;
-					IMG_HEIGHT = (maxsize * perc) / 100;
-
-				}
-				resizedImage = new BufferedImage(IMG_WIDTH.intValue(), IMG_HEIGHT.intValue(), type);
-
-				Graphics2D g = resizedImage.createGraphics();
-				g.drawImage(originalImage, 0, 0, IMG_WIDTH.intValue(), IMG_HEIGHT.intValue(), null);
-				g.dispose();
-
-				// ImageIO.write(resizedImage, "jpg", new File("D:\\Program Files\\Mydocs\\Visual Studio 2015\\Projects\\chamaTrago\\chamaTrago\\www\\img\\prodsmin\\" + cod + "_min.jpg"));
-				ImageIO.write(resizedImage, "jpg", new File("D:\\phonegap_projects\\tragoaqui_contextos\\m_16\\src\\main\\webapp\\images\\prodsmin\\" + cod + "_min.jpg"));
-
-			}
-
-		} catch (Exception e) {
-			e.printStackTrace();
-			// TODO: handle exception
-		}
-
-	}
-
-	public static void sizeimage2(String cod) {
-		try {
-			// mudei direitorio para o m16_/***/produtos
-			BufferedImage originalImage = ImageIO.read(new File("D:\\phonegap_projects\\tragoaqui_contextos\\m_16\\src\\main\\webapp\\images\\produtos\\" + cod + "_1.jpg"));
-
-			int type = originalImage.getType() == 0 ? BufferedImage.TYPE_INT_ARGB : originalImage.getType();
-			Double IMG_WIDTH = new Double(maxsize);
-			Double IMG_HEIGHT = new Double(maxsize);
-
-			BufferedImage resizedImage = ImageIO.read(new File("D:\\phonegap_projects\\tragoaqui_contextos\\m_16\\src\\main\\webapp\\images\\produtos\\" + cod + "_1.jpg"));
-			int width = resizedImage.getWidth();
-			int height = resizedImage.getHeight();
-
-			if (width > maxsize || height > maxsize) {
-				if (height > width) {
-
-					double perc = (width * 100) / height;
-					IMG_WIDTH = (maxsize * perc) / 100;
-
-				} else if (height < width) {
-
-					double perc = (height * 100) / width;
-					IMG_HEIGHT = (maxsize * perc) / 100;
-
-				}
-				resizedImage = new BufferedImage(IMG_WIDTH.intValue(), IMG_HEIGHT.intValue(), type);
-
-				Graphics2D g = resizedImage.createGraphics();
-				g.drawImage(originalImage, 0, 0, IMG_WIDTH.intValue(), IMG_HEIGHT.intValue(), null);
-				g.dispose();
-
-				// ImageIO.write(resizedImage, "jpg", new File("D:\\Program Files\\Mydocs\\Visual Studio 2015\\Projects\\chamaTrago\\chamaTrago\\www\\img\\prodsmin\\" + cod + "_min.jpg"));
-				ImageIO.write(resizedImage, "jpg", new File("D:\\phonegap_projects\\tragoaqui_contextos\\m_16\\src\\main\\webapp\\images\\produtos\\" + cod + "_1.jpg"));
-
-			}
-
-		} catch (Exception e) {
-			e.printStackTrace();
-			// TODO: handle exception
-		}
-
-	}
-
-	public static void resizeAllimage() throws Exception {
-		Connection conn = null;
-		try {
-			conn = Conexao.getConexao();
-			String varname1 = "";
-
-			varname1 = " select * from produtos ";
-
-			PreparedStatement st = conn.prepareStatement(varname1);
-			ResultSet rs2 = st.executeQuery();
-			while (rs2.next()) {
-				try {
-					System.out.println(rs2.getInt("ID_PROD"));
-					sizeimage(rs2.getInt("ID_PROD") + "");
-				} catch (Exception e) {
-				}
-			}
-
-		} catch (Exception e) {
-			e.printStackTrace();
-			// TODO: handle exception
-		}
-
-		try {
-			conn.close();
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
-
-	}
-
-
 	public static DecimalFormatSymbols dfs = new DecimalFormatSymbols(new Locale("pt", "BR"));
 	public static NumberFormat df = new DecimalFormat("###,###.#", dfs);
 	public static NumberFormat df2 = new DecimalFormat("#,###,##0.00", dfs);
 	public static NumberFormat df3 = new DecimalFormat("#,###,##0.0", dfs);
 
-	public static void renamefiles() throws IOException {
-
-		for (int i = 0; i < 150; i++) {
-
-			File file = new File("C:/Users/gkothe/Desktop/img_fit/img_fit" + i + "_1.jpg");
-
-			// File (or directory) with new name
-			File file2 = new File("D:/phonegap_projects/TragoAqui_Fit/www/img/prodsmin/" + i + "_min.jpg");
-
-			if (file2.exists())
-				throw new java.io.IOException("file exists");
-
-			// Rename file (or directory)
-			boolean success = file.renameTo(file2);
-
-			if (!success) {
-				// File was not successfully renamed
-			}
-
-		}
-
-		// File (or directory) with old name
-
-	}
-
-	public static void renamefiles3() throws IOException {
-
-		File dir = new File("C:/Users/gkothe/Desktop/img_fit/img_fit");
-
-		if (dir.isDirectory()) { // make sure it's a directory
-			for (final File f : dir.listFiles()) {
-				try {
-					File newfile = new File("C:/Users/gkothe/Desktop/img_fit/img_fit/" + f.getName().toLowerCase());
-
-					if (f.renameTo(newfile)) {
-						System.out.println("Rename succesful");
-					} else {
-						System.out.println("Rename failed");
-					}
-				} catch (Exception e) {
-					// TODO: handle exception
-					e.printStackTrace();
-				}
-			}
-		}
-	}
-
-	// File (or directory) with old name
-
-	public static void renamefilesSys() throws IOException {
-
-		for (int i = 0; i < 150; i++) {
-
-			File file = new File("D:/phonegap_projects/m_16/m_16/src/main/webapp/images/produtos/" + i + ".jpg");
-
-			// File (or directory) with new name
-			File file2 = new File("D:/phonegap_projects/m_16/m_16/src/main/webapp/images/produtos/" + i + "_1.jpg");
-
-			if (file2.exists())
-				throw new java.io.IOException("file exists");
-
-			// Rename file (or directory)
-			boolean success = file.renameTo(file2);
-
-			if (!success) {
-				// File was not successfully renamed
-			}
-
-		}
-
-		// File (or directory) with old name
-
-	}
-
-
-
-
-
-
 	public static void main(String[] args) {
 		// Connection conn = null;
 
 		try {
-			// conn = Conexao.getConexao();
-			// Sys_parametros sys = new Sys_parametros(conn);
-
-			// getCidadeBairroGps("-29.69579482872522", "-52.44530843952397", conn, 0, sys);
-
-			// readTableprods("D:/phonegap_projects/prods_listas/lista_uplen.xlt",6);
-
-			resizeAllimage();
-
-			// oneSginal(sys, "g.kothe@hotmail.com", "aaaa", new JSONObject());
-			// oneSginal(sys, "morratu@hotmail.com", "aaaa", new JSONObject());
 		} catch (Exception e) {
 			System.out.println(e);
 			try {
@@ -622,34 +353,5 @@ public class Utilitario {
 
 		}
 	}
-
-	/*
-	 * public static void main(String[] args) {
-	 * 
-	 * Connection conn =null; try { // sendEmail("g.kothe@hotmail.com", "aaaa", "Recuperação de senha"); conn = Conexao.getConexao(); // String validacao = Utilitario.StringGen(1000, 32).substring(0, 99); // Sys_parametros sys = new Sys_parametros(Conexao.getConexao()); // String texto = " Bem vindo ao TragoAqui, para validar seu e-mail clique no link abaixo: <br> " + sys.getUrl_system() + "mobile/ac=validar&token=" + validacao; // Utilitario.sendEmail("g.kothe@hotmail.com", texto, "Ativação da sua conta no TragoAqui!");
-	 * 
-	 * // System.out.println("Horario_1".toString().substring("Horario_1".toString().length() - 1, "Horario_1".toString().length())); // String hora = "1234";
-	 * 
-	 * // System.out.println(hora.substring(0, 2)); // System.out.println(hora.substring(2, 4));
-	 * 
-	 * String sql = " 	select * from pedido  where id_pedido = 1   ";
-	 * 
-	 * PreparedStatement st = conn.prepareStatement(sql);
-	 * 
-	 * ResultSet rs = st.executeQuery();
-	 * 
-	 * if (rs.next()) {
-	 * 
-	 * Date datatempoentregateste; Date datatempoentregateste2; try { datatempoentregateste = new SimpleDateFormat("HH:mm").parse("01:00"); datatempoentregateste2 = new SimpleDateFormat("HH:mm").parse(rs.getString("TEMPO_ESTIMADO_DESEJADO")); System.out.println(datatempoentregateste); System.out.println(datatempoentregateste2);
-	 * 
-	 * 
-	 * } catch (Exception e) { throw new Exception("Tempo de entrega inválidos!"); }
-	 * 
-	 * if(datatempoentregateste.after(datatempoentregateste2)){ throw new Exception("Tempo de entrega é acima do desejado!"); }
-	 * 
-	 * } } catch (Exception e) { // TODO: handle exception e.printStackTrace(); }
-	 * 
-	 * try { conn.close(); } catch (Exception e) { // TODO: handle exception } }
-	 */
 
 }

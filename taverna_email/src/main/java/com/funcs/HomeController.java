@@ -2,16 +2,15 @@ package com.funcs;
 
 import java.io.PrintWriter;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.Map;
 
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
 
 import org.json.simple.JSONObject;
 
@@ -20,6 +19,9 @@ import com.phpdao.domain.Campanha;
 
 @SuppressWarnings("unchecked")
 @WebServlet(urlPatterns = { "/home/*" })
+@MultipartConfig(fileSizeThreshold = 1024 * 1024 * 10, // 10 MB
+		maxFileSize = 1024 * 1024 * 50, // 50 MB
+		maxRequestSize = 1024 * 1024 * 100) // 100 MB
 public class HomeController extends javax.servlet.http.HttpServlet {
 
 	private final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -32,8 +34,22 @@ public class HomeController extends javax.servlet.http.HttpServlet {
 		processaRequisicoes(request, response);
 	}
 
+	private String getFileName(Part part) {
+		String contentDisp = part.getHeader("content-disposition");
+		System.out.println("content-disposition header= " + contentDisp);
+		String[] tokens = contentDisp.split(";");
+		for (String token : tokens) {
+			if (token.trim().startsWith("filename")) {
+				return token.substring(token.indexOf("=") + 2, token.length() - 1);
+			}
+		}
+		return "";
+	}
+
+	private static final String UPLOAD_DIR = "uploads";
+
 	public void processaRequisicoes(HttpServletRequest request, HttpServletResponse response) {
-		//
+
 		System.out.println("--------entro home");
 		Map map = request.getParameterMap();
 		for (Iterator iterator = map.keySet().iterator(); iterator.hasNext();) {
@@ -64,6 +80,9 @@ public class HomeController extends javax.servlet.http.HttpServlet {
 				}
 				if (strTipo.equalsIgnoreCase("campanhaEdit")) {
 					campanhaEdit(request, response);
+				}
+				if (strTipo.equalsIgnoreCase("uploadImage")) {
+					uploadImage(request, response);
 				} else if (strTipo.equalsIgnoreCase("listaped")) {
 					dashpedidos(request, response);
 				}
@@ -158,9 +177,10 @@ public class HomeController extends javax.servlet.http.HttpServlet {
 		}
 	}
 
-	private void home(HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+	private void uploadImage(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		try {
-			request.getRequestDispatcher("/WEB-INF/home.jsp").forward(request, response);
+			request.getRequestDispatcher("/WEB-INF/upload_image.html").forward(request, response);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;
