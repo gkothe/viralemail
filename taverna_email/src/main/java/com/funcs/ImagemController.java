@@ -20,7 +20,7 @@ import com.configs.Conexao;
 
 @SuppressWarnings("unchecked")
 @WebServlet(urlPatterns = { "/imageup/*" })
-@MultipartConfig(maxFileSize = 1024 * 1024 * 3, maxRequestSize = 1024 * 1024 * 5)
+@MultipartConfig(maxFileSize = 1024 * 1024 * 3, maxRequestSize = 1024 * 1024 * 50) //TODO tratar se todo for mais q 50mb
 public class ImagemController extends javax.servlet.http.HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) {
@@ -108,7 +108,6 @@ public class ImagemController extends javax.servlet.http.HttpServlet {
 		if (!fileSaveDir.exists()) {
 			fileSaveDir.mkdirs();
 		}
-
 
 		String fileName = null;
 		// Get all the parts from request and write it to the file on server

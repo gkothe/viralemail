@@ -177,6 +177,20 @@ public class CampanhaLandpage implements java.io.Serializable {
 		}
 
 	}
+	
+	
+	public void setFieldNull(String field) throws Exception{//TESTAR
+		sql = new StringBuffer();
+		sql.append("	update campanha_landpage set "+field+" =  null "); 
+		sql.append(" where id_landpage = " + getIdlandpage() + " ");
+		st = conn.prepareStatement(sql.toString());
+
+		if (st.executeUpdate() == 1) {
+
+		} else {
+			throw new Exception("Erro, contate suporte. Set null de land page.");
+		}
+	}
 
 	public void update() throws Exception {
 
