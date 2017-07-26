@@ -172,9 +172,6 @@ public class Usuario implements java.io.Serializable {
 		this.chaveativacaonovoemail = chaveativacaonovoemail;
 	}
 
-	public void Lista(String chaveativacaonovoemail) {
-		this.chaveativacaonovoemail = chaveativacaonovoemail;
-	}
 
 	public ResultSet lista() throws Exception {
 

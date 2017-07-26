@@ -87,7 +87,7 @@ public class AcessoController implements SysController {
 					Sys_parametros sys = new Sys_parametros(conn);
 					session.setAttribute("app", sys.getApplicacao());
 
-					request.getRequestDispatcher("home?ac=home").forward(request, response);
+					request.getRequestDispatcher("home?ac=campanhaInsert").forward(request, response);
 
 				} else {
 					throw new Exception("Usuário e/ou senha inválidos.");

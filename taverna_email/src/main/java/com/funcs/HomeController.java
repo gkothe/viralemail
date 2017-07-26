@@ -16,11 +16,12 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.simple.JSONObject;
 
 import com.configs.Conexao;
+import com.phpdao.domain.Campanha;
 
 @SuppressWarnings("unchecked")
 @WebServlet(urlPatterns = { "/home/*" })
 public class HomeController extends javax.servlet.http.HttpServlet {
-	
+
 	private final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) {
@@ -33,13 +34,12 @@ public class HomeController extends javax.servlet.http.HttpServlet {
 
 	public void processaRequisicoes(HttpServletRequest request, HttpServletResponse response) {
 		//
-		// System.out.println("--------entro home");
-		// Map map = request.getParameterMap();
-		// for (Iterator iterator = map.keySet().iterator(); iterator.hasNext();) {
-		// String type = (String) iterator.next();
-		// System.out.println(type + " : " + request.getParameter(type));
-		// }
-		// System.out.println(request.getParameter("cmd") + " - " + new Date());
+		System.out.println("--------entro home");
+		Map map = request.getParameterMap();
+		for (Iterator iterator = map.keySet().iterator(); iterator.hasNext();) {
+			String type = (String) iterator.next();
+			System.out.println(type + " : " + request.getParameter(type));
+		}
 
 		try {
 
@@ -50,7 +50,7 @@ public class HomeController extends javax.servlet.http.HttpServlet {
 
 			request.setCharacterEncoding("UTF-8");
 
-			if (request.getSession().getAttribute("username") == null) {
+			if (request.getSession().getAttribute("id_user") == null) {
 				if (strTipo.equalsIgnoreCase("ajax")) {
 					ajaxErro(request, response);
 				} else {
@@ -59,8 +59,11 @@ public class HomeController extends javax.servlet.http.HttpServlet {
 				}
 			} else {
 
-				if (strTipo.equalsIgnoreCase("home")) {
-					home(request, response);
+				if (strTipo.equalsIgnoreCase("campanhaInsert")) {
+					campanhaInsert(request, response);
+				}
+				if (strTipo.equalsIgnoreCase("campanhaEdit")) {
+					campanhaEdit(request, response);
 				} else if (strTipo.equalsIgnoreCase("listaped")) {
 					dashpedidos(request, response);
 				}
@@ -76,7 +79,6 @@ public class HomeController extends javax.servlet.http.HttpServlet {
 					ajax(request, response);
 				}
 			}
-			// System.out.println( request.getParameter("cmd")+ "-fim "+" - " + new Date());
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			try {
@@ -119,7 +121,7 @@ public class HomeController extends javax.servlet.http.HttpServlet {
 		response.setHeader("Pragma", "no-cache");
 		request.setCharacterEncoding("UTF-8");
 
-		int coddistr = Integer.parseInt(request.getSession(false).getAttribute("coddis").toString());
+		long coduser = Long.parseLong(request.getSession(false).getAttribute("id_user").toString());
 		Connection conn = null;
 		JSONObject objRetorno = new JSONObject();
 
@@ -128,8 +130,10 @@ public class HomeController extends javax.servlet.http.HttpServlet {
 			conn.setAutoCommit(false);
 			String cmd = request.getParameter("cmd");
 
-			if (cmd.equalsIgnoreCase("")) {
-				// Home_ajax.checkPedidos(request, response, conn, coddistr);
+			if (cmd.equalsIgnoreCase("insertCamapanha")) {
+				Campanha.InsertCampanha(request, response, conn, coduser);
+			} else if (cmd.equalsIgnoreCase("updateCamapanha")) {
+				Campanha.updateCampanha(request, response, conn, coduser);
 			}
 
 			conn.commit();
@@ -157,6 +161,26 @@ public class HomeController extends javax.servlet.http.HttpServlet {
 	private void home(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		try {
 			request.getRequestDispatcher("/WEB-INF/home.jsp").forward(request, response);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+		}
+	}
+
+	private void campanhaInsert(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		try {
+			request.getRequestDispatcher("/WEB-INF/camapanha_insert.jsp").forward(request, response);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+		}
+	}
+
+	private void campanhaEdit(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		try {
+			request.getRequestDispatcher("/WEB-INF/camapanha_edit.jsp").forward(request, response);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;
