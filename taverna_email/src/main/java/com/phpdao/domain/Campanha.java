@@ -7,8 +7,11 @@ import java.sql.ResultSet;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.jsp.el.ELException;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 
 import com.configs.Conexao;
 import com.funcs.Sys_parametros;
@@ -151,26 +154,43 @@ public class Campanha implements java.io.Serializable {
 		Sys_parametros sys = new Sys_parametros(conn);
 		PrintWriter out = response.getWriter();
 		JSONObject objRetorno = new JSONObject();
+
 		JSONObject param = Utilitario.getJsonFromRequest(request, response);
+
+		JSONArray featuresarray = (JSONArray) new JSONParser().parse(param.get("landpage_features").toString());
 		PreparedStatement st;
 		StringBuffer sql;
 		ResultSet rs;
+		CampanhaLandpageFeature features;
+		CampanhaLandpage landpage;
+		UserImage image;
+		UserImagePage imagepage;
+		CampanhaThankspage thankspage;
 
-		long id_camapanha = Long.parseLong(param.get("id_campanha").toString());
-		
+		long id_campanha = Long.parseLong(param.get("id_campanha").toString());
+
 		Campanha campanha = new Campanha(conn);
-		campanha.setIdcampanha(id_camapanha);
+		campanha.setIdcampanha(id_campanha);
 		campanha.setIdusuario(user);
-		rs  = campanha.lista();
-		if(rs.next()){
-			//deletar land_page features //TODO
-			
-			CampanhaLandpage landpage = new CampanhaLandpage(conn);
-			landpage.setIdcampanha(id_camapanha);
-			landpage.delete();
-			
+		rs = campanha.lista();
+		if (rs.next()) {
+
 			landpage = new CampanhaLandpage(conn);
-			landpage.setIdcampanha(id_camapanha);
+			landpage.setIdcampanha(id_campanha);
+			rs = landpage.lista();
+			if (rs.next()) {// Considerando que existe sóh uma landpage pra campanha atualmente
+				// deletando land_page features
+				features = new CampanhaLandpageFeature(conn);
+				features.setIdlandpage(rs.getLong("id_landpage"));
+				features.delete();
+			}
+
+			landpage = new CampanhaLandpage(conn);
+			landpage.setIdcampanha(id_campanha);
+			landpage.delete();
+
+			landpage = new CampanhaLandpage(conn);
+			landpage.setIdcampanha(id_campanha);
 			landpage.setDesctitulo1(param.get("desc_titulo_1").toString());
 			landpage.setDescsubtitulo1(param.get("desc_sub_titulo_1").toString());
 			landpage.setUrlvideo(param.get("url_video").toString());
@@ -178,13 +198,112 @@ public class Campanha implements java.io.Serializable {
 			landpage.setDesctitulo2(param.get("desc_titulo_2").toString());
 			landpage.setSubtitulo2(param.get("sub_titulo_2").toString());
 			landpage.Insert();
-			
-		}else{
+
+			imagepage = new UserImagePage(conn);
+			imagepage.setId_campanha(id_campanha);
+			imagepage.delete();
+			// imagem landpage
+			if (!param.get("imagens_proj_landpage").toString().equalsIgnoreCase("")) {
+				JSONArray imagensid = (JSONArray) new JSONParser().parse(param.get("imagens_proj_landpage").toString());
+				long id_image = 0;
+				for (int i = 0; i < imagensid.size(); i++) {
+
+					if (!Utilitario.isNumeric(imagensid.get(i).toString())) {
+						throw new Exception("Id de imagem inválido.");
+					}
+
+					id_image = Long.parseLong(imagensid.get(i).toString());
+
+					image = new UserImage(conn);
+					image.setId_image(id_image);
+					image.setId_usuario(user);
+					rs = image.lista();
+					if (!rs.next()) {
+						throw new Exception("Id de imagem inválido.");
+					}
+
+					imagepage = new UserImagePage(conn);
+					imagepage.setId_image(id_image);
+					imagepage.setId_page(landpage.getIdlandpage());
+					imagepage.setId_campanha(id_campanha);
+					imagepage.setFlag_pagetipe("L");
+					imagepage.Insert();
+
+				}
+			}
+			for (int i = 0; i < featuresarray.size(); i++) {
+
+				objRetorno = (JSONObject) featuresarray.get(i);
+
+				if (objRetorno.get("desc_feature") == null || objRetorno.get("desc_feature").toString().equalsIgnoreCase("")) {
+					throw new Exception("Funcionalidade sem descrição.");
+				}
+
+				if (objRetorno.get("desc_class_icon") == null || objRetorno.get("desc_class_icon").toString().equalsIgnoreCase("")) {
+					throw new Exception("Funcionalidade sem ícone.");
+				}
+
+				if (objRetorno.get("desc_name") == null || objRetorno.get("desc_name").toString().equalsIgnoreCase("")) {
+					throw new Exception("Funcionalidade sem nome.");
+				}
+
+				features = new CampanhaLandpageFeature(conn);
+				features.setIdlandpage(landpage.getIdlandpage());
+				features.setDescfeature(objRetorno.get("desc_feature").toString());
+				features.setDescclassicon(objRetorno.get("desc_class_icon").toString());
+				features.setDescname(objRetorno.get("desc_name").toString());
+				features.Insert();
+
+			}
+
+			thankspage = new CampanhaThankspage(conn);
+			thankspage.setIdcampanha(id_campanha);
+			thankspage.delete();
+
+			thankspage = new CampanhaThankspage(conn);
+			thankspage.setIdcampanha(id_campanha);
+			thankspage.setMsgthanks(param.get("t_msg_thanks").toString());
+			thankspage.setSubtitulo(param.get("t_sub_titulo").toString());
+			thankspage.setUrlvideo(param.get("t_url_video").toString());
+			thankspage.setDescfrase(param.get("t_desc_frase").toString());
+			thankspage.setDescfrase2(param.get("t_desc_frase2").toString());
+			thankspage.setDesctexto(param.get("t_desc_texto").toString());
+			thankspage.Insert();
+
+			// imagem thankspage
+			if (!param.get("imagens_proj_thanks").toString().equalsIgnoreCase("")) {
+				JSONArray imagensid = (JSONArray) new JSONParser().parse(param.get("imagens_proj_thanks").toString());
+				long id_image = 0;
+				for (int i = 0; i < imagensid.size(); i++) {
+
+					if (!Utilitario.isNumeric(imagensid.get(i).toString())) {
+						throw new Exception("Id de imagem inválido.");
+					}
+
+					id_image = Long.parseLong(imagensid.get(i).toString());
+
+					image = new UserImage(conn);
+					image.setId_image(id_image);
+					image.setId_usuario(user);
+					rs = image.lista();
+					if (!rs.next()) {
+						throw new Exception("Id de imagem inválido.");
+					}
+
+					imagepage = new UserImagePage(conn);
+					imagepage.setId_image(id_image);
+					imagepage.setId_page(landpage.getIdlandpage());
+					imagepage.setId_campanha(id_campanha);
+					imagepage.setFlag_pagetipe("T");
+					imagepage.Insert();
+
+				}
+			}
+
+		} else {
 			throw new Exception("Campanha não encontrada.");
 		}
 
-		
-		// landpage.setIdcampanha();
 
 	}
 

@@ -31,51 +31,151 @@
 				<div class="row">
 					<div class="col-xs-6 col-md-6 col-lg-6">
 						<div class="form-group">
-							<label>Desc_titulo 1</label> <input type="text" class="form-control warn-change" id="desc_titulo_1" />
+							<label>Desc_titulo 1</label> <input type="text" class="form-control " id="desc_titulo_1" />
 						</div>
 					</div>
+				</div>
+				<div class="row">
 					<div class="col-xs-6 col-md-6 col-lg-6">
 						<div class="form-group">
-							<label>Desc_sub_titulo 1</label> <input type="text" class="form-control warn-change" id="desc_sub_titulo_1" />
+							<label>Desc_sub_titulo 1</label> <input type="text" class="form-control " id="desc_sub_titulo_1" />
 						</div>
 					</div>
+				</div>
+				<div class="row">
 					<div class="col-xs-6 col-md-6 col-lg-6">
 						<div class="form-group">
-							<label>url_video </label> <input type="text" class="form-control warn-change" id="url_video" />
+							<label>url_video </label> <input type="text" class="form-control " id="url_video" />
 						</div>
 					</div>
+				</div>
+				<div class="row">
 					<div class="col-xs-6 col-md-6 col-lg-6">
 						<div class="form-group">
-							<label>desc_campanha </label> <input type="text" class="form-control warn-change" id="desc_campanha" />
+							<label>desc_campanha </label> <input type="text" class="form-control " id="desc_campanha" />
 						</div>
 					</div>
+				</div>
+				<div class="row">
 					<div class="col-xs-6 col-md-6 col-lg-6">
 						<div class="form-group">
-							<label>DESC_TITULO_2 </label> <input type="text" class="form-control warn-change" id="desc_titulo_2" />
+							<label>DESC_TITULO_2 </label> <input type="text" class="form-control " id="desc_titulo_2" />
 						</div>
 					</div>
+				</div>
+				<div class="row">
 					<div class="col-xs-6 col-md-6 col-lg-6">
 						<div class="form-group">
-							<label>sub_titulo_2 </label> <input type="text" class="form-control warn-change" id="sub_titulo_2" />
+							<label>sub_titulo_2 </label> <input type="text" class="form-control " id="sub_titulo_2" />
 						</div>
 					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-6 col-md-6 col-lg-6">
+						<label>Array Imagens </label> <input type="text" class="form-control " id="array_imagens" />
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-3 col-md-3 col-lg-3">
+						<label>FEATURES </label>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-3 col-md-3 col-lg-3">
+						<label>Nome </label> <input type="text" class="form-control features " contador="1" id="desc_name_1" />
+					</div>
+					<div class="col-xs-3 col-md-3 col-lg-3">
+						<label>Descrição </label> <input type="text" class="form-control " id="desc_feature_1" />
+					</div>
+					<div class="col-xs-3 col-md-3 col-lg-3">
+						<label>Classe </label> <input type="text" class="form-control " id="desc_class_icon_1" />
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-3 col-md-3 col-lg-3">
+						<label>Nome </label> <input type="text" class="form-control features " contador="2" id="desc_name_2" />
+					</div>
+					<div class="col-xs-3 col-md-3 col-lg-3">
+						<label>Descrição</label> <input type="text" class="form-control " id="desc_feature_2" />
+					</div>
+					<div class="col-xs-3 col-md-3 col-lg-3">
+						<label>Classe </label> <input type="text" class="form-control " id="desc_class_icon_2" />
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-3 col-md-3 col-lg-3">
+						<label>Nome</label> <input type="text" class="form-control features " contador="3" id="desc_name_3" />
+					</div>
+					<div class="col-xs-3 col-md-3 col-lg-3">
+						<label>Descrição</label> <input type="text" class="form-control " id="desc_feature_3" />
+					</div>
+					<div class="col-xs-3 col-md-3 col-lg-3">
+						<label>Classe</label> <input type="text" class="form-control " id="desc_class_icon_3" />
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-3 col-md-3 col-lg-3">
+						<label>Thankspage </label>
+					</div>
+				</div>
+				<div class="row">
 					<div class="col-xs-6 col-md-6 col-lg-6">
 						<div class="form-group">
-							<label>Upload de imagens *** Pensar 
+							<label>t_msg_thanks</label> <input type="text" class="form-control " id="t_msg_thanks" />
 						</div>
 					</div>
-					<div class="row">
-						<div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-							<table>
-								<tr>
-									<td style="width: 300px" align="right">
-										<div class="form-group">
-											<button type="button" id="btn_salvar" class="btn btn-primary">Salvar</button>
-										</div>
-									<td>
-								</tr>
-							</table>
+				</div>
+				<div class="row">
+					<div class="col-xs-6 col-md-6 col-lg-6">
+						<div class="form-group">
+							<label>t_sub_titulo</label> <input type="text" class="form-control " id="t_sub_titulo" />
 						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-6 col-md-6 col-lg-6">
+						<div class="form-group">
+							<label>t_url_video</label> <input type="text" class="form-control " id="t_url_video" />
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-6 col-md-6 col-lg-6">
+						<div class="form-group">
+							<label>t_desc_frase</label> <input type="text" class="form-control " id="t_desc_frase" />
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-6 col-md-6 col-lg-6">
+						<div class="form-group">
+							<label>t_desc_frase2</label> <input type="text" class="form-control " id="t_desc_frase2" />
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-6 col-md-6 col-lg-6">
+						<div class="form-group">
+							<label>t_desc_texto</label> <input type="text" class="form-control " id="t_desc_texto" />
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-6 col-md-6 col-lg-6">
+						<label>Array Imagens </label> <input type="text" class="form-control " id="t_array_imagens" />
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+						<table>
+							<tr>
+								<td style="width: 300px" align="right">
+									<div class="form-group">
+										<button type="button" id="btn_salvar" class="btn btn-primary">Salvar</button>
+									</div>
+								<td>
+							</tr>
+						</table>
 					</div>
 				</div>
 			</div>

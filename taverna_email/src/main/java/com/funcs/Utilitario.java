@@ -306,7 +306,7 @@ public class Utilitario {
 		copiaStream(in, out, false, false);
 	}
 
-	public static int retornaIdinsertChaveSecundaria(String tabela, String nomechaveprimaria, String valchaveprimaria, String coluna, Connection conn) throws Exception {
+	public static int retornaIdinsertChaveSecundariaInt(String tabela, String nomechaveprimaria, String valchaveprimaria, String coluna, Connection conn) throws Exception {
 		String varname1 = "";
 		// so funciona para pk single
 
@@ -333,6 +333,34 @@ public class Utilitario {
 		return id;
 	}
 
+	public static Long retornaIdinsertChaveSecundariaLong(String tabela, String nomechaveprimaria, String valchaveprimaria, String coluna, Connection conn) throws Exception {
+		String varname1 = "";
+		// so funciona para pk single
+
+		varname1 += " SELECT z.expected AS missing  ";
+		varname1 += " FROM   ( ";
+		varname1 += " SELECT   @rownum:=@rownum+1                         AS expected,IF(@rownum=" + coluna + ", 0, @rownum:=" + coluna + ") as got";
+		varname1 += " FROM     ( ";
+		varname1 += " SELECT @rownum:=0) AS a ";
+		varname1 += " JOIN     " + tabela + " ";
+		varname1 += " where " + nomechaveprimaria + " = " + valchaveprimaria + " ";
+		varname1 += " ORDER BY " + coluna + " ) AS z ";
+		varname1 += " WHERE  z.got!=0 ";
+		varname1 += " UNION ";
+		varname1 += " SELECT COALESCE(max(" + coluna + "+1),1) AS missing ";
+		varname1 += " FROM   " + tabela + " where " + nomechaveprimaria + " = " + valchaveprimaria + " limit 1 ";
+
+		PreparedStatement st = conn.prepareStatement(varname1);
+		long id = 1;
+		ResultSet rs2 = st.executeQuery();
+		if (rs2.next()) {
+			id = rs2.getInt("missing");
+		}
+
+		return id;
+	}
+
+	
 	private static final int maxsize = 1000;
 
 	public static DecimalFormatSymbols dfs = new DecimalFormatSymbols(new Locale("pt", "BR"));

@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     17/7/2017 4:38:04 PM                         */
+/* Created on:     27/7/2017 7:56:51 PM                         */
 /*==============================================================*/
 
 
@@ -22,6 +22,14 @@ drop table if exists CAMPANHA_THANKSPAGE;
 
 drop table if exists CIDADE;
 
+drop table if exists ESTADO;
+
+drop table if exists SYS_PARAMETROS;
+
+drop table if exists USER_IMAGE;
+
+drop table if exists USER_IMAGE_PAGE;
+
 drop table if exists USUARIO;
 
 /*==============================================================*/
@@ -33,6 +41,9 @@ create table CAMPANHA
    ID_USUARIO           bigint,
    DATA_CRIACAO         datetime,
    LINK_INICIAL         text,
+   DESC_NOME            text,
+   DESC_OBS             text,
+   FLAG_ATIVO           char(1) default 'S',
    primary key (ID_CAMPANHA)
 )
 auto_increment = 1;
@@ -66,14 +77,13 @@ create table CAMPANHA_EMAIL_PREMIO
 create table CAMPANHA_LANDPAGE
 (
    ID_LANDPAGE          bigint not null auto_increment,
-   ID_CAMPANHA          bigint not null,
+   ID_CAMPANHA          bigint,
    DESC_TITULO_1        text,
    DESC_SUB_TITULO_1    text,
    URL_VIDEO            text,
    DESC_CAMPANHA        text,
    DESC_TITULO_2        text,
    SUB_TITULO_2         text,
-   QTD_IMAGE            int,
    primary key (ID_LANDPAGE)
 )
 auto_increment = 1;
@@ -87,6 +97,7 @@ create table CAMPANHA_LANDPAGE_FEATURES
    ID_FEATURE           int not null,
    DESC_FEATURE         text,
    DESC_CLASS_ICON      varchar(30),
+   DESC_NAME            text,
    primary key (ID_FEATURE, ID_LANDPAGE)
 );
 
@@ -142,8 +153,91 @@ auto_increment = 1;
 create table CIDADE
 (
    COD_CIDADE           integer not null auto_increment,
+   ID_ESTADO            int,
    DESC_CIDADE          TEXT not null,
    primary key (COD_CIDADE)
+)
+auto_increment = 1;
+
+/*==============================================================*/
+/* Table: ESTADO                                                */
+/*==============================================================*/
+create table ESTADO
+(
+   ID_ESTADO            int not null auto_increment,
+   DESC_UF              varchar(4),
+   DESC_ESTADO          text,
+   primary key (ID_ESTADO)
+)
+auto_increment = 1;
+
+/*==============================================================*/
+/* Table: SYS_PARAMETROS                                        */
+/*==============================================================*/
+create table SYS_PARAMETROS
+(
+   ID_PARAM             INT4 not null,
+   ID_USUARIO_ADMIN     INT8,
+   ID_VISITANTE         bigint,
+   FLAG_MANUTENCAO      char(1),
+   DESC_KEY             text,
+   SEGS_TESTE_AJAX      bigint,
+   FACE_APP_ID          bigint,
+   FACE_APP_SECRETKEY   text,
+   FACE_APP_TOKEN       text,
+   FACE_REDIRECT_URI    text,
+   URL_SYSTEM           text,
+   SYS_HOST_NAME_SMTP   text,
+   SYS_SMTP_PORT        int4,
+   SYS_EMAIL            text,
+   SYS_SENHA            text,
+   SYS_FROMEMAIL        text,
+   SYS_FROMDESC         text,
+   SYS_TLS              char(1),
+   PED_HORASOKEY        int,
+   NUM_MINUTOS_NOT_FINAL int,
+   NUM_TEMPOMAXCANC_MINUTO int,
+   COD_RECUSA           int,
+   ONESIGNAL_KEY        text,
+   ONESIGNAL_APPID      text,
+   ONESIGNAL_URL        text,
+   NUM_SEGS_NOT_FINAL_EXEC int,
+   COD_CANCELAMENTOSYS  int,
+   DESC_WEBAPPFOLDER    text,
+   IGNORAR_REGRAMAIOR18 char(1),
+   FACE_REDIRECT_URI_WEBAPP text,
+   TRAGOAQUI_NUM_TELEFONE text,
+   TRAGOAQUI_PAG_FACEBOOK text,
+   APP_VERSAO           text,
+   APPLICACAO           int,
+   SYS_MINUTES_AGEN_NOT_RESP int,
+   URL_WEBSOCKET        text,
+   primary key (ID_PARAM)
+);
+
+/*==============================================================*/
+/* Table: USER_IMAGE                                            */
+/*==============================================================*/
+create table USER_IMAGE
+(
+   ID_IMAGE             bigint not null,
+   ID_USUARIO           bigint,
+   DESC_IMAGE           text,
+   DESC_PATH_SYSTEM     text,
+   primary key (ID_IMAGE)
+);
+
+/*==============================================================*/
+/* Table: USER_IMAGE_PAGE                                       */
+/*==============================================================*/
+create table USER_IMAGE_PAGE
+(
+   ID_ASSOCIACAO        bigint not null auto_increment,
+   ID_IMAGE             bigint,
+   ID_CAMPANHA          bigint,
+   ID_PAGE              text,
+   FLAG_PAGETIPE        char(1),
+   primary key (ID_ASSOCIACAO)
 )
 auto_increment = 1;
 
@@ -201,6 +295,18 @@ alter table CAMPANHA_PREMIOS add constraint FK_REFERENCE_5 foreign key (ID_CAMPA
       references CAMPANHA (ID_CAMPANHA) on delete restrict on update restrict;
 
 alter table CAMPANHA_THANKSPAGE add constraint FK_REFERENCE_4 foreign key (ID_CAMPANHA)
+      references CAMPANHA (ID_CAMPANHA) on delete restrict on update restrict;
+
+alter table CIDADE add constraint FK_REFERENCE_14 foreign key (ID_ESTADO)
+      references ESTADO (ID_ESTADO) on delete restrict on update restrict;
+
+alter table USER_IMAGE add constraint FK_REFERENCE_15 foreign key (ID_USUARIO)
+      references USUARIO (ID_USUARIO) on delete restrict on update restrict;
+
+alter table USER_IMAGE_PAGE add constraint FK_REFERENCE_16 foreign key (ID_IMAGE)
+      references USER_IMAGE (ID_IMAGE) on delete restrict on update restrict;
+
+alter table USER_IMAGE_PAGE add constraint FK_REFERENCE_17 foreign key (ID_CAMPANHA)
       references CAMPANHA (ID_CAMPANHA) on delete restrict on update restrict;
 
 alter table USUARIO add constraint FK_REFERENCE_11 foreign key (COD_CIDADE)

@@ -130,6 +130,93 @@ public class CampanhaLandpage implements java.io.Serializable {
 		this.conn = conn;
 	}
 
+	public ResultSet lista() throws Exception {
+
+		sql = new StringBuffer();
+		sql.append("	select * from  campanha_landpage where 1=1 "); // seta a pk soh para ter um "set"
+
+		if (getDesctitulo1() != null) {
+			sql.append("and desc_titulo_1 = ? ");
+		}
+
+		if (getDescsubtitulo1() != null) {
+			sql.append("and desc_sub_titulo_1 = ? ");
+		}
+
+		if (getUrlvideo() != null) {
+			sql.append("and url_video = ? ");
+		}
+
+		if (getDesccampanha() != null) {
+			sql.append("and desc_campanha = ? ");
+		}
+
+		if (getDesctitulo2() != null) {
+			sql.append("and desc_titulo_2 = ? ");
+		}
+
+		if (getSubtitulo2() != null) {
+			sql.append("and sub_titulo_2 = ? ");
+		}
+
+		if (getIdcampanha() != null && getIdcampanha() != 0) {
+			sql.append("and id_campanha = ? ");
+		}
+
+		if (getIdlandpage() != null && getIdlandpage() != 0) {
+			sql.append("and id_campanha = ? ");
+		}
+
+		st = conn.prepareStatement(sql.toString());
+
+		int contparam = 1;
+
+		if (getDesctitulo1() != null) {
+			st.setString(contparam, getDesctitulo1());
+			contparam++;
+		}
+
+		if (getDescsubtitulo1() != null) {
+			st.setString(contparam, getDescsubtitulo1());
+			contparam++;
+		}
+
+		if (getUrlvideo() != null) {
+			st.setString(contparam, getUrlvideo());
+			contparam++;
+		}
+
+		if (getDesccampanha() != null) {
+			st.setString(contparam, getDesccampanha());
+			contparam++;
+		}
+
+		if (getDesctitulo2() != null) {
+			st.setString(contparam, getDesctitulo2());
+			contparam++;
+		}
+
+		if (getSubtitulo2() != null) {
+			st.setString(contparam, getSubtitulo2());
+			contparam++;
+		}
+
+		if (getIdcampanha() != null && getIdcampanha() != 0) {
+			st.setLong(contparam, getIdcampanha());
+			contparam++;
+		}
+
+		if (getIdlandpage() != null && getIdlandpage() != 0) {
+			st.setLong(contparam, getIdlandpage());
+			contparam++;
+		}
+
+		rs = st.executeQuery();
+
+		return rs;
+
+	}
+
 	public void delete() throws Exception {
 
 		sql = new StringBuffer();
@@ -177,11 +264,10 @@ public class CampanhaLandpage implements java.io.Serializable {
 		}
 
 	}
-	
-	
-	public void setFieldNull(String field) throws Exception{//TESTAR
+
+	public void setFieldNull(String field) throws Exception {// TESTAR
 		sql = new StringBuffer();
-		sql.append("	update campanha_landpage set "+field+" =  null "); 
+		sql.append("	update campanha_landpage set " + field + " =  null ");
 		sql.append(" where id_landpage = " + getIdlandpage() + " ");
 		st = conn.prepareStatement(sql.toString());
 
