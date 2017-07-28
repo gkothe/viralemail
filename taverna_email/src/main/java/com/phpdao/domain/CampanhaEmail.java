@@ -197,4 +197,46 @@ public class CampanhaEmail implements java.io.Serializable {
 
 	}
 
+	public ResultSet lista() throws Exception {
+
+		sql = new StringBuffer();
+		sql.append(" select * from campanha_email where  1=1 ");
+
+		if (getIdcampanha() != null && getIdcampanha() != 0) {
+			sql.append("and id_campanha = ? ");
+		}
+
+		if (getIdemail() != null && getIdemail() != 0) {
+			sql.append("and id_email = ? ");
+		}
+
+		if (getQtd_referencia() != null) {
+			sql.append("and qtd_referencia = ? ");
+		}
+
+		st = conn.prepareStatement(sql.toString());
+
+		int contparam = 1;
+
+		if (getIdcampanha() != null && getIdcampanha() != 0) {
+			st.setLong(contparam, getIdcampanha());
+			contparam++;
+		}
+
+		if (getIdemail() != null && getIdemail() != 0) {
+			st.setLong(contparam, getIdemail());
+			contparam++;
+		}
+
+		if (getQtd_referencia() != null) {
+			st.setInt(contparam, getQtd_referencia());
+			contparam++;
+		}
+
+		rs = st.executeQuery();
+
+		return rs;
+
+	}
+
 }

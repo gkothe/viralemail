@@ -71,6 +71,38 @@ public class UserPremio implements java.io.Serializable {
 		this.conn = conn;
 	}
 
+	public ResultSet lista() throws Exception {
+
+		sql = new StringBuffer();
+		sql.append(" select * from user_premios where  1=1 ");
+
+		if (getIdpremio() != null && getIdpremio() != 0) {
+			sql.append(" and  id_premio = ? ");
+		}
+
+		if (getIdusuario() != null && getIdusuario() != 0) {
+			sql.append(" and  id_usuario = ? ");
+		}
+
+		st = conn.prepareStatement(sql.toString());
+
+		int contparam = 1;
+
+		if (getIdpremio() != null && getIdpremio() != 0) {
+			st.setLong(contparam, getIdpremio());
+			contparam++;
+		}
+
+		if (getIdusuario() != null && getIdusuario() != 0) {
+			st.setLong(contparam, getIdusuario());
+			contparam++;
+		}
+
+		rs = st.executeQuery();
+
+		return rs;
+	}
+
 	public void insert() throws Exception {
 
 		sql = new StringBuffer();
@@ -179,7 +211,7 @@ public class UserPremio implements java.io.Serializable {
 		PrintWriter out = response.getWriter();
 		JSONObject objRetorno = new JSONObject();
 		JSONObject param = Utilitario.getJsonFromRequest(request, response);
-		
+
 		if (param.get("desc_name").toString().equalsIgnoreCase("")) {
 			throw new Exception("Você deve inserir o nome da sua camapanha.");
 		}

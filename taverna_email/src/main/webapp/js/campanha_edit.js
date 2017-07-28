@@ -60,7 +60,6 @@ function salvarCampanha(id) {
 		data["imagens_proj_thanks"] = JSON.stringify($("#t_array_imagens").val().split(","));
 	}
 
-	
 	// emails
 	var emails = [];
 	$('.emails').each(function() {
@@ -70,11 +69,16 @@ function salvarCampanha(id) {
 		obj["desc_titulo"] = $("#em_desc_titulo_" + cont).val();
 		obj["qtd_referencia"] = $("#em_qtd_referencia_" + cont).val();
 
+		if ($("#em_premio_ids").val() == "") {
+			obj["premio_ids"] = "";
+		} else {
+			obj["premio_ids"] = JSON.stringify($("#em_premio_ids_"+cont).val().split(","));
+		}
+
 		emails.push(obj);
 	});
 	data["campanha_emails"] = JSON.stringify(emails);
-	
-	
+
 	$.blockUI({
 		message : 'Salvando...'
 	});

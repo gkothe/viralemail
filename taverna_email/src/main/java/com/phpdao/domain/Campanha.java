@@ -114,11 +114,11 @@ public class Campanha implements java.io.Serializable {
 		sql = new StringBuffer();
 		sql.append(" select * from campanha where  1=1 ");
 
-		if (getIdcampanha() != null) {
+		if (getIdcampanha() != null && getIdcampanha() != 0) {
 			sql.append(" and  id_campanha = ? ");
 		}
 
-		if (getIdusuario() != null) {
+		if (getIdusuario() != null && getIdusuario() != 0) {
 			sql.append(" and  id_usuario = ? ");
 		}
 
@@ -130,12 +130,12 @@ public class Campanha implements java.io.Serializable {
 
 		int contparam = 1;
 
-		if (getIdcampanha() != null) {
+		if (getIdcampanha() != null && getIdcampanha() != 0) {
 			st.setLong(contparam, getIdcampanha());
 			contparam++;
 		}
 
-		if (getIdusuario() != null) {
+		if (getIdusuario() != null && getIdusuario() != 0) {
 			st.setLong(contparam, getIdusuario());
 			contparam++;
 		}
@@ -166,6 +166,8 @@ public class Campanha implements java.io.Serializable {
 		UserImagePage imagepage;
 		CampanhaThankspage thankspage;
 		CampanhaEmail cpEmail;
+		CampanhaEmailPremio cpEmPr;
+		UserPremio up;
 
 		long id_campanha = Long.parseLong(param.get("id_campanha").toString());
 
@@ -231,7 +233,7 @@ public class Campanha implements java.io.Serializable {
 
 				}
 			}
-
+			// lande page features
 			if (!param.get("landpage_features").toString().equalsIgnoreCase("")) {
 				JSONArray featuresarray = (JSONArray) new JSONParser().parse(param.get("landpage_features").toString());
 				for (int i = 0; i < featuresarray.size(); i++) {
@@ -259,6 +261,7 @@ public class Campanha implements java.io.Serializable {
 
 				}
 			}
+			// thanks page
 			thankspage = new CampanhaThankspage(conn);
 			thankspage.setIdcampanha(id_campanha);
 			thankspage.delete();
@@ -303,13 +306,25 @@ public class Campanha implements java.io.Serializable {
 				}
 			}
 
+			// deletar relação de premios e emails da campanha atual
+			cpEmail = new CampanhaEmail(conn);
+			cpEmail.setIdcampanha(id_campanha);
+			rs = cpEmail.lista();
+			while (rs.next()) {
+				cpEmPr = new CampanhaEmailPremio(conn);
+				cpEmPr.setIdemail(rs.getLong("id_email"));
+				cpEmPr.delete();
+			}
+			// deletar emails da campanha atual
 			cpEmail = new CampanhaEmail(conn);
 			cpEmail.setIdcampanha(id_campanha);
 			cpEmail.delete();
 
+			// insert email
 			if (!param.get("campanha_emails").toString().equalsIgnoreCase("")) {
 
 				JSONArray campanha_emails = (JSONArray) new JSONParser().parse(param.get("campanha_emails").toString());
+				JSONArray campanha_emails_premio;
 				for (int i = 0; i < campanha_emails.size(); i++) {
 
 					objRetorno = (JSONObject) campanha_emails.get(i);
@@ -333,12 +348,36 @@ public class Campanha implements java.io.Serializable {
 					cpEmail.setQtd_referencia(Integer.parseInt(objRetorno.get("qtd_referencia").toString()));
 					cpEmail.Insert();
 
+					if (!objRetorno.get("premio_ids").toString().equalsIgnoreCase("")) {
+						long idpremio = 0;
+						campanha_emails_premio = (JSONArray) new JSONParser().parse(objRetorno.get("premio_ids").toString());
+						for (int j = 0; j < campanha_emails_premio.size(); j++) {
+
+							if (!Utilitario.isNumeric(campanha_emails_premio.get(i).toString())) {
+								throw new Exception("Id de prêmio inválido.");
+							}
+
+							idpremio = Long.parseLong(campanha_emails_premio.get(j).toString());
+
+							up = new UserPremio(conn);
+							up.setIdpremio(idpremio);
+							up.setIdusuario(user);
+							rs = up.lista();
+							if (!rs.next()) {
+								throw new Exception("Id de prêmio inválido.");
+							}
+
+							cpEmPr = new CampanhaEmailPremio(conn);
+							cpEmPr.setIdemail(cpEmail.getIdemail());
+							cpEmPr.setIdpremio(idpremio);
+							cpEmPr.Insert();
+							
+						}
+
+					}
+
 				}
 			}
-			
-			
-			
-			
 
 		} else {
 			throw new Exception("Campanha não encontrada.");

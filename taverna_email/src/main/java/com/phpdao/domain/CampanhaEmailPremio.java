@@ -1,24 +1,86 @@
 package com.phpdao.domain;
 
-public class CampanhaEmailPremio implements java.io.Serializable{
-	private Long IDEMAIL;
-	private Long IDPREMIO;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
-	public Long getIDEMAIL(){
-		return this.IDEMAIL;
+import com.funcs.Utilitario;
+
+public class CampanhaEmailPremio implements java.io.Serializable {
+	private Long idemail;
+	private Long idpremio;
+
+	private PreparedStatement st;
+	private StringBuffer sql;
+	private ResultSet rs;
+	private Connection conn;
+
+	public Long getIdemail() {
+		return idemail;
 	}
 
-	public Long getIDPREMIO(){
-		return this.IDPREMIO;
+	public void setIdemail(Long idemail) {
+		this.idemail = idemail;
 	}
 
-
-	public void setIDEMAIL(Long IDEMAIL){
-		this.IDEMAIL = IDEMAIL;
+	public Long getIdpremio() {
+		return idpremio;
 	}
 
-	public void setIDPREMIO(Long IDPREMIO){
-		this.IDPREMIO = IDPREMIO;
+	public void setIdpremio(Long idpremio) {
+		this.idpremio = idpremio;
+	}
+
+	public CampanhaEmailPremio(Connection conn) {
+		super();
+		this.conn = conn;
+	}
+
+	public void delete() throws Exception {
+
+		sql = new StringBuffer();
+		sql.append("delete from campanha_email_premio where 1=1 ");
+
+		if (getIdpremio() != null && getIdpremio() != 0) {
+			sql.append("and id_premio = ? ");
+		}
+
+		if (getIdemail() != null && getIdemail() != 0) {
+			sql.append("and id_email = ? ");
+		}
+
+		st = conn.prepareStatement(sql.toString());
+
+		int contparam = 1;
+
+		if (getIdpremio() != null && getIdpremio() != 0) {
+			st.setLong(contparam, getIdpremio());
+			contparam++;
+		}
+
+		if (getIdemail() != null && getIdemail() != 0) {
+			st.setLong(contparam, getIdemail());
+			contparam++;
+		}
+
+		st.executeUpdate();
+
+	}
+
+	public void Insert() throws Exception {
+
+		sql = new StringBuffer();
+		sql.append("	INSERT INTO campanha_email_premio (id_premio, id_email) value (?,?) ");
+		st = conn.prepareStatement(sql.toString());
+		st.setLong(1, getIdpremio());
+		st.setLong(2, getIdemail());
+
+		if (st.executeUpdate() == 1) {
+
+		} else {
+			throw new Exception("Erro, contate suporte. Inserção de relação de email e prêmio.");
+		}
+
 	}
 
 }
