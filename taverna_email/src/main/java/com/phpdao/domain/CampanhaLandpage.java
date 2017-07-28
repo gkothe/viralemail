@@ -253,11 +253,11 @@ public class CampanhaLandpage implements java.io.Serializable {
 		sql = new StringBuffer();
 		sql.append("	INSERT INTO campanha_landpage (id_landpage) value (?) ");
 		st = conn.prepareStatement(sql.toString());
-		long id_landpage = Utilitario.retornaIdinsertLong("campanha_landpage", "id_landpage", conn);
-		st.setLong(1, id_landpage);
+		long id = Utilitario.retornaIdinsertLong("campanha_landpage", "id_landpage", conn);
+		st.setLong(1, id);
 
 		if (st.executeUpdate() == 1) {
-			setIdlandpage(id_landpage);
+			setIdlandpage(id);
 			update();
 		} else {
 			throw new Exception("Erro, contate suporte. Inserção de land page.");

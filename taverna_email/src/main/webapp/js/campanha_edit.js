@@ -18,18 +18,18 @@ function salvarCampanha(id) {
 	data["id_campanha"] = id;
 
 	// landpage
-	data["desc_titulo_1"] = $("#desc_titulo_1").val();
-	data["desc_sub_titulo_1"] = $("#desc_sub_titulo_1").val();
-	data["url_video"] = $("#url_video").val();
-	data["desc_campanha"] = $("#desc_campanha").val();
-	data["desc_titulo_2"] = $("#desc_titulo_2").val();
-	data["sub_titulo_2"] = $("#sub_titulo_2").val();
+	data["desc_titulo_1"] = $("#lp_desc_titulo_1").val();
+	data["desc_sub_titulo_1"] = $("#lp_desc_sub_titulo_1").val();
+	data["url_video"] = $("#lp_url_video").val();
+	data["desc_campanha"] = $("#lp_desc_campanha").val();
+	data["desc_titulo_2"] = $("#lp_desc_titulo_2").val();
+	data["sub_titulo_2"] = $("#lp_sub_titulo_2").val();
 
 	// imagem land
 	if ($("#array_imagens").val() == "") {
 		data["imagens_proj_landpage"] = "";
 	} else {
-		data["imagens_proj_landpage"] = JSON.stringify($("#array_imagens").val().split(","));
+		data["imagens_proj_landpage"] = JSON.stringify($("#lp_array_imagens").val().split(","));
 	}
 
 	// fetaures
@@ -37,9 +37,9 @@ function salvarCampanha(id) {
 	$('.features').each(function() {
 		var cont = $(this).attr("contador");
 		var obj = {};
-		obj["desc_name"] = $("#desc_name_" + cont).val();
-		obj["desc_feature"] = $("#desc_feature_" + cont).val();
-		obj["desc_class_icon"] = $("#desc_class_icon_" + cont).val();
+		obj["desc_name"] = $("#ft_desc_name_" + cont).val();
+		obj["desc_feature"] = $("#ft_desc_feature_" + cont).val();
+		obj["desc_class_icon"] = $("#ft_desc_class_icon_" + cont).val();
 
 		features.push(obj);
 	});
@@ -60,6 +60,21 @@ function salvarCampanha(id) {
 		data["imagens_proj_thanks"] = JSON.stringify($("#t_array_imagens").val().split(","));
 	}
 
+	
+	// emails
+	var emails = [];
+	$('.emails').each(function() {
+		var cont = $(this).attr("contador");
+		var obj = {};
+		obj["desc_email"] = $("#em_desc_email_" + cont).val();
+		obj["desc_titulo"] = $("#em_desc_titulo_" + cont).val();
+		obj["qtd_referencia"] = $("#em_qtd_referencia_" + cont).val();
+
+		emails.push(obj);
+	});
+	data["campanha_emails"] = JSON.stringify(emails);
+	
+	
 	$.blockUI({
 		message : 'Salvando...'
 	});

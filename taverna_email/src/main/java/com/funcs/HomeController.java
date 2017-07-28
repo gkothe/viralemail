@@ -16,6 +16,7 @@ import org.json.simple.JSONObject;
 
 import com.configs.Conexao;
 import com.phpdao.domain.Campanha;
+import com.phpdao.domain.UserPremio;
 
 @SuppressWarnings("unchecked")
 @WebServlet(urlPatterns = { "/home/*" })
@@ -77,12 +78,12 @@ public class HomeController extends javax.servlet.http.HttpServlet {
 
 				if (strTipo.equalsIgnoreCase("campanhaInsert")) {
 					campanhaInsert(request, response);
-				}
-				if (strTipo.equalsIgnoreCase("campanhaEdit")) {
+				} else if (strTipo.equalsIgnoreCase("campanhaEdit")) {
 					campanhaEdit(request, response);
-				}
-				if (strTipo.equalsIgnoreCase("uploadImage")) {
+				} else if (strTipo.equalsIgnoreCase("uploadImage")) {
 					uploadImage(request, response);
+				} else if (strTipo.equalsIgnoreCase("insertPremio")) {
+					insertPremio(request, response);
 				} else if (strTipo.equalsIgnoreCase("listaped")) {
 					dashpedidos(request, response);
 				}
@@ -153,7 +154,12 @@ public class HomeController extends javax.servlet.http.HttpServlet {
 				Campanha.InsertCampanha(request, response, conn, coduser);
 			} else if (cmd.equalsIgnoreCase("updateCamapanha")) {
 				Campanha.updateCampanha(request, response, conn, coduser);
+			} else if (cmd.equalsIgnoreCase("insertPremio")) {
+				UserPremio.insertPremio(request, response, conn, coduser);
 			}
+			
+			
+			
 
 			conn.commit();
 		} catch (Exception ex) {
@@ -177,7 +183,6 @@ public class HomeController extends javax.servlet.http.HttpServlet {
 		}
 	}
 
-
 	private void uploadImage(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		try {
 			request.getRequestDispatcher("/WEB-INF/upload_image.html").forward(request, response);
@@ -190,7 +195,7 @@ public class HomeController extends javax.servlet.http.HttpServlet {
 
 	private void campanhaInsert(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		try {
-			request.getRequestDispatcher("/WEB-INF/camapanha_insert.jsp").forward(request, response);
+			request.getRequestDispatcher("/WEB-INF/camapanha_insert.html").forward(request, response);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;
@@ -200,7 +205,17 @@ public class HomeController extends javax.servlet.http.HttpServlet {
 
 	private void campanhaEdit(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		try {
-			request.getRequestDispatcher("/WEB-INF/camapanha_edit.jsp").forward(request, response);
+			request.getRequestDispatcher("/WEB-INF/camapanha_edit.html").forward(request, response);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+		}
+	}
+
+	private void insertPremio(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		try {
+			request.getRequestDispatcher("/WEB-INF/insert_premio.html").forward(request, response);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;

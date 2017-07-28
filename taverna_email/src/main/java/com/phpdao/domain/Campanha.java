@@ -157,7 +157,6 @@ public class Campanha implements java.io.Serializable {
 
 		JSONObject param = Utilitario.getJsonFromRequest(request, response);
 
-		JSONArray featuresarray = (JSONArray) new JSONParser().parse(param.get("landpage_features").toString());
 		PreparedStatement st;
 		StringBuffer sql;
 		ResultSet rs;
@@ -166,6 +165,7 @@ public class Campanha implements java.io.Serializable {
 		UserImage image;
 		UserImagePage imagepage;
 		CampanhaThankspage thankspage;
+		CampanhaEmail cpEmail;
 
 		long id_campanha = Long.parseLong(param.get("id_campanha").toString());
 
@@ -231,31 +231,34 @@ public class Campanha implements java.io.Serializable {
 
 				}
 			}
-			for (int i = 0; i < featuresarray.size(); i++) {
 
-				objRetorno = (JSONObject) featuresarray.get(i);
+			if (!param.get("landpage_features").toString().equalsIgnoreCase("")) {
+				JSONArray featuresarray = (JSONArray) new JSONParser().parse(param.get("landpage_features").toString());
+				for (int i = 0; i < featuresarray.size(); i++) {
 
-				if (objRetorno.get("desc_feature") == null || objRetorno.get("desc_feature").toString().equalsIgnoreCase("")) {
-					throw new Exception("Funcionalidade sem descrição.");
+					objRetorno = (JSONObject) featuresarray.get(i);
+
+					if (objRetorno.get("desc_feature") == null || objRetorno.get("desc_feature").toString().equalsIgnoreCase("")) {
+						throw new Exception("Funcionalidade sem descrição.");
+					}
+
+					if (objRetorno.get("desc_class_icon") == null || objRetorno.get("desc_class_icon").toString().equalsIgnoreCase("")) {
+						throw new Exception("Funcionalidade sem ícone.");
+					}
+
+					if (objRetorno.get("desc_name") == null || objRetorno.get("desc_name").toString().equalsIgnoreCase("")) {
+						throw new Exception("Funcionalidade sem nome.");
+					}
+
+					features = new CampanhaLandpageFeature(conn);
+					features.setIdlandpage(landpage.getIdlandpage());
+					features.setDescfeature(objRetorno.get("desc_feature").toString());
+					features.setDescclassicon(objRetorno.get("desc_class_icon").toString());
+					features.setDescname(objRetorno.get("desc_name").toString());
+					features.Insert();
+
 				}
-
-				if (objRetorno.get("desc_class_icon") == null || objRetorno.get("desc_class_icon").toString().equalsIgnoreCase("")) {
-					throw new Exception("Funcionalidade sem ícone.");
-				}
-
-				if (objRetorno.get("desc_name") == null || objRetorno.get("desc_name").toString().equalsIgnoreCase("")) {
-					throw new Exception("Funcionalidade sem nome.");
-				}
-
-				features = new CampanhaLandpageFeature(conn);
-				features.setIdlandpage(landpage.getIdlandpage());
-				features.setDescfeature(objRetorno.get("desc_feature").toString());
-				features.setDescclassicon(objRetorno.get("desc_class_icon").toString());
-				features.setDescname(objRetorno.get("desc_name").toString());
-				features.Insert();
-
 			}
-
 			thankspage = new CampanhaThankspage(conn);
 			thankspage.setIdcampanha(id_campanha);
 			thankspage.delete();
@@ -300,10 +303,46 @@ public class Campanha implements java.io.Serializable {
 				}
 			}
 
+			cpEmail = new CampanhaEmail(conn);
+			cpEmail.setIdcampanha(id_campanha);
+			cpEmail.delete();
+
+			if (!param.get("campanha_emails").toString().equalsIgnoreCase("")) {
+
+				JSONArray campanha_emails = (JSONArray) new JSONParser().parse(param.get("campanha_emails").toString());
+				for (int i = 0; i < campanha_emails.size(); i++) {
+
+					objRetorno = (JSONObject) campanha_emails.get(i);
+
+					if (!Utilitario.isNumeric(objRetorno.get("qtd_referencia").toString())) {
+						throw new Exception("Quantidade de refêrencias inválida.");
+					}
+
+					if (objRetorno.get("desc_email") == null || objRetorno.get("desc_email").toString().equalsIgnoreCase("")) {
+						throw new Exception("Email sem texto!.");
+					}
+
+					if (objRetorno.get("desc_titulo") == null || objRetorno.get("desc_titulo").toString().equalsIgnoreCase("")) {
+						throw new Exception("Email sem título.");
+					}
+
+					cpEmail = new CampanhaEmail(conn);
+					cpEmail.setIdcampanha(id_campanha);
+					cpEmail.setDescemail(objRetorno.get("desc_email").toString());
+					cpEmail.setDesctitulo(objRetorno.get("desc_titulo").toString());
+					cpEmail.setQtd_referencia(Integer.parseInt(objRetorno.get("qtd_referencia").toString()));
+					cpEmail.Insert();
+
+				}
+			}
+			
+			
+			
+			
+
 		} else {
 			throw new Exception("Campanha não encontrada.");
 		}
-
 
 	}
 
