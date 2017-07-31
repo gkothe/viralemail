@@ -20,12 +20,7 @@ import com.phpdao.domain.UserPremio;
 
 @SuppressWarnings("unchecked")
 @WebServlet(urlPatterns = { "/home/*" })
-@MultipartConfig(fileSizeThreshold = 1024 * 1024 * 10, // 10 MB
-		maxFileSize = 1024 * 1024 * 50, // 50 MB
-		maxRequestSize = 1024 * 1024 * 100) // 100 MB
 public class HomeController extends javax.servlet.http.HttpServlet {
-
-	private final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) {
 		processaRequisicoes(request, response);
@@ -34,20 +29,6 @@ public class HomeController extends javax.servlet.http.HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) {
 		processaRequisicoes(request, response);
 	}
-
-	private String getFileName(Part part) {
-		String contentDisp = part.getHeader("content-disposition");
-		System.out.println("content-disposition header= " + contentDisp);
-		String[] tokens = contentDisp.split(";");
-		for (String token : tokens) {
-			if (token.trim().startsWith("filename")) {
-				return token.substring(token.indexOf("=") + 2, token.length() - 1);
-			}
-		}
-		return "";
-	}
-
-	private static final String UPLOAD_DIR = "uploads";
 
 	public void processaRequisicoes(HttpServletRequest request, HttpServletResponse response) {
 
