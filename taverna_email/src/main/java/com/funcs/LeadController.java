@@ -42,16 +42,18 @@ public class LeadController extends javax.servlet.http.HttpServlet {
 		try {
 			request.setCharacterEncoding("UTF-8");
 
-			String id = request.getParameter("id");
+			String id = request.getParameter("ref");
+			String ac = request.getParameter("acao") == null ? "" : request.getParameter("acao");
+
 			if (id == null) {
 				erroPage(request, response);
+			} else if (ac.equalsIgnoreCase("ajax_w")) {
+				Ajax_w.ajax_w(request, response);
 			} else {
 				abreCampanha(request, response);
 			}
 
-		} catch (
-
-		Exception ex) {
+		} catch (Exception ex) {
 			ex.printStackTrace();
 			try {
 				// exibeErro(request, response, ex);

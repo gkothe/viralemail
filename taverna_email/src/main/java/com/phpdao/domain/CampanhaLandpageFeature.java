@@ -158,6 +158,39 @@ public class CampanhaLandpageFeature implements java.io.Serializable {
 
 	}
 
+	public ResultSet lista() throws Exception {
+
+		sql = new StringBuffer();
+		sql.append("	select * from  campanha_landpage_features where 1=1 "); // seta a pk soh para ter um "set"
+
+		if (getIdfeature() != null && getIdfeature() != 0) {
+			sql.append("and id_feature = ? ");
+		}
+
+		if (getIdlandpage() != null && getIdlandpage() != 0) {
+			sql.append("and id_landpage = ? ");
+		}
+
+		st = conn.prepareStatement(sql.toString());
+
+		int contparam = 1;
+
+		if (getIdfeature() != null && getIdfeature() != 0) {
+			st.setLong(contparam, getIdfeature());
+			contparam++;
+		}
+
+		if (getIdlandpage() != null && getIdlandpage() != 0) {
+			st.setLong(contparam, getIdlandpage());
+			contparam++;
+		}
+
+		rs = st.executeQuery();
+
+		return rs;
+
+	}
+
 	public void delete() throws Exception {
 
 		sql = new StringBuffer();

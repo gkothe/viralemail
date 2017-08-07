@@ -1,5 +1,7 @@
 package com.funcs;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -25,6 +27,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.mail.DefaultAuthenticator;
 import org.apache.commons.mail.HtmlEmail;
 import org.json.simple.JSONObject;
+
+import com.auth0.jwt.internal.org.apache.commons.codec.binary.Base64;
+import com.configs.Conexao;
 
 public class Utilitario {
 
@@ -65,7 +70,8 @@ public class Utilitario {
 		mailService.setHtmlMsg(html + rodape);
 		mailService.addTo(para);
 		mailService.setCharset("utf-8");
-		mailService.send();
+		
+	System.out.println(mailService.send());	
 
 		System.out.println("Email sent:" + new Date());
 	}
@@ -360,8 +366,16 @@ public class Utilitario {
 		return id;
 	}
 
-	
-	private static final int maxsize = 1000;
+	public static String encodeFileToBase64Binary(String pathfile) throws Exception {
+		File file = new File(pathfile);
+		String encodedfile = null;
+		FileInputStream fileInputStreamReader = new FileInputStream(file);
+		byte[] bytes = new byte[(int) file.length()];
+		fileInputStreamReader.read(bytes);
+		encodedfile = new String(Base64.encodeBase64(bytes), "UTF-8");
+
+		return encodedfile;
+	}
 
 	public static DecimalFormatSymbols dfs = new DecimalFormatSymbols(new Locale("pt", "BR"));
 	public static NumberFormat df = new DecimalFormat("###,###.#", dfs);
@@ -369,13 +383,16 @@ public class Utilitario {
 	public static NumberFormat df3 = new DecimalFormat("#,###,##0.0", dfs);
 
 	public static void main(String[] args) {
-		// Connection conn = null;
+		 Connection conn = null;
 
 		try {
+			conn = Conexao.getConexao();
+//			sendEmail("12312@asd.com", "oi","oi", conn);
+			
 		} catch (Exception e) {
 			System.out.println(e);
 			try {
-				// conn.close();
+				 conn.close();
 			} catch (Exception es) { // TODO: handle exception } }
 			}
 

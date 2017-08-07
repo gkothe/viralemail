@@ -371,7 +371,7 @@ public class Campanha implements java.io.Serializable {
 							cpEmPr.setIdemail(cpEmail.getIdemail());
 							cpEmPr.setIdpremio(idpremio);
 							cpEmPr.Insert();
-							
+
 						}
 
 					}
@@ -435,6 +435,97 @@ public class Campanha implements java.io.Serializable {
 
 		out.print(objRetorno.toJSONString());
 
+	}
+
+	public JSONObject getLandPage() throws Exception { // TODO considerando que tem uma landpage só
+		JSONObject objRetorno = new JSONObject();
+		ResultSet rs;
+
+		if (getIdcampanha() == 0 || getIdcampanha() == null) {
+			throw new Exception("Erro. Campanha inválida");
+		}
+
+		CampanhaLandpage landpage = new CampanhaLandpage(conn);
+		landpage.setIdcampanha(getIdcampanha());
+		rs = landpage.lista();
+		if (rs.next()) {
+
+			objRetorno.put("id_landpage", rs.getString("id_landpage") == null ? "" : rs.getString("id_landpage"));
+			objRetorno.put("desc_titulo_1", rs.getString("desc_titulo_1") == null ? "" : rs.getString("desc_titulo_1"));
+			objRetorno.put("desc_sub_titulo_1", rs.getString("desc_sub_titulo_1") == null ? "" : rs.getString("desc_sub_titulo_1"));
+			objRetorno.put("url_video", rs.getString("url_video") == null ? "" : rs.getString("url_video"));
+			objRetorno.put("desc_campanha", rs.getString("desc_campanha") == null ? "" : rs.getString("desc_campanha"));
+			objRetorno.put("sub_titulo_2", rs.getString("sub_titulo_2") == null ? "" : rs.getString("sub_titulo_2"));
+			objRetorno.put("desc_titulo_2", rs.getString("desc_titulo_2") == null ? "" : rs.getString("desc_titulo_2"));
+
+		} else {
+			throw new Exception("Erro. Campanha inválida");
+		}
+
+		return objRetorno;
+	}
+
+	public JSONArray getLandPageImages(long landpage) throws Exception { // TODO considerando que tem uma landpage só
+		JSONArray objRetorno = new JSONArray();
+		JSONObject obj = new JSONObject();
+
+		ResultSet rs;
+		ResultSet rs2;
+
+		if (getIdcampanha() == 0 || getIdcampanha() == null) {
+			throw new Exception("Erro. Campanha inválida");
+		}
+
+		UserImage image = new UserImage(conn);
+
+		UserImagePage imagePage = new UserImagePage(conn);
+		imagePage.setId_campanha(getIdcampanha());
+		imagePage.setId_page(landpage);
+		imagePage.setFlag_pagetipe("L");
+
+		rs = imagePage.lista();
+		while (rs.next()) {
+
+			image = new UserImage(conn);
+			image.setId_image(rs.getLong("id_image"));
+			rs2 = image.lista();
+			if (rs2.next()) {
+				obj = new JSONObject();
+//				obj.put("desc_image", rs.getString("desc_image") == null ? "" : rs.getString("desc_image"));
+//				obj.put("desc_path_system", rs.getString("desc_path_system") == null ? "" : rs.getString("desc_path_system"));
+				obj.put("img64",Utilitario.encodeFileToBase64Binary(rs2.getString("desc_path_system")));
+				objRetorno.add(obj);
+			}
+
+		}
+
+		return objRetorno;
+	}
+
+	public JSONArray getLandPageFeatures(long landpage) throws Exception { // TODO considerando que tem uma landpage só
+		JSONArray objRetorno = new JSONArray();
+		JSONObject obj = new JSONObject();
+		ResultSet rs;
+
+		if (getIdcampanha() == 0 || getIdcampanha() == null) {
+			throw new Exception("Erro. Campanha inválida");
+		}
+
+		CampanhaLandpageFeature lpfeat = new CampanhaLandpageFeature(conn);
+		lpfeat.setIdlandpage(landpage);
+		rs = lpfeat.lista();
+		while (rs.next()) {
+			obj = new JSONObject();
+
+			obj.put("id_feature", rs.getString("id_feature") == null ? "" : rs.getString("id_feature"));
+			obj.put("desc_feature", rs.getString("desc_feature") == null ? "" : rs.getString("desc_feature"));
+			obj.put("desc_class_icon", rs.getString("desc_class_icon") == null ? "" : rs.getString("desc_class_icon"));
+			obj.put("desc_name", rs.getString("desc_name") == null ? "" : rs.getString("desc_name"));
+			objRetorno.add(obj);
+
+		}
+
+		return objRetorno;
 	}
 
 	public Campanha(Connection conn) {

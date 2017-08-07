@@ -164,7 +164,7 @@ public class CampanhaLandpage implements java.io.Serializable {
 		}
 
 		if (getIdlandpage() != null && getIdlandpage() != 0) {
-			sql.append("and id_campanha = ? ");
+			sql.append("and id_landpage = ? ");
 		}
 
 		st = conn.prepareStatement(sql.toString());

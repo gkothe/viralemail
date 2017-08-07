@@ -12,10 +12,70 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.simple.JSONObject;
 
 import com.configs.Conexao;
+import com.phpdao.domain.Campanha;
+import com.phpdao.domain.CampanhaEmail;
+import com.phpdao.domain.CampanhaEmailPremio;
+import com.phpdao.domain.CampanhaLandpage;
+import com.phpdao.domain.CampanhaLandpageFeature;
+import com.phpdao.domain.CampanhaLead;
+import com.phpdao.domain.CampanhaThankspage;
 import com.phpdao.domain.Cidade;
+import com.phpdao.domain.UserImage;
+import com.phpdao.domain.UserImagePage;
+import com.phpdao.domain.UserPremio;
 import com.phpdao.domain.Usuario;
 
 public class Ajax_w {
+
+	public static void ajax_w(HttpServletRequest request, HttpServletResponse response) throws Exception {// ajax que nao precisam de login
+		PrintWriter out = response.getWriter();
+	
+		response.setContentType("text/x-json; charset=UTF-8");
+		response.setDateHeader("Expires", 0);
+		response.setDateHeader("Last-Modified", new java.util.Date().getTime());
+		response.setHeader("Cache-Control", "no-cache, must-revalidate");
+		response.setHeader("Pragma", "no-cache");
+		request.setCharacterEncoding("UTF-8");
+	
+		Connection conn = null;
+		JSONObject objRetorno = new JSONObject();
+	
+		try {
+			conn = Conexao.getConexao();
+			conn.setAutoCommit(false);
+			String cmd = request.getParameter("cmd");
+	
+			if (cmd.equalsIgnoreCase("doCadastro")) {
+				Ajax_w.Cadastro(request, response, conn);
+			}else if (cmd.equalsIgnoreCase("loadCampanhabyRef")) {
+				Ajax_w.LoadCampanhabyRef(request, response, conn);
+			}else if (cmd.equalsIgnoreCase("sendLead")) {
+				Ajax_w.SendLead(request, response, conn);
+			}
+			
+			
+			conn.commit();
+		} catch (Exception ex) {
+			if (ex.getMessage() == null || ex.getMessage().equals("")) {
+				objRetorno.put("erro", "Erro, por favor entrar em contato com suporte.");
+			} else {
+				objRetorno.put("erro", ex.getMessage());
+			}
+	
+			ex.printStackTrace();
+			out.print(objRetorno.toJSONString());
+			try {
+				conn.rollback();
+			} catch (Exception exr) {
+			}
+		} finally {
+			try {
+				conn.close();
+			} catch (Exception ex) {
+			}
+		}
+	}
+
 
 	public static void validarConta(HttpServletRequest request, HttpServletResponse response) {
 
@@ -80,6 +140,7 @@ public class Ajax_w {
 		}
 
 	}
+	
 
 	public static void Cadastro(HttpServletRequest request, HttpServletResponse response, Connection conn) throws Exception {
 		Sys_parametros sys = new Sys_parametros(conn);
@@ -235,6 +296,89 @@ public class Ajax_w {
 
 		objRetorno.put("msgok", "ok");
 		objRetorno.put("msg", "Seu usuário foi criado. Para validar se cadastro, acesse seu e-mail.");
+
+		out.print(objRetorno.toJSONString());
+
+	}
+
+	public static void LoadCampanhabyRef(HttpServletRequest request, HttpServletResponse response, Connection conn) throws Exception {
+		// Load camapnha landpage
+		PrintWriter out = response.getWriter();
+		JSONObject objRetorno = new JSONObject();
+		JSONObject param = Utilitario.getJsonFromRequest(request, response);
+		ResultSet rs;
+		Campanha camp = new Campanha(conn);
+		camp.setLinkinicial(param.get("ref").toString());
+		rs = camp.lista();
+		if (rs.next()) {
+
+			camp.setIdcampanha(rs.getLong("id_campanha"));
+
+			JSONObject land = camp.getLandPage();
+
+			objRetorno.put("landpage", land);
+			objRetorno.put("landpagefeatures", camp.getLandPageFeatures(Long.parseLong(land.get("id_landpage").toString())));
+			objRetorno.put("landpageImage", camp.getLandPageImages(Long.parseLong(land.get("id_landpage").toString())));
+			
+			
+			
+			objRetorno.put("msgok", "ok");
+			
+
+		} else {
+			throw new Exception("Campanha inexistente.");
+		}
+
+		out.print(objRetorno.toJSONString());
+
+	}
+	
+	
+	public static void SendLead(HttpServletRequest request, HttpServletResponse response, Connection conn) throws Exception {
+		// Load camapnha landpage
+		PrintWriter out = response.getWriter();
+		JSONObject objRetorno = new JSONObject();
+		JSONObject param = Utilitario.getJsonFromRequest(request, response);
+		
+		CampanhaLead clead = new CampanhaLead(conn);
+		Sys_parametros sys = new Sys_parametros(conn);
+		
+		ResultSet rs;
+		ResultSet rs2;
+		Campanha camp = new Campanha(conn);
+		camp.setLinkinicial(param.get("ref").toString());
+		rs = camp.lista();
+		if (rs.next()) {
+
+			String lead = param.get("lead").toString();
+			
+			clead = new CampanhaLead(conn);
+			clead.setIdcampanha(rs.getLong("id_campanha"));
+			clead.setDescemail(lead);
+			rs2 = clead.lista();
+			if(rs2.next()){
+				throw new Exception("Este e-mail ja foi usado para esta campanha!");
+			}
+			
+			clead = new CampanhaLead(conn);
+			clead.setIdcampanha(rs.getLong("id_campanha"));
+			clead.setDescemail(lead);
+			clead.insert();
+			long id_lead = clead.getIdlead();
+			
+			clead = new CampanhaLead(conn);
+			clead.setIdlead(id_lead);
+			clead.setDesclinkreferal(  sys.getUrl_system()+"campanha?ref="+param.get("ref").toString()+"&l="+id_lead);
+			clead.update();
+			
+			objRetorno.put("ref", clead.getDesclinkreferal());
+			
+			objRetorno.put("msgok", "ok");
+			objRetorno.put("msg", "Seu link de referencia é " + clead.getDesclinkreferal());
+
+		} else {
+			throw new Exception("Campanha inexistente.");
+		}
 
 		out.print(objRetorno.toJSONString());
 

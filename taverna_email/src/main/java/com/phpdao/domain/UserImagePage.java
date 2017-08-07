@@ -112,7 +112,7 @@ public class UserImagePage {
 			sql.append("and flag_pagetipe = ? ");
 		}
 
-		if (getId_campanha() != null && getId_page() != 0) {
+		if (getId_campanha() != null && getId_campanha() != 0) {
 			sql.append("and id_campanha = ? ");
 		}
 
@@ -145,7 +145,7 @@ public class UserImagePage {
 		}
 
 		if (getId_associacao() != null && getId_associacao() != 0) {
-			st.setLong(contparam, getId_campanha());
+			st.setLong(contparam, getId_associacao());
 			contparam++;
 		}
 
