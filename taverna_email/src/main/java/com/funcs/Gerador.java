@@ -272,21 +272,19 @@ public class Gerador {
 				column = rsmd.getColumnName(i);
 				type = rsmd.getColumnTypeName(i);
 
-				if (!column.equalsIgnoreCase(namepk1) && !column.equalsIgnoreCase(namepk2)) {
 
 					if (returnType(type, 1).equalsIgnoreCase("Integer") || returnType(type, 1).equalsIgnoreCase("Long")) {
-						bw.write("retorno.put(\"" + FLow(column) + "\", obj.get" + FCol(column) + "() == null ? 0 : obj.get" + FCol(column) + "() );");
+						bw.write("retorno.put(\"" + FLow(column) + "\", obj.getRs" + FCol(column) + "() == null ? 0 : obj.getRs" + FCol(column) + "() );");
 					} else if (returnType(type, 1).equalsIgnoreCase("Double")) {
-						bw.write("retorno.put(\"" + FLow(column) + "\", obj.get" + FCol(column) + "() == null ? 0 :Utilitario.df2.format( obj.get" + FCol(column) + "() ));");
+						bw.write("retorno.put(\"" + FLow(column) + "\", obj.getRs" + FCol(column) + "() == null ? 0 :Utilitario.df2.format( obj.getRs" + FCol(column) + "() ));");
 					} else if (returnType(type, 3).equalsIgnoreCase("date")) {
-						bw.write("retorno.put(\"" + FLow(column) + "\", obj.get" + FCol(column) + "() == null ? 0 :new SimpleDateFormat(\"dd/MM/yyyy HH:mm\").format(obj.get" + FCol(column) + "() ));");
+						bw.write("retorno.put(\"" + FLow(column) + "\", obj.getRs" + FCol(column) + "() == null ? 0 :new SimpleDateFormat(\"dd/MM/yyyy HH:mm\").format(obj.getRs" + FCol(column) + "() ));");
 					} else if (returnType(type, 3).equalsIgnoreCase("time")) {
-						bw.write("retorno.put(\"" + FLow(column) + "\", obj.get" + FCol(column) + "() == null ? 0 :new SimpleDateFormat(\"HH:mm\").format(obj.get" + FCol(column) + "() ));");
+						bw.write("retorno.put(\"" + FLow(column) + "\", obj.getRs" + FCol(column) + "() == null ? 0 :new SimpleDateFormat(\"HH:mm\").format(obj.getRs" + FCol(column) + "() ));");
 					} else {
-						bw.write("retorno.put(\"" + FLow(column) + "\", obj.get" + FCol(column) + "() == null ? \"\" : obj.get" + FCol(column) + "() );");
+						bw.write("retorno.put(\"" + FLow(column) + "\", obj.getRs" + FCol(column) + "() == null ? \"\" : obj.getRs" + FCol(column) + "() );");
 					}
 
-				}
 
 			}
 
@@ -408,15 +406,15 @@ public class Gerador {
 				type = rsmd.getColumnTypeName(i);
 
 				if (returnType(type, 1).equalsIgnoreCase("Integer") || returnType(type, 1).equalsIgnoreCase("Long")) {
-					bw.write("objjson.put(\"" + FLow(column) + "\", obj.get" + FCol(column) + "() == null ? 0 : obj.get" + FCol(column) + "() );");
+					bw.write("objjson.put(\"" + FLow(column) + "\", obj.getRs" + FCol(column) + "() == null ? 0 : obj.getRs" + FCol(column) + "() );");
 				} else if (returnType(type, 1).equalsIgnoreCase("Double")) {
-					bw.write("objjson.put(\"" + FLow(column) + "\", obj.get" + FCol(column) + "() == null ? 0 :Utilitario.df2.format( obj.get" + FCol(column) + "() ));");
+					bw.write("objjson.put(\"" + FLow(column) + "\", obj.getRs" + FCol(column) + "() == null ? 0 :Utilitario.df2.format( obj.getRs" + FCol(column) + "() ));");
 				} else if (returnType(type, 3).equalsIgnoreCase("date")) {
-					bw.write("objjson.put(\"" + FLow(column) + "\", obj.get" + FCol(column) + "() == null ? 0 :new SimpleDateFormat(\"dd/MM/yyyy HH:mm\").format(obj.get" + FCol(column) + "() ));");
+					bw.write("objjson.put(\"" + FLow(column) + "\", obj.getRs" + FCol(column) + "() == null ? 0 :new SimpleDateFormat(\"dd/MM/yyyy HH:mm\").format(obj.getRs" + FCol(column) + "() ));");
 				} else if (returnType(type, 3).equalsIgnoreCase("time")) {
-					bw.write("objjson.put(\"" + FLow(column) + "\", obj.get" + FCol(column) + "() == null ? 0 :new SimpleDateFormat(\"HH:mm\").format(obj.get" + FCol(column) + "() ));");
+					bw.write("objjson.put(\"" + FLow(column) + "\", obj.getRs" + FCol(column) + "() == null ? 0 :new SimpleDateFormat(\"HH:mm\").format(obj.getRs" + FCol(column) + "() ));");
 				} else {
-					bw.write("objjson.put(\"" + FLow(column) + "\", obj.get" + FCol(column) + "() == null ? \"\" : obj.get" + FCol(column) + "() );");
+					bw.write("objjson.put(\"" + FLow(column) + "\", obj.getRs" + FCol(column) + "() == null ? \"\" : obj.getRs" + FCol(column) + "() );");
 				}
 
 			}
@@ -795,7 +793,7 @@ public class Gerador {
 
 			fw = new FileWriter(path + "\\" + table_nameformated + ".java");
 			bw = new BufferedWriter(fw);
-			bw.write("package com.gerador; \n");
+			bw.write("package com.phpdao.domain; \n");
 			bw.write("import java.sql.Connection; \n");
 			bw.write("import java.sql.PreparedStatement; \n");
 			bw.write("import java.sql.ResultSet; \n");
@@ -950,7 +948,7 @@ public class Gerador {
 			bw.write(" if(getSelect()!=null){ ");
 			bw.write("sql.append(\" select \"+getSelect()+\" \");");
 			bw.write(" }else {");
-			bw.write("sql.append(\" select * from " + tableName + "  \");");
+			bw.write("sql.append(\" select *   \");");
 			bw.write(" }");
 
 			bw.write(" if(getJoin()!=null){ ");
@@ -1274,11 +1272,12 @@ public class Gerador {
 
 		try {
 
-			String path = "D:\\phonegap_projects\\viralemail\\taverna_email\\src\\main\\java\\com\\gerador\\";
+//			String path = "D:\\phonegap_projects\\viralemail\\taverna_email\\src\\main\\java\\com\\phpdao\\domain";
+			String path = "D:\\phonegap_projects\\geracoes";
 			conn = Conexao.getConexao();
 			javaClasse(conn, "taverna_email", path);
-//			jsFuncs(conn, "taverna_email", path);
-//			javaAjax(conn, "taverna_email", path);
+			jsFuncs(conn, "taverna_email", path);
+			javaAjax(conn, "taverna_email", path);
 //			javaHC(conn, "taverna_email", path);
 			//
 			//

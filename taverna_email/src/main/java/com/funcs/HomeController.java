@@ -136,6 +136,8 @@ public class HomeController extends javax.servlet.http.HttpServlet {
 				HM_Campanha.updateCampanha(request, response, conn, coduser);
 			} else if (cmd.equalsIgnoreCase("insertPremio")) {
 				HM_UserPremios.insertPremio(request, response, conn, coduser);
+			} else if (cmd.equalsIgnoreCase("loadCampanha")) {
+				HM_Campanha.LoadCampanha(request, response, conn,coduser);
 			}
 			
 			

@@ -9,6 +9,8 @@ $(document).ready(function() {
 		salvarCampanha($("#id_campanha").val());
 	});
 
+	loadCamapnha(id_campanha)
+	
 });
 
 function salvarCampanha(id) {
@@ -114,12 +116,11 @@ function salvarCampanha(id) {
 function loadCamapnha(id) {
 
 	var data = {}
-	data["cmd"] = "insertCamapanha";
-	data["desc_nome"] = $("#desc_nome").val();
-	data["desc_observacao"] = $("#desc_observacao").val();
-
+	data["cmd"] = "loadCampanha";
+	data["id"] = id;
+	
 	$.blockUI({
-		message : 'Salvando...'
+		message : 'Carregando...'
 	});
 
 	$.ajax({
@@ -133,9 +134,57 @@ function loadCamapnha(id) {
 		success : function(data) {
 			if (data.msgok == 'ok') {
 
-				console.log(data.id_campanha)
-				sysMsg(data.msg, 'M')
+			
+				var land = data.landpage;
 
+				$("#lp_desc_titulo_1").val(land.desc_titulo_1);
+				$("#lp_desc_sub_titulo_1").val(land.desc_sub_titulo_1);
+				$("#lp_url_video").val(land.url_video);
+				$("#lp_desc_campanha").val(land.desc_campanha);
+				$("#lp_desc_titulo_2").val(land.desc_titulo_2);
+				$("#lp_sub_titulo_2").val(land.sub_titulo_2);
+
+				var ft = data.landpagefeatures;
+
+				for (t = 1; t <= ft.length; t++) {
+
+					$("#ft_desc_name_" + t).val(ft[t-1].desc_name);
+					$("#ft_desc_feature_" + t).val(ft[t-1].desc_feature);
+					$("#ft_desc_class_icon_" + t).val(ft[t-1].desc_class_icon);
+
+				}
+
+				var lp_img = data.landpageImage;
+
+//				$("#lp_image_1").attr("src", "data:image/gif;base64," + lp_img[0].img64);
+//				$("#lp_image_2").attr("src", "data:image/gif;base64," + lp_img[1].img64);
+				
+				var thanks = data.thankspage;
+				
+				$("#t_msg_thanks").val(thanks.msg_thanks);
+				$("#t_sub_titulo").val(thanks.sub_titulo);
+				$("#t_url_video").val(thanks.url_video);
+				$("#t_desc_frase").val(thanks.desc_frase);
+				$("#t_desc_frase2").val(thanks.desc_frase2);
+				$("#t_desc_texto").val(thanks.desc_texto);
+				
+				var lp_img = data.thankspageImage;
+				
+
+				var emails = data.emails;
+				for (t = 1; t <= emails.length; t++) {
+					
+					$("#em_desc_email_" + t).val(emails[t-1].desc_email);
+					$("#em_desc_titulo_" + t).val(emails[t-1].desc_titulo);
+					$("#em_qtd_referencia_" + t).val(emails[t-1].qtd_referencia);
+					
+//					$("#ft_desc_name_" + t).val(ft[t].desc_name);
+//					$("#ft_desc_feature_" + t).val(ft[t].desc_feature);
+//					$("#ft_desc_class_icon_" + t).val(ft[t].desc_class_icon);
+
+				}
+				
+				
 			} else {
 				$.unblockUI();
 				sysMsg(data.erro, 'E')

@@ -29,6 +29,40 @@ public class HM_Campanha extends Campanha {
 		super(conn);
 	}
 
+	public static void LoadCampanha(HttpServletRequest request, HttpServletResponse response, Connection conn, long user) throws Exception {
+		// Load camapnha landpage
+		PrintWriter out = response.getWriter();
+		JSONObject objRetorno = new JSONObject();
+		JSONObject param = Utilitario.getJsonFromRequest(request, response);
+		ResultSet rs;
+		HM_Campanha camp = new HM_Campanha(conn);
+		camp.setIdCampanha(Long.parseLong(param.get("id").toString()));
+		camp.setIdUsuario(user);
+		camp.lista();
+		if (camp.next()) {
+
+			JSONObject land = camp.getLandPage();
+
+			objRetorno.put("landpage", land);
+			objRetorno.put("landpagefeatures", camp.getLandPageFeatures(Long.parseLong(land.get("id_landpage").toString())));
+			objRetorno.put("landpageImage", camp.getLandPageImages(Long.parseLong(land.get("id_landpage").toString())));
+		
+			JSONObject thanks = camp.getThanksPage();
+			
+			objRetorno.put("thankspage", thanks);
+			objRetorno.put("thankspageImage", camp.getThanksPageImages(Long.parseLong(thanks.get("id_thankspage").toString())));
+			objRetorno.put("emails", camp.getEmails());;
+
+			objRetorno.put("msgok", "ok");
+
+		} else {
+			throw new Exception("Campanha inexistente.");
+		}
+
+		out.print(objRetorno.toJSONString());
+
+	}
+
 	public static void updateCampanha(HttpServletRequest request, HttpServletResponse response, Connection conn, long user) throws Exception {
 		Sys_parametros sys = new Sys_parametros(conn);
 		PrintWriter out = response.getWriter();
@@ -380,6 +414,48 @@ public class HM_Campanha extends Campanha {
 
 		return objRetorno;
 	}
+	
+	
+	
+	
+	
+	public JSONArray getThanksPageImages(long thankspage) throws Exception { // TODO considerando que tem uma thanks só
+		JSONArray objRetorno = new JSONArray();
+		JSONObject obj = new JSONObject();
+
+		ResultSet rs;
+		ResultSet rs2;
+
+		if (getIdCampanha() == 0 || getIdCampanha() == null) {
+			throw new Exception("Erro. Campanha inválida");
+		}
+
+		UserImage image = new UserImage(super.getConn());
+
+		UserImagePage imagePage = new UserImagePage(super.getConn());
+		imagePage.setIdCampanha(getIdCampanha());
+		imagePage.setIdPage(thankspage);
+		imagePage.setFlagPagetipe("T");
+
+		rs = imagePage.lista();
+		while (rs.next()) {
+
+			image = new UserImage(super.getConn());
+			image.setIdImage(rs.getLong("id_image"));
+			rs2 = image.lista();
+			if (rs2.next()) {
+				obj = new JSONObject();
+				// obj.put("desc_image", rs.getString("desc_image") == null ? "" : rs.getString("desc_image"));
+				// obj.put("desc_path_system", rs.getString("desc_path_system") == null ? "" : rs.getString("desc_path_system"));
+				obj.put("img64", Utilitario.encodeFileToBase64Binary(rs2.getString("desc_path_system")));
+				objRetorno.add(obj);
+			}
+
+		}
+
+		return objRetorno;
+	}
+	
 
 	public JSONArray getLandPageFeatures(long landpage) throws Exception { // TODO considerando que tem uma landpage só
 		JSONArray objRetorno = new JSONArray();
@@ -406,5 +482,56 @@ public class HM_Campanha extends Campanha {
 
 		return objRetorno;
 	}
+
+	public JSONObject getThanksPage() throws Exception { // TODO considerando que tem uma thankspage só
+		JSONObject retorno = new JSONObject();
+
+		if (getIdCampanha() == 0 || getIdCampanha() == null) {
+			throw new Exception("Erro. Campanha inválida");
+		}
+
+		HM_CampanhaThankspage obj = new HM_CampanhaThankspage(super.getConn());
+		obj.setIdCampanha(getIdCampanha());
+		obj.lista();
+		if (obj.next()) {
+			retorno.put("id_thankspage", obj.getRsIdThankspage() == null ? 0 : obj.getRsIdThankspage());
+			retorno.put("msg_thanks", obj.getRsMsgThanks() == null ? "" : obj.getRsMsgThanks());
+			retorno.put("sub_titulo", obj.getRsSubTitulo() == null ? "" : obj.getRsSubTitulo());
+			retorno.put("url_video", obj.getRsUrlVideo() == null ? "" : obj.getRsUrlVideo());
+			retorno.put("desc_frase", obj.getRsDescFrase() == null ? "" : obj.getRsDescFrase());
+			retorno.put("desc_frase2", obj.getRsDescFrase2() == null ? "" : obj.getRsDescFrase2());
+			retorno.put("desc_texto", obj.getRsDescTexto() == null ? "" : obj.getRsDescTexto());
+
+		}
+
+		return retorno;
+	}
+	
+
+	public JSONArray getEmails() throws Exception { // TODO considerando que tem uma landpage só
+		JSONObject objjson = new JSONObject();
+		JSONArray array = new JSONArray();
+
+		if (getIdCampanha() == 0 || getIdCampanha() == null) {
+			throw new Exception("Erro. Campanha inválida");
+		}
+
+		HM_CampanhaEmail obj = new HM_CampanhaEmail(super.getConn());
+		obj.setIdCampanha(getIdCampanha());
+		obj.lista();
+		while (obj.next()) {
+			objjson = new JSONObject();
+//			objjson.put("id_email", obj.getRsIdEmail() == null ? 0 : obj.getRsIdEmail());
+//			objjson.put("id_campanha", obj.getRsIdCampanha() == null ? 0 : obj.getRsIdCampanha());
+			objjson.put("desc_email", obj.getRsDescEmail() == null ? "" : obj.getRsDescEmail());
+			objjson.put("desc_titulo", obj.getRsDescTitulo() == null ? "" : obj.getRsDescTitulo());
+			objjson.put("qtd_referencia", obj.getRsQtdReferencia() == null ? "" : obj.getRsQtdReferencia());
+			array.add(objjson);
+		}
+
+		return array;
+	}
+
+	
 
 }
