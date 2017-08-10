@@ -71,6 +71,38 @@ public class UserPremio implements java.io.Serializable {
 		this.conn = conn;
 	}
 
+	public PreparedStatement getSt() {
+		return st;
+	}
+
+	public void setSt(PreparedStatement st) {
+		this.st = st;
+	}
+
+	public StringBuffer getSql() {
+		return sql;
+	}
+
+	public void setSql(StringBuffer sql) {
+		this.sql = sql;
+	}
+
+	public ResultSet getRs() {
+		return rs;
+	}
+
+	public void setRs(ResultSet rs) {
+		this.rs = rs;
+	}
+
+	public Connection getConn() {
+		return conn;
+	}
+
+	public void setConn(Connection conn) {
+		this.conn = conn;
+	}
+
 	public ResultSet lista() throws Exception {
 
 		sql = new StringBuffer();

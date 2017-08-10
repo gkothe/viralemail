@@ -1,0 +1,16 @@
+package com.gerador; 
+import com.funcs.Utilitario; 
+import java.util.Date; 
+import javax.servlet.http.HttpServletRequest; 
+import javax.servlet.http.HttpServletResponse; 
+import org.json.simple.JSONObject; 
+import java.sql.Connection; 
+import java.text.SimpleDateFormat; 
+import java.io.PrintWriter; 
+import org.json.simple.JSONArray; 
+
+public class Ajax_CampanhaEmailPremio{ 
+
+ public void carregaUnicoAjax(HttpServletRequest request, HttpServletResponse response, Connection conn ) throws Exception{  JSONObject retorno = new JSONObject();	PrintWriter out = response.getWriter();  String pk = request.getParameter("id_email") == null ? "" : request.getParameter("id_email");   String pk2 = request.getParameter("id_premio") == null ? "" : request.getParameter("id_premio");   	if (!Utilitario.isNumeric(pk)) { throw new Exception("Parâmetro inválido!"); } 	if (!Utilitario.isNumeric(pk2)) { throw new Exception("Parâmetro inválido!"); } 	CampanhaEmailPremio obj = new CampanhaEmailPremio(conn);  	obj.setIdEmail( Long.parseLong(pk) ); 	obj.setIdPremio( Long.parseLong(pk2) ); 	obj.lista(); 	if(obj.next()){ 	} 	retorno.put("msg", ""); 	retorno.put("msgok", "ok"); 	out.print(retorno.toJSONString()); } public void SaveAjax(HttpServletRequest request, HttpServletResponse response, Connection conn ) throws Exception{  JSONObject retorno = new JSONObject();	PrintWriter out = response.getWriter();  String id_email = request.getParameter("id_email") == null ? "" : request.getParameter("id_email");   String id_premio = request.getParameter("id_premio") == null ? "" : request.getParameter("id_premio");   	if (!Utilitario.isNumeric(id_email)) { throw new Exception("Parâmetro inválido!"); } 	if (!Utilitario.isNumeric(id_premio)) { throw new Exception("Parâmetro inválido!"); } 	CampanhaEmailPremio obj = new CampanhaEmailPremio(conn);  	obj.setIdEmail( Long.parseLong(id_email) ); 	obj.setIdPremio( Long.parseLong(id_premio) ); 	obj.insert(); 	obj.update(); 	retorno.put("msg", ""); 	retorno.put("msgok", "ok"); 	out.print(retorno.toJSONString()); } public void ListaAjax(HttpServletRequest request, HttpServletResponse response, Connection conn ) throws Exception{  JSONObject retorno = new JSONObject();JSONObject objjson = new JSONObject();	PrintWriter out = response.getWriter(); JSONArray array = new JSONArray(); String id_email = request.getParameter("id_email") == null ? "" : request.getParameter("id_email");   String id_premio = request.getParameter("id_premio") == null ? "" : request.getParameter("id_premio");   	if (!Utilitario.isNumeric(id_email)) { throw new Exception("Parâmetro inválido!"); } 	if (!Utilitario.isNumeric(id_premio)) { throw new Exception("Parâmetro inválido!"); } 	CampanhaEmailPremio obj = new CampanhaEmailPremio(conn);  if(!id_email.equalsIgnoreCase("")){   	obj.setIdEmail( Long.parseLong(id_email) ); } if(!id_premio.equalsIgnoreCase("")){   	obj.setIdPremio( Long.parseLong(id_premio) ); } 	obj.lista(); 	while(obj.next()){objjson = new JSONObject();objjson.put("id_email", obj.getIdEmail() == null ? 0 : obj.getIdEmail() );objjson.put("id_premio", obj.getIdPremio() == null ? 0 : obj.getIdPremio() );array.add(objjson); 	} 	retorno.put("lista", array); 	retorno.put("msg", ""); 	retorno.put("msgok", "ok"); 	out.print(retorno.toJSONString()); }
+ 
+ }

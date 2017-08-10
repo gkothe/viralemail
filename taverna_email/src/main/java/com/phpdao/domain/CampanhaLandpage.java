@@ -1,363 +1,99 @@
-package com.phpdao.domain;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-
-import com.funcs.Utilitario;
-
-public class CampanhaLandpage implements java.io.Serializable {
-	private Long idlandpage;
-	private Long idcampanha;
-	private String desctitulo1;
-	private String descsubtitulo1;
-	private String urlvideo;
-	private String desccampanha;
-	private String desctitulo2;
-	private String subtitulo2;
-	private Long qtdimage;
-	private PreparedStatement st;
-	private StringBuffer sql;
-	private ResultSet rs;
-	private Connection conn;
-
-	public Long getIdlandpage() {
-		return idlandpage;
-	}
-
-	public void setIdlandpage(Long idlandpage) {
-		this.idlandpage = idlandpage;
-	}
-
-	public Long getIdcampanha() {
-		return idcampanha;
-	}
-
-	public void setIdcampanha(Long idcampanha) {
-		this.idcampanha = idcampanha;
-	}
-
-	public String getDesctitulo1() {
-		return desctitulo1;
-	}
-
-	public void setDesctitulo1(String desctitulo1) {
-		this.desctitulo1 = desctitulo1;
-	}
-
-	public String getDescsubtitulo1() {
-		return descsubtitulo1;
-	}
-
-	public void setDescsubtitulo1(String descsubtitulo1) {
-		this.descsubtitulo1 = descsubtitulo1;
-	}
-
-	public String getUrlvideo() {
-		return urlvideo;
-	}
-
-	public void setUrlvideo(String urlvideo) {
-		this.urlvideo = urlvideo;
-	}
-
-	public String getDesccampanha() {
-		return desccampanha;
-	}
-
-	public void setDesccampanha(String desccampanha) {
-		this.desccampanha = desccampanha;
-	}
-
-	public String getDesctitulo2() {
-		return desctitulo2;
-	}
-
-	public void setDesctitulo2(String desctitulo2) {
-		this.desctitulo2 = desctitulo2;
-	}
-
-	public String getSubtitulo2() {
-		return subtitulo2;
-	}
-
-	public void setSubtitulo2(String subtitulo2) {
-		this.subtitulo2 = subtitulo2;
-	}
-
-	public Long getQtdimage() {
-		return qtdimage;
-	}
-
-	public void setQtdimage(Long qtdimage) {
-		this.qtdimage = qtdimage;
-	}
-
-	public PreparedStatement getSt() {
-		return st;
-	}
-
-	public void setSt(PreparedStatement st) {
-		this.st = st;
-	}
-
-	public StringBuffer getSql() {
-		return sql;
-	}
-
-	public void setSql(StringBuffer sql) {
-		this.sql = sql;
-	}
-
-	public ResultSet getRs() {
-		return rs;
-	}
-
-	public void setRs(ResultSet rs) {
-		this.rs = rs;
-	}
-
-	public Connection getConn() {
-		return conn;
-	}
-
-	public void setConn(Connection conn) {
-		this.conn = conn;
-	}
-
-	public CampanhaLandpage(Connection conn) {
-		super();
-		this.conn = conn;
-	}
-
-	public ResultSet lista() throws Exception {
-
-		sql = new StringBuffer();
-		sql.append("	select * from  campanha_landpage where 1=1 "); // seta a pk soh para ter um "set"
-
-		if (getDesctitulo1() != null) {
-			sql.append("and desc_titulo_1 = ? ");
-		}
-
-		if (getDescsubtitulo1() != null) {
-			sql.append("and desc_sub_titulo_1 = ? ");
-		}
-
-		if (getUrlvideo() != null) {
-			sql.append("and url_video = ? ");
-		}
-
-		if (getDesccampanha() != null) {
-			sql.append("and desc_campanha = ? ");
-		}
-
-		if (getDesctitulo2() != null) {
-			sql.append("and desc_titulo_2 = ? ");
-		}
-
-		if (getSubtitulo2() != null) {
-			sql.append("and sub_titulo_2 = ? ");
-		}
-
-		if (getIdcampanha() != null && getIdcampanha() != 0) {
-			sql.append("and id_campanha = ? ");
-		}
-
-		if (getIdlandpage() != null && getIdlandpage() != 0) {
-			sql.append("and id_landpage = ? ");
-		}
-
-		st = conn.prepareStatement(sql.toString());
-
-		int contparam = 1;
-
-		if (getDesctitulo1() != null) {
-			st.setString(contparam, getDesctitulo1());
-			contparam++;
-		}
-
-		if (getDescsubtitulo1() != null) {
-			st.setString(contparam, getDescsubtitulo1());
-			contparam++;
-		}
-
-		if (getUrlvideo() != null) {
-			st.setString(contparam, getUrlvideo());
-			contparam++;
-		}
-
-		if (getDesccampanha() != null) {
-			st.setString(contparam, getDesccampanha());
-			contparam++;
-		}
-
-		if (getDesctitulo2() != null) {
-			st.setString(contparam, getDesctitulo2());
-			contparam++;
-		}
-
-		if (getSubtitulo2() != null) {
-			st.setString(contparam, getSubtitulo2());
-			contparam++;
-		}
-
-		if (getIdcampanha() != null && getIdcampanha() != 0) {
-			st.setLong(contparam, getIdcampanha());
-			contparam++;
-		}
-
-		if (getIdlandpage() != null && getIdlandpage() != 0) {
-			st.setLong(contparam, getIdlandpage());
-			contparam++;
-		}
-
-		rs = st.executeQuery();
-
-		return rs;
-
-	}
-
-	public void delete() throws Exception {
-
-		sql = new StringBuffer();
-		sql.append("delete from campanha_landpage where 1=1 ");
-
-		if (getIdcampanha() != null && getIdcampanha() != 0) {
-			sql.append("and id_campanha = ? ");
-		}
-
-		if (getIdlandpage() != null && getIdlandpage() != 0) {
-			sql.append("and id_landpage = ? ");
-		}
-
-		st = conn.prepareStatement(sql.toString());
-
-		int contparam = 1;
-
-		if (getIdcampanha() != null && getIdcampanha() != 0) {
-			st.setLong(contparam, getIdcampanha());
-			contparam++;
-		}
-
-		if (getIdlandpage() != null && getIdlandpage() != 0) {
-			st.setLong(contparam, getIdlandpage());
-			contparam++;
-		}
-
-		st.executeUpdate();
-
-	}
-
-	public void Insert() throws Exception {
-
-		sql = new StringBuffer();
-		sql.append("	INSERT INTO campanha_landpage (id_landpage) value (?) ");
-		st = conn.prepareStatement(sql.toString());
-		long id = Utilitario.retornaIdinsertLong("campanha_landpage", "id_landpage", conn);
-		st.setLong(1, id);
-
-		if (st.executeUpdate() == 1) {
-			setIdlandpage(id);
-			update();
-		} else {
-			throw new Exception("Erro, contate suporte. Inserção de land page.");
-		}
-
-	}
-
-	public void setFieldNull(String field) throws Exception {// TESTAR
-		sql = new StringBuffer();
-		sql.append("	update campanha_landpage set " + field + " =  null ");
-		sql.append(" where id_landpage = " + getIdlandpage() + " ");
-		st = conn.prepareStatement(sql.toString());
-
-		if (st.executeUpdate() == 1) {
-
-		} else {
-			throw new Exception("Erro, contate suporte. Set null de land page.");
-		}
-	}
-
-	public void update() throws Exception {
-
-		sql = new StringBuffer();
-		sql.append("	update campanha_landpage set id_landpage =  " + getIdlandpage() + " "); // seta a pk soh para ter um "set"
-
-		if (getDesctitulo1() != null) {
-			sql.append(", desc_titulo_1 = ? ");
-		}
-
-		if (getDescsubtitulo1() != null) {
-			sql.append(", desc_sub_titulo_1 = ? ");
-		}
-
-		if (getUrlvideo() != null) {
-			sql.append(", url_video = ? ");
-		}
-
-		if (getDesccampanha() != null) {
-			sql.append(", desc_campanha = ? ");
-		}
-
-		if (getDesctitulo2() != null) {
-			sql.append(", desc_titulo_2 = ? ");
-		}
-
-		if (getSubtitulo2() != null) {
-			sql.append(", sub_titulo_2 = ? ");
-		}
-
-		if (getIdcampanha() != null && getIdcampanha() != 0) {
-			sql.append(", id_campanha = ? ");
-		}
-
-		sql.append(" where id_landpage = " + getIdlandpage() + " ");
-
-		st = conn.prepareStatement(sql.toString());
-
-		int contparam = 1;
-
-		if (getDesctitulo1() != null) {
-			st.setString(contparam, getDesctitulo1());
-			contparam++;
-		}
-
-		if (getDescsubtitulo1() != null) {
-			st.setString(contparam, getDescsubtitulo1());
-			contparam++;
-		}
-
-		if (getUrlvideo() != null) {
-			st.setString(contparam, getUrlvideo());
-			contparam++;
-		}
-
-		if (getDesccampanha() != null) {
-			st.setString(contparam, getDesccampanha());
-			contparam++;
-		}
-
-		if (getDesctitulo2() != null) {
-			st.setString(contparam, getDesctitulo2());
-			contparam++;
-		}
-
-		if (getSubtitulo2() != null) {
-			st.setString(contparam, getSubtitulo2());
-			contparam++;
-		}
-
-		if (getIdcampanha() != null && getIdcampanha() != 0) {
-			st.setLong(contparam, getIdcampanha());
-			contparam++;
-		}
-
-		if (st.executeUpdate() == 1) {
-
-		} else {
-			throw new Exception("Erro, contate suporte. Update de land page.");
-		}
-
-	}
-
-}
+package com.phpdao.domain; 
+import java.sql.Connection; 
+import java.sql.PreparedStatement; 
+import java.sql.ResultSet; 
+import com.funcs.Utilitario; 
+import java.util.Date; 
+import java.sql.Timestamp; 
+
+public class CampanhaLandpage { 
+
+private PreparedStatement st; 
+private StringBuffer sql; 
+private ResultSet rs; 
+private Connection conn; 
+private String Where; 
+private String Join; 
+private String LastSentence; 
+private String Select; 
+public CampanhaLandpage(Connection conn) { super();this.conn = conn;} 
+ private Long IdLandpage; 
+ private Long rsIdLandpage; 
+ private Long IdCampanha; 
+ private Long rsIdCampanha; 
+ private  boolean  nullIdCampanha = false; 
+ private String DescTitulo1; 
+ private String rsDescTitulo1; 
+ private  boolean  nullDescTitulo1 = false; 
+ private String DescSubTitulo1; 
+ private String rsDescSubTitulo1; 
+ private  boolean  nullDescSubTitulo1 = false; 
+ private String UrlVideo; 
+ private String rsUrlVideo; 
+ private  boolean  nullUrlVideo = false; 
+ private String DescCampanha; 
+ private String rsDescCampanha; 
+ private  boolean  nullDescCampanha = false; 
+ private String DescTitulo2; 
+ private String rsDescTitulo2; 
+ private  boolean  nullDescTitulo2 = false; 
+ private String SubTitulo2; 
+ private String rsSubTitulo2; 
+ private  boolean  nullSubTitulo2 = false; 
+public PreparedStatement getSt() {		return st; 	} 
+ public void setSt(PreparedStatement st) {		this.st = st; 	} 
+ public StringBuffer getSql() {		return sql; 	} 
+ public void setSql(StringBuffer sql) {		this.sql = sql; 	} 
+ public ResultSet getRs() {		return rs; 	} 
+ public void setRs(ResultSet rs) {		this.rs = rs; 	} 
+ public Connection getConn() {		return conn; 	} 
+ public void setConn(Connection conn) {		this.conn = conn; 	}
+ public String getWhere() { return this.Where; }public void setWhere(String where) { this.Where = where; }public String getJoin() {return this.Join;}public void setJoin(String join) {this.Join = join;}public String getLastSentence() {return this.LastSentence;}public void setLastSentence(String last) {this.LastSentence = last;}public String getSelect() { return this.Select; }public void setSelect(String select) { this.Select = select; }public Long getIdLandpage() {		return IdLandpage ; 	} 
+ public void setIdLandpage(Long var) {		this.IdLandpage = var; 	} 
+ public Long getRsIdLandpage() {		return rsIdLandpage ; 	} 
+ public void setRsIdLandpage(Long var) {		this.rsIdLandpage = var; 	} 
+ public Long getIdCampanha() {		return IdCampanha ; 	} 
+ public void setIdCampanha(Long var) {		this.IdCampanha = var; 	} 
+ public Long getRsIdCampanha() {		return rsIdCampanha ; 	} 
+ public void setRsIdCampanha(Long var) {		this.rsIdCampanha = var; 	} 
+ public boolean getNullIdCampanha() {		return nullIdCampanha ; 	} 
+ public void setNullIdCampanha(boolean var) {		this.nullIdCampanha = var; 	} 
+ public String getDescTitulo1() {		return DescTitulo1 ; 	} 
+ public void setDescTitulo1(String var) {		this.DescTitulo1 = var; 	} 
+ public String getRsDescTitulo1() {		return rsDescTitulo1 ; 	} 
+ public void setRsDescTitulo1(String var) {		this.rsDescTitulo1 = var; 	} 
+ public boolean getNullDescTitulo1() {		return nullDescTitulo1 ; 	} 
+ public void setNullDescTitulo1(boolean var) {		this.nullDescTitulo1 = var; 	} 
+ public String getDescSubTitulo1() {		return DescSubTitulo1 ; 	} 
+ public void setDescSubTitulo1(String var) {		this.DescSubTitulo1 = var; 	} 
+ public String getRsDescSubTitulo1() {		return rsDescSubTitulo1 ; 	} 
+ public void setRsDescSubTitulo1(String var) {		this.rsDescSubTitulo1 = var; 	} 
+ public boolean getNullDescSubTitulo1() {		return nullDescSubTitulo1 ; 	} 
+ public void setNullDescSubTitulo1(boolean var) {		this.nullDescSubTitulo1 = var; 	} 
+ public String getUrlVideo() {		return UrlVideo ; 	} 
+ public void setUrlVideo(String var) {		this.UrlVideo = var; 	} 
+ public String getRsUrlVideo() {		return rsUrlVideo ; 	} 
+ public void setRsUrlVideo(String var) {		this.rsUrlVideo = var; 	} 
+ public boolean getNullUrlVideo() {		return nullUrlVideo ; 	} 
+ public void setNullUrlVideo(boolean var) {		this.nullUrlVideo = var; 	} 
+ public String getDescCampanha() {		return DescCampanha ; 	} 
+ public void setDescCampanha(String var) {		this.DescCampanha = var; 	} 
+ public String getRsDescCampanha() {		return rsDescCampanha ; 	} 
+ public void setRsDescCampanha(String var) {		this.rsDescCampanha = var; 	} 
+ public boolean getNullDescCampanha() {		return nullDescCampanha ; 	} 
+ public void setNullDescCampanha(boolean var) {		this.nullDescCampanha = var; 	} 
+ public String getDescTitulo2() {		return DescTitulo2 ; 	} 
+ public void setDescTitulo2(String var) {		this.DescTitulo2 = var; 	} 
+ public String getRsDescTitulo2() {		return rsDescTitulo2 ; 	} 
+ public void setRsDescTitulo2(String var) {		this.rsDescTitulo2 = var; 	} 
+ public boolean getNullDescTitulo2() {		return nullDescTitulo2 ; 	} 
+ public void setNullDescTitulo2(boolean var) {		this.nullDescTitulo2 = var; 	} 
+ public String getSubTitulo2() {		return SubTitulo2 ; 	} 
+ public void setSubTitulo2(String var) {		this.SubTitulo2 = var; 	} 
+ public String getRsSubTitulo2() {		return rsSubTitulo2 ; 	} 
+ public void setRsSubTitulo2(String var) {		this.rsSubTitulo2 = var; 	} 
+ public boolean getNullSubTitulo2() {		return nullSubTitulo2 ; 	} 
+ public void setNullSubTitulo2(boolean var) {		this.nullSubTitulo2 = var; 	} 
+  public void posicionaRs() throws Exception{ if ( getSelect() == null ) {    try {   rsIdLandpage = rs.getLong("id_landpage"); } catch (Exception e) { e.printStackTrace();  }  try {   rsIdCampanha = rs.getLong("id_campanha"); } catch (Exception e) { e.printStackTrace();  }  try {   rsDescTitulo1 = rs.getString("desc_titulo_1"); } catch (Exception e) { e.printStackTrace();  }  try {   rsDescSubTitulo1 = rs.getString("desc_sub_titulo_1"); } catch (Exception e) { e.printStackTrace();  }  try {   rsUrlVideo = rs.getString("url_video"); } catch (Exception e) { e.printStackTrace();  }  try {   rsDescCampanha = rs.getString("desc_campanha"); } catch (Exception e) { e.printStackTrace();  }  try {   rsDescTitulo2 = rs.getString("desc_titulo_2"); } catch (Exception e) { e.printStackTrace();  }  try {   rsSubTitulo2 = rs.getString("sub_titulo_2"); } catch (Exception e) { e.printStackTrace();  } }  }   public boolean next(){    boolean resultado;   resultado = false;    try{ limpaRs();    resultado = rs.next();    if (resultado){ posicionaRs(); }   } catch (Exception e){    e.printStackTrace(); }     return resultado; } public void limpaRs() throws Exception{  rsIdLandpage=  null ;  rsIdCampanha=  null ;  rsDescTitulo1=  null ;  rsDescSubTitulo1=  null ;  rsUrlVideo=  null ;  rsDescCampanha=  null ;  rsDescTitulo2=  null ;  rsSubTitulo2=  null ;   }  public ResultSet lista() throws Exception { sql = new StringBuffer(); if(getSelect()!=null){ sql.append(" select "+getSelect()+" "); }else {sql.append(" select * from campanha_landpage  "); } if(getJoin()!=null){ sql.append(" from "+getJoin()+" where  1=1 "); }else {sql.append(" from campanha_landpage where  1=1 "); } if( getIdLandpage() != null ) { sql.append(" and campanha_landpage .id_landpage = ? "); } if( getIdCampanha() != null ) { sql.append(" and campanha_landpage .id_campanha = ? "); } if( getDescTitulo1() != null ) { sql.append(" and campanha_landpage .desc_titulo_1 = ? "); } if( getDescSubTitulo1() != null ) { sql.append(" and campanha_landpage .desc_sub_titulo_1 = ? "); } if( getUrlVideo() != null ) { sql.append(" and campanha_landpage .url_video = ? "); } if( getDescCampanha() != null ) { sql.append(" and campanha_landpage .desc_campanha = ? "); } if( getDescTitulo2() != null ) { sql.append(" and campanha_landpage .desc_titulo_2 = ? "); } if( getSubTitulo2() != null ) { sql.append(" and campanha_landpage .sub_titulo_2 = ? "); } if(getWhere()!=null){ sql.append(" and "+ getWhere()+" "); }        if(getLastSentence()!=null){ sql.append(" "+ getLastSentence()+""); }        st = conn.prepareStatement(sql.toString());  int contparam = 1;  if( getIdLandpage() != null ){ st.setLong(contparam,getIdLandpage()); contparam++;}  if( getIdCampanha() != null ){ st.setLong(contparam,getIdCampanha()); contparam++;}  if( getDescTitulo1() != null ){ st.setString(contparam,getDescTitulo1()); contparam++;}  if( getDescSubTitulo1() != null ){ st.setString(contparam,getDescSubTitulo1()); contparam++;}  if( getUrlVideo() != null ){ st.setString(contparam,getUrlVideo()); contparam++;}  if( getDescCampanha() != null ){ st.setString(contparam,getDescCampanha()); contparam++;}  if( getDescTitulo2() != null ){ st.setString(contparam,getDescTitulo2()); contparam++;}  if( getSubTitulo2() != null ){ st.setString(contparam,getSubTitulo2()); contparam++;}  	rs = st.executeQuery();  	return rs; }public void update() throws Exception { sql = new StringBuffer();sql.append(" update campanha_landpage set id_landpage =  " + getIdLandpage() + "  "); if( getIdCampanha() != null ) { sql.append(" ,  id_campanha = ? "); } if( getNullIdCampanha()) { sql.append(" ,  id_campanha = null "); } if( getDescTitulo1() != null ) { sql.append(" ,  desc_titulo_1 = ? "); } if( getNullDescTitulo1()) { sql.append(" ,  desc_titulo_1 = null "); } if( getDescSubTitulo1() != null ) { sql.append(" ,  desc_sub_titulo_1 = ? "); } if( getNullDescSubTitulo1()) { sql.append(" ,  desc_sub_titulo_1 = null "); } if( getUrlVideo() != null ) { sql.append(" ,  url_video = ? "); } if( getNullUrlVideo()) { sql.append(" ,  url_video = null "); } if( getDescCampanha() != null ) { sql.append(" ,  desc_campanha = ? "); } if( getNullDescCampanha()) { sql.append(" ,  desc_campanha = null "); } if( getDescTitulo2() != null ) { sql.append(" ,  desc_titulo_2 = ? "); } if( getNullDescTitulo2()) { sql.append(" ,  desc_titulo_2 = null "); } if( getSubTitulo2() != null ) { sql.append(" ,  sub_titulo_2 = ? "); } if( getNullSubTitulo2()) { sql.append(" ,  sub_titulo_2 = null "); } sql.append(" where id_landpage =  " + getIdLandpage() + "  "); if(getWhere()!=null){ sql.append(" and "+ getWhere()+" "); }        st = conn.prepareStatement(sql.toString());  int contparam = 1;  if( getIdCampanha() != null ){ st.setLong(contparam,getIdCampanha()); contparam++;}  if( getDescTitulo1() != null ){ st.setString(contparam,getDescTitulo1()); contparam++;}  if( getDescSubTitulo1() != null ){ st.setString(contparam,getDescSubTitulo1()); contparam++;}  if( getUrlVideo() != null ){ st.setString(contparam,getUrlVideo()); contparam++;}  if( getDescCampanha() != null ){ st.setString(contparam,getDescCampanha()); contparam++;}  if( getDescTitulo2() != null ){ st.setString(contparam,getDescTitulo2()); contparam++;}  if( getSubTitulo2() != null ){ st.setString(contparam,getSubTitulo2()); contparam++;}  		st.executeUpdate() ;} public void delete() throws Exception { sql = new StringBuffer();sql.append(" delete from campanha_landpage "); sql.append(" where id_landpage =  " + getIdLandpage() + "  "); st = conn.prepareStatement(sql.toString());  		st.executeUpdate() ;} public void insert() throws Exception { sql = new StringBuffer();StringBuffer values = new StringBuffer();sql.append(" insert into campanha_landpage  (id_landpage " );values.append(" value (? "); if( getIdLandpage() != null ) {sql.append(" , id_landpage ");values.append(", ? "); }  if( getIdCampanha() != null ) {sql.append(" , id_campanha ");values.append(", ? "); }  if( getDescTitulo1() != null ) {sql.append(" , desc_titulo_1 ");values.append(", ? "); }  if( getDescSubTitulo1() != null ) {sql.append(" , desc_sub_titulo_1 ");values.append(", ? "); }  if( getUrlVideo() != null ) {sql.append(" , url_video ");values.append(", ? "); }  if( getDescCampanha() != null ) {sql.append(" , desc_campanha ");values.append(", ? "); }  if( getDescTitulo2() != null ) {sql.append(" , desc_titulo_2 ");values.append(", ? "); }  if( getSubTitulo2() != null ) {sql.append(" , sub_titulo_2 ");values.append(", ? "); } sql.append(" ) ");values.append(" ) ");sql.append( values.toString()); 	st = conn.prepareStatement(sql.toString());   long id = 	 Utilitario.retornaIdinsertLong	 ("campanha_landpage", "id_landpage", conn); int contparam = 1;  st.setLong(contparam, id); contparam++;  if( getIdCampanha() != null ){ st.setLong(contparam,getIdCampanha()); contparam++;  }  if( getDescTitulo1() != null ){ st.setString(contparam,getDescTitulo1()); contparam++;  }  if( getDescSubTitulo1() != null ){ st.setString(contparam,getDescSubTitulo1()); contparam++;  }  if( getUrlVideo() != null ){ st.setString(contparam,getUrlVideo()); contparam++;  }  if( getDescCampanha() != null ){ st.setString(contparam,getDescCampanha()); contparam++;  }  if( getDescTitulo2() != null ){ st.setString(contparam,getDescTitulo2()); contparam++;  }  if( getSubTitulo2() != null ){ st.setString(contparam,getSubTitulo2()); contparam++;  }  		if (st.executeUpdate() == 1) { setIdLandpage(id);} else { throw new Exception("Erro, contate suporte. Inserção de campanha_landpage.");}}
+ 
+ }

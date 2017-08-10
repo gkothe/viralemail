@@ -3,52 +3,40 @@ package com.phpdao.domain;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-
 import com.funcs.Utilitario;
+import java.util.Date;
+import java.sql.Timestamp;
 
 public class UserImagePage {
 
-	private Long id_image;
-	private Long id_associacao;
-	private Long id_page;
-	private String flag_pagetipe; // L = landpage, T = thankspage
-	private Long id_campanha;
 	private PreparedStatement st;
 	private StringBuffer sql;
 	private ResultSet rs;
 	private Connection conn;
+	private String Where;
+	private String Join;
+	private String LastSentence;
+	private String Select;
 
-	public Long getId_image() {
-		return id_image;
+	public UserImagePage(Connection conn) {
+		super();
+		this.conn = conn;
 	}
 
-	public void setId_image(Long id_image) {
-		this.id_image = id_image;
-	}
-
-	public Long getId_associacao() {
-		return id_associacao;
-	}
-
-	public void setId_associacao(Long id_associacao) {
-		this.id_associacao = id_associacao;
-	}
-
-	public Long getId_page() {
-		return id_page;
-	}
-
-	public void setId_page(Long id_page) {
-		this.id_page = id_page;
-	}
-
-	public String getFlag_pagetipe() {
-		return flag_pagetipe;
-	}
-
-	public void setFlag_pagetipe(String flag_pagetipe) {
-		this.flag_pagetipe = flag_pagetipe;
-	}
+	private Long IdAssociacao;
+	private Long rsIdAssociacao;
+	private Long IdImage;
+	private Long rsIdImage;
+	private boolean nullIdImage = false;
+	private String FlagPagetipe;
+	private String rsFlagPagetipe;
+	private boolean nullFlagPagetipe = false;
+	private Long IdCampanha;
+	private Long rsIdCampanha;
+	private boolean nullIdCampanha = false;
+	private Long IdPage;
+	private Long rsIdPage;
+	private boolean nullIdPage = false;
 
 	public PreparedStatement getSt() {
 		return st;
@@ -82,188 +70,376 @@ public class UserImagePage {
 		this.conn = conn;
 	}
 
-	public Long getId_campanha() {
-		return id_campanha;
+	public String getWhere() {
+		return this.Where;
 	}
 
-	public void setId_campanha(Long id_campanha) {
-		this.id_campanha = id_campanha;
+	public void setWhere(String where) {
+		this.Where = where;
 	}
 
-	public UserImagePage(Connection conn) {
-		super();
-		this.conn = conn;
+	public String getJoin() {
+		return this.Join;
+	}
+
+	public void setJoin(String join) {
+		this.Join = join;
+	}
+
+	public String getLastSentence() {
+		return this.LastSentence;
+	}
+
+	public void setLastSentence(String last) {
+		this.LastSentence = last;
+	}
+
+	public String getSelect() {
+		return this.Select;
+	}
+
+	public void setSelect(String select) {
+		this.Select = select;
+	}
+
+	public Long getIdAssociacao() {
+		return IdAssociacao;
+	}
+
+	public void setIdAssociacao(Long var) {
+		this.IdAssociacao = var;
+	}
+
+	public Long getRsIdAssociacao() {
+		return rsIdAssociacao;
+	}
+
+	public void setRsIdAssociacao(Long var) {
+		this.rsIdAssociacao = var;
+	}
+
+	public Long getIdImage() {
+		return IdImage;
+	}
+
+	public void setIdImage(Long var) {
+		this.IdImage = var;
+	}
+
+	public Long getRsIdImage() {
+		return rsIdImage;
+	}
+
+	public void setRsIdImage(Long var) {
+		this.rsIdImage = var;
+	}
+
+	public boolean getNullIdImage() {
+		return nullIdImage;
+	}
+
+	public void setNullIdImage(boolean var) {
+		this.nullIdImage = var;
+	}
+
+	public String getFlagPagetipe() {
+		return FlagPagetipe;
+	}
+
+	public void setFlagPagetipe(String var) {
+		this.FlagPagetipe = var;
+	}
+
+	public String getRsFlagPagetipe() {
+		return rsFlagPagetipe;
+	}
+
+	public void setRsFlagPagetipe(String var) {
+		this.rsFlagPagetipe = var;
+	}
+
+	public boolean getNullFlagPagetipe() {
+		return nullFlagPagetipe;
+	}
+
+	public void setNullFlagPagetipe(boolean var) {
+		this.nullFlagPagetipe = var;
+	}
+
+	public Long getIdCampanha() {
+		return IdCampanha;
+	}
+
+	public void setIdCampanha(Long var) {
+		this.IdCampanha = var;
+	}
+
+	public Long getRsIdCampanha() {
+		return rsIdCampanha;
+	}
+
+	public void setRsIdCampanha(Long var) {
+		this.rsIdCampanha = var;
+	}
+
+	public boolean getNullIdCampanha() {
+		return nullIdCampanha;
+	}
+
+	public void setNullIdCampanha(boolean var) {
+		this.nullIdCampanha = var;
+	}
+
+	public Long getIdPage() {
+		return IdPage;
+	}
+
+	public void setIdPage(Long var) {
+		this.IdPage = var;
+	}
+
+	public Long getRsIdPage() {
+		return rsIdPage;
+	}
+
+	public void setRsIdPage(Long var) {
+		this.rsIdPage = var;
+	}
+
+	public boolean getNullIdPage() {
+		return nullIdPage;
+	}
+
+	public void setNullIdPage(boolean var) {
+		this.nullIdPage = var;
+	}
+
+	public void posicionaRs() throws Exception {
+		if (getSelect() == null) {
+			try {
+				rsIdAssociacao = rs.getLong("id_associacao");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			try {
+				rsIdImage = rs.getLong("id_image");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			try {
+				rsFlagPagetipe = rs.getString("flag_pagetipe");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			try {
+				rsIdCampanha = rs.getLong("id_campanha");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			try {
+				rsIdPage = rs.getLong("id_page");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public boolean next() {
+		boolean resultado;
+		resultado = false;
+		try {
+			limpaRs();
+			resultado = rs.next();
+			if (resultado) {
+				posicionaRs();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return resultado;
+	}
+
+	public void limpaRs() throws Exception {
+		rsIdAssociacao = null;
+		rsIdImage = null;
+		rsFlagPagetipe = null;
+		rsIdCampanha = null;
+		rsIdPage = null;
 	}
 
 	public ResultSet lista() throws Exception {
-
 		sql = new StringBuffer();
-		sql.append(" select * from user_image_page where  1=1 ");
-
-		if (getId_image() != null && getId_image() != 0) {
-			sql.append("and id_image = ? ");
+		if (getSelect() != null) {
+			sql.append(" select " + getSelect() + " ");
+		} else {
+			sql.append(" select * from user_image_page  ");
 		}
-
-		if (getId_page() != null && getId_page() != 0) {
-			sql.append("and id_page = ? ");
+		if (getJoin() != null) {
+			sql.append(" from " + getJoin() + " where  1=1 ");
+		} else {
+			sql.append(" from user_image_page where  1=1 ");
 		}
-
-		if (getFlag_pagetipe() != null) {
-			sql.append("and flag_pagetipe = ? ");
+		if (getIdAssociacao() != null) {
+			sql.append(" and user_image_page .id_associacao = ? ");
 		}
-
-		if (getId_campanha() != null && getId_campanha() != 0) {
-			sql.append("and id_campanha = ? ");
+		if (getIdImage() != null) {
+			sql.append(" and user_image_page .id_image = ? ");
 		}
-
-		if (getId_associacao() != null && getId_associacao() != 0) {
-			sql.append("and id_associacao = ? ");
+		if (getFlagPagetipe() != null) {
+			sql.append(" and user_image_page .flag_pagetipe = ? ");
 		}
-
+		if (getIdCampanha() != null) {
+			sql.append(" and user_image_page .id_campanha = ? ");
+		}
+		if (getIdPage() != null) {
+			sql.append(" and user_image_page .id_page = ? ");
+		}
+		if (getWhere() != null) {
+			sql.append(" and " + getWhere() + " ");
+		}
+		if (getLastSentence() != null) {
+			sql.append(" " + getLastSentence() + "");
+		}
 		st = conn.prepareStatement(sql.toString());
-
 		int contparam = 1;
-
-		if (getId_image() != null && getId_image() != 0) {
-			st.setLong(contparam, getId_image());
+		if (getIdAssociacao() != null) {
+			st.setLong(contparam, getIdAssociacao());
 			contparam++;
 		}
-
-		if (getId_page() != null && getId_page() != 0) {
-			st.setLong(contparam, getId_page());
+		if (getIdImage() != null) {
+			st.setLong(contparam, getIdImage());
 			contparam++;
 		}
-
-		if (getFlag_pagetipe() != null) {
-			st.setString(contparam, getFlag_pagetipe());
+		if (getFlagPagetipe() != null) {
+			st.setString(contparam, getFlagPagetipe());
 			contparam++;
 		}
-
-		if (getId_campanha() != null && getId_campanha() != 0) {
-			st.setLong(contparam, getId_campanha());
+		if (getIdCampanha() != null) {
+			st.setLong(contparam, getIdCampanha());
 			contparam++;
 		}
-
-		if (getId_associacao() != null && getId_associacao() != 0) {
-			st.setLong(contparam, getId_associacao());
+		if (getIdPage() != null) {
+			st.setLong(contparam, getIdPage());
 			contparam++;
 		}
-
 		rs = st.executeQuery();
-
 		return rs;
 	}
 
-	public void delete() throws Exception {
-
+	public void update() throws Exception {
 		sql = new StringBuffer();
-		sql.append("delete from user_image_page where 1=1 ");
-
-		if (getId_campanha() != null && getId_campanha() != 0) {
-			sql.append("and id_campanha = ? ");
+		sql.append(" update user_image_page set id_associacao =  " + getIdAssociacao() + "  ");
+		if (getIdImage() != null) {
+			sql.append(" ,  id_image = ? ");
 		}
-
-		if (getId_associacao() != null && getId_associacao() != 0) {
-			sql.append("and id_associacao = ? ");
+		if (getNullIdImage()) {
+			sql.append(" ,  id_image = null ");
 		}
-
-		if (getId_image() != null && getId_image() != 0) {
-			sql.append("and id_image = ? ");
+		if (getFlagPagetipe() != null) {
+			sql.append(" ,  flag_pagetipe = ? ");
 		}
-
+		if (getNullFlagPagetipe()) {
+			sql.append(" ,  flag_pagetipe = null ");
+		}
+		if (getIdCampanha() != null) {
+			sql.append(" ,  id_campanha = ? ");
+		}
+		if (getNullIdCampanha()) {
+			sql.append(" ,  id_campanha = null ");
+		}
+		if (getIdPage() != null) {
+			sql.append(" ,  id_page = ? ");
+		}
+		if (getNullIdPage()) {
+			sql.append(" ,  id_page = null ");
+		}
+		sql.append(" where id_associacao =  " + getIdAssociacao() + "  ");
+		if (getWhere() != null) {
+			sql.append(" and " + getWhere() + " ");
+		}
 		st = conn.prepareStatement(sql.toString());
-
 		int contparam = 1;
-
-		if (getId_campanha() != null && getId_campanha() != 0) {
-			st.setLong(contparam, getId_campanha());
+		if (getIdImage() != null) {
+			st.setLong(contparam, getIdImage());
 			contparam++;
 		}
-
-		if (getId_associacao() != null && getId_associacao() != 0) {
-			st.setLong(contparam, getId_associacao());
+		if (getFlagPagetipe() != null) {
+			st.setString(contparam, getFlagPagetipe());
 			contparam++;
 		}
-
-		if (getId_image() != null && getId_image() != 0) {
-			st.setLong(contparam, getId_image());
+		if (getIdCampanha() != null) {
+			st.setLong(contparam, getIdCampanha());
 			contparam++;
 		}
-
+		if (getIdPage() != null) {
+			st.setLong(contparam, getIdPage());
+			contparam++;
+		}
 		st.executeUpdate();
-
 	}
 
-	public void Insert() throws Exception {
-
+	public void delete() throws Exception {
 		sql = new StringBuffer();
-		sql.append("	INSERT INTO user_image_page (id_associacao) value (?) ");
+		sql.append(" delete from user_image_page ");
+		sql.append(" where id_associacao =  " + getIdAssociacao() + "  ");
+		st = conn.prepareStatement(sql.toString());
+		st.executeUpdate();
+	}
+
+	public void insert() throws Exception {
+		sql = new StringBuffer();
+		StringBuffer values = new StringBuffer();
+		sql.append(" insert into user_image_page  (id_associacao ");
+		values.append(" value (? ");
+		if (getIdAssociacao() != null) {
+			sql.append(" , id_associacao ");
+			values.append(", ? ");
+		}
+		if (getIdImage() != null) {
+			sql.append(" , id_image ");
+			values.append(", ? ");
+		}
+		if (getFlagPagetipe() != null) {
+			sql.append(" , flag_pagetipe ");
+			values.append(", ? ");
+		}
+		if (getIdCampanha() != null) {
+			sql.append(" , id_campanha ");
+			values.append(", ? ");
+		}
+		if (getIdPage() != null) {
+			sql.append(" , id_page ");
+			values.append(", ? ");
+		}
+		sql.append(" ) ");
+		values.append(" ) ");
+		sql.append(values.toString());
 		st = conn.prepareStatement(sql.toString());
 		long id = Utilitario.retornaIdinsertLong("user_image_page", "id_associacao", conn);
-		st.setLong(1, id);
-
-		if (st.executeUpdate() == 1) {
-			setId_associacao(id);
-			update();
-		} else {
-			throw new Exception("Erro, contate suporte. Inserção de land page.");
-		}
-
-	}
-
-	public void update() throws Exception {
-
-		sql = new StringBuffer();
-		sql.append("	update user_image_page set id_associacao =  " + getId_associacao() + " "); // seta a pk soh para ter um "set"
-
-		if (getId_image() != null && getId_image() != 0) {
-			sql.append(", id_image = ? ");
-		}
-
-		if (getId_page() != null && getId_page() != 0) {
-			sql.append(", id_page = ? ");
-		}
-
-		if (getFlag_pagetipe() != null) {
-			sql.append(", flag_pagetipe = ? ");
-		}
-
-		if (getId_campanha() != null && getId_page() != 0) {
-			sql.append(", id_campanha = ? ");
-		}
-
-		sql.append(" where id_associacao = " + getId_associacao() + " ");
-
-		st = conn.prepareStatement(sql.toString());
-
 		int contparam = 1;
-
-		if (getId_image() != null && getId_image() != 0) {
-			st.setLong(contparam, getId_image());
+		st.setLong(contparam, id);
+		contparam++;
+		if (getIdImage() != null) {
+			st.setLong(contparam, getIdImage());
 			contparam++;
 		}
-
-		if (getId_page() != null && getId_page() != 0) {
-			st.setLong(contparam, getId_page());
+		if (getFlagPagetipe() != null) {
+			st.setString(contparam, getFlagPagetipe());
 			contparam++;
 		}
-
-		if (getFlag_pagetipe() != null) {
-			st.setString(contparam, getFlag_pagetipe());
+		if (getIdCampanha() != null) {
+			st.setLong(contparam, getIdCampanha());
 			contparam++;
 		}
-
-		if (getId_campanha() != null && getId_campanha() != 0) {
-			st.setLong(contparam, getId_campanha());
+		if (getIdPage() != null) {
+			st.setLong(contparam, getIdPage());
 			contparam++;
 		}
-
 		if (st.executeUpdate() == 1) {
-
+			setIdAssociacao(id);
 		} else {
-			throw new Exception("Erro, contate suporte. Update de land page.");
+			throw new Exception("Erro, contate suporte. Inserção de user_image_page.");
 		}
-
 	}
 
 }

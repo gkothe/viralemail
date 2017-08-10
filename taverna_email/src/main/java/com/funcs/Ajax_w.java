@@ -16,44 +16,43 @@ import com.phpdao.domain.Campanha;
 import com.phpdao.domain.CampanhaEmail;
 import com.phpdao.domain.CampanhaEmailPremio;
 import com.phpdao.domain.CampanhaLandpage;
-import com.phpdao.domain.CampanhaLandpageFeature;
-import com.phpdao.domain.CampanhaLead;
+import com.phpdao.domain.CampanhaLandpageFeatures;
+import com.phpdao.domain.CampanhaLeads;
 import com.phpdao.domain.CampanhaThankspage;
 import com.phpdao.domain.Cidade;
 import com.phpdao.domain.UserImage;
 import com.phpdao.domain.UserImagePage;
-import com.phpdao.domain.UserPremio;
+import com.phpdao.domain.UserPremios;
 import com.phpdao.domain.Usuario;
 
 public class Ajax_w {
 
 	public static void ajax_w(HttpServletRequest request, HttpServletResponse response) throws Exception {// ajax que nao precisam de login
 		PrintWriter out = response.getWriter();
-	
+
 		response.setContentType("text/x-json; charset=UTF-8");
 		response.setDateHeader("Expires", 0);
 		response.setDateHeader("Last-Modified", new java.util.Date().getTime());
 		response.setHeader("Cache-Control", "no-cache, must-revalidate");
 		response.setHeader("Pragma", "no-cache");
 		request.setCharacterEncoding("UTF-8");
-	
+
 		Connection conn = null;
 		JSONObject objRetorno = new JSONObject();
-	
+
 		try {
 			conn = Conexao.getConexao();
 			conn.setAutoCommit(false);
 			String cmd = request.getParameter("cmd");
-	
+
 			if (cmd.equalsIgnoreCase("doCadastro")) {
 				Ajax_w.Cadastro(request, response, conn);
-			}else if (cmd.equalsIgnoreCase("loadCampanhabyRef")) {
+			} else if (cmd.equalsIgnoreCase("loadCampanhabyRef")) {
 				Ajax_w.LoadCampanhabyRef(request, response, conn);
-			}else if (cmd.equalsIgnoreCase("sendLead")) {
+			} else if (cmd.equalsIgnoreCase("sendLead")) {
 				Ajax_w.SendLead(request, response, conn);
 			}
-			
-			
+
 			conn.commit();
 		} catch (Exception ex) {
 			if (ex.getMessage() == null || ex.getMessage().equals("")) {
@@ -61,7 +60,7 @@ public class Ajax_w {
 			} else {
 				objRetorno.put("erro", ex.getMessage());
 			}
-	
+
 			ex.printStackTrace();
 			out.print(objRetorno.toJSONString());
 			try {
@@ -75,7 +74,6 @@ public class Ajax_w {
 			}
 		}
 	}
-
 
 	public static void validarConta(HttpServletRequest request, HttpServletResponse response) {
 
@@ -140,7 +138,6 @@ public class Ajax_w {
 		}
 
 	}
-	
 
 	public static void Cadastro(HttpServletRequest request, HttpServletResponse response, Connection conn) throws Exception {
 		Sys_parametros sys = new Sys_parametros(conn);
@@ -169,7 +166,7 @@ public class Ajax_w {
 			}
 
 			Cidade cidade = new Cidade(conn);
-			cidade.setCodcidade(Long.parseLong(param.get("cod_cidade").toString()));
+			cidade.setCodCidade(Integer.parseInt(param.get("cod_cidade").toString()));
 			rs = cidade.lista();
 			if (!rs.next()) {
 				throw new Exception("Cidade não existente");
@@ -207,7 +204,7 @@ public class Ajax_w {
 		} else {
 
 			user = new Usuario(conn);
-			user.setDescmail(param.get("desc_email").toString());
+			user.setDescMail(param.get("desc_email").toString());
 			rs = user.lista();
 			if (rs.next()) {
 				throw new Exception("Este e-mail já esta em uso.");
@@ -218,7 +215,7 @@ public class Ajax_w {
 			throw new Exception("Você deve inserir um usuario.");
 		} else {
 			user = new Usuario(conn);
-			user.setDesclogin(param.get("desc_login").toString());
+			user.setDescLogin(param.get("desc_login").toString());
 			rs = user.lista();
 			if (rs.next()) {
 				throw new Exception("Este login já esta em uso.");
@@ -231,12 +228,12 @@ public class Ajax_w {
 
 		String validacao = Utilitario.StringGen(1000, 32).substring(0, 99);
 		user = new Usuario(conn);
-		user.setChaveativacao(validacao);
+		user.setChaveAtivacao(validacao);
 		rs = user.lista();
 		while (rs.next()) {
 			validacao = Utilitario.StringGen(1000, 32).substring(0, 99);
 			user = new Usuario(conn);
-			user.setChaveativacao(validacao);
+			user.setChaveAtivacao(validacao);
 			rs.close();
 			rs = user.lista();
 		}
@@ -307,23 +304,20 @@ public class Ajax_w {
 		JSONObject objRetorno = new JSONObject();
 		JSONObject param = Utilitario.getJsonFromRequest(request, response);
 		ResultSet rs;
-		Campanha camp = new Campanha(conn);
-		camp.setLinkinicial(param.get("ref").toString());
+		HM_Campanha camp = new HM_Campanha(conn);
+		camp.setLinkInicial(param.get("ref").toString());
 		rs = camp.lista();
 		if (rs.next()) {
 
-			camp.setIdcampanha(rs.getLong("id_campanha"));
+			camp.setIdCampanha(rs.getLong("id_campanha"));
 
 			JSONObject land = camp.getLandPage();
 
 			objRetorno.put("landpage", land);
 			objRetorno.put("landpagefeatures", camp.getLandPageFeatures(Long.parseLong(land.get("id_landpage").toString())));
 			objRetorno.put("landpageImage", camp.getLandPageImages(Long.parseLong(land.get("id_landpage").toString())));
-			
-			
-			
+
 			objRetorno.put("msgok", "ok");
-			
 
 		} else {
 			throw new Exception("Campanha inexistente.");
@@ -332,49 +326,103 @@ public class Ajax_w {
 		out.print(objRetorno.toJSONString());
 
 	}
-	
-	
+
+	/*
+	 * problemas do snedlead] pode botar qalqer coisa como email e vai inserir e contar como referencia se ele botar qalqer outro email valido, usando proprio link de rederencia, acaba virnando um spam. Esse email(se for valido) vai receber o premio 1, mas n vai fazer ideia do qq se trata, e nao vai saber qal o seu link de referencia para mandar para outras pessoas.
+	 * 
+	 * soluções: Enviar um email, com um link. Quando a pessoa clickar neste link ( e la encontraria os link premios?) ativa o insert do referencia, ou um update confirmado , flag_ref_valido = 'S' O email 1, tinha q ter umas informaçõs padroes da camapnha e etc
+	 */
+
 	public static void SendLead(HttpServletRequest request, HttpServletResponse response, Connection conn) throws Exception {
 		// Load camapnha landpage
 		PrintWriter out = response.getWriter();
 		JSONObject objRetorno = new JSONObject();
 		JSONObject param = Utilitario.getJsonFromRequest(request, response);
-		
-		CampanhaLead clead = new CampanhaLead(conn);
+
+		HM_CampanhaLeads clead = new HM_CampanhaLeads(conn);
+		HM_CampanhaEmail c_mail = new HM_CampanhaEmail(conn);
 		Sys_parametros sys = new Sys_parametros(conn);
-		
+
 		ResultSet rs;
 		ResultSet rs2;
 		Campanha camp = new Campanha(conn);
-		camp.setLinkinicial(param.get("ref").toString());
+		camp.setLinkInicial(param.get("ref").toString());
 		rs = camp.lista();
 		if (rs.next()) {
 
 			String lead = param.get("lead").toString();
-			
-			clead = new CampanhaLead(conn);
-			clead.setIdcampanha(rs.getLong("id_campanha"));
-			clead.setDescemail(lead);
-			rs2 = clead.lista();
-			if(rs2.next()){
-				throw new Exception("Este e-mail ja foi usado para esta campanha!");
+			String l_ref = param.get("lerf") == null ? "" : param.get("lerf").toString();
+
+			if (!l_ref.equalsIgnoreCase("")) {
+				if (!Utilitario.isNumeric(l_ref)) {
+					throw new Exception("Refêrencia inválida..");
+				}
 			}
-			
-			clead = new CampanhaLead(conn);
-			clead.setIdcampanha(rs.getLong("id_campanha"));
-			clead.setDescemail(lead);
+
+			clead = new HM_CampanhaLeads(conn);
+			clead.setIdCampanha(rs.getLong("id_campanha"));
+			clead.setDescEmail(lead);
+			rs2 = clead.lista();
+			if (rs2.next()) {
+				throw new Exception("Este e-mail já foi usado para esta campanha!");
+			}
+
+			clead = new HM_CampanhaLeads(conn);
+			clead.setIdCampanha(rs.getLong("id_campanha"));
+			clead.setDescEmail(lead);
 			clead.insert();
-			long id_lead = clead.getIdlead();
-			
-			clead = new CampanhaLead(conn);
-			clead.setIdlead(id_lead);
-			clead.setDesclinkreferal(  sys.getUrl_system()+"campanha?ref="+param.get("ref").toString()+"&l="+id_lead);
+			long id_lead = clead.getIdLead();
+
+			clead = new HM_CampanhaLeads(conn);
+			clead.setIdLead(id_lead);
+			clead.setDescLinkReferal(sys.getUrl_system() + "campanha?ref=" + param.get("ref").toString() + "&l=" + id_lead);
+			if (!l_ref.equalsIgnoreCase("")) {
+				clead.setIdLeadReferencia((Long.parseLong(l_ref)));
+			}
+
 			clead.update();
-			
-			objRetorno.put("ref", clead.getDesclinkreferal());
-			
+			String linkref = clead.getDescLinkReferal();
+
+			c_mail = new HM_CampanhaEmail(conn);
+			c_mail.setIdCampanha(rs.getLong("id_campanha"));
+			c_mail.setQtdReferencia(0);
+			c_mail.sendEmail(lead);
+
+			// *********parte do referal
+			if (!l_ref.equalsIgnoreCase("")) {
+				String emaildoref = "";
+				int contador = 0;
+
+				clead = new HM_CampanhaLeads(conn);
+				clead.setIdCampanha(rs.getLong("id_campanha"));
+				clead.setIdLead(Long.parseLong(l_ref));
+				rs2 = clead.lista();
+				if (rs2.next()) {
+					emaildoref = rs2.getString("desc_email");
+				} else {
+					throw new Exception("Refêrencia inválida..");
+				}
+
+				clead = new HM_CampanhaLeads(conn);
+				clead.setIdCampanha(rs.getLong("id_campanha"));
+				clead.setIdLeadReferencia(Long.parseLong(l_ref));
+				rs2 = clead.lista();
+				while (rs2.next()) {
+					contador++;
+				}
+
+				if (contador != 0) {
+					c_mail = new HM_CampanhaEmail(conn);
+					c_mail.setIdCampanha(rs.getLong("id_campanha"));
+					c_mail.setQtdReferencia(contador);
+					c_mail.sendEmail(emaildoref);
+				}
+			}
+
+			objRetorno.put("ref", linkref);
+
 			objRetorno.put("msgok", "ok");
-			objRetorno.put("msg", "Seu link de referencia é " + clead.getDesclinkreferal());
+			objRetorno.put("msg", "Seu link de referencia é " + linkref);
 
 		} else {
 			throw new Exception("Campanha inexistente.");

@@ -16,7 +16,6 @@ import org.json.simple.JSONObject;
 
 import com.configs.Conexao;
 import com.phpdao.domain.Campanha;
-import com.phpdao.domain.UserPremio;
 
 @SuppressWarnings("unchecked")
 @WebServlet(urlPatterns = { "/home/*" })
@@ -132,11 +131,11 @@ public class HomeController extends javax.servlet.http.HttpServlet {
 			String cmd = request.getParameter("cmd");
 
 			if (cmd.equalsIgnoreCase("insertCamapanha")) {
-				Campanha.InsertCampanha(request, response, conn, coduser);
+				HM_Campanha.InsertCampanha(request, response, conn, coduser);
 			} else if (cmd.equalsIgnoreCase("updateCamapanha")) {
-				Campanha.updateCampanha(request, response, conn, coduser);
+				HM_Campanha.updateCampanha(request, response, conn, coduser);
 			} else if (cmd.equalsIgnoreCase("insertPremio")) {
-				UserPremio.insertPremio(request, response, conn, coduser);
+				HM_UserPremios.insertPremio(request, response, conn, coduser);
 			}
 			
 			
