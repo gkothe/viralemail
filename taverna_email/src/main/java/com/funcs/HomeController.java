@@ -16,6 +16,8 @@ import org.json.simple.JSONObject;
 
 import com.configs.Conexao;
 import com.phpdao.domain.Campanha;
+import com.phpdao.domain.HM_Campanha;
+import com.phpdao.domain.HM_UserPremios;
 
 @SuppressWarnings("unchecked")
 @WebServlet(urlPatterns = { "/home/*" })
