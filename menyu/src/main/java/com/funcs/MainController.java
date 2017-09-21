@@ -31,13 +31,6 @@ public class MainController extends javax.servlet.http.HttpServlet {
 	}
 	
 
-	protected void doOptions(HttpServletRequest request, HttpServletResponse response) {
-
-		response.setHeader("Access-Control-Allow-Methods", "GET, POST");
-		response.setHeader("Access-Control-Allow-Origin", "*");
-		response.setHeader("Access-Control-Allow-Headers", "AUTHORIZATION,X-Auth-Token");
-	}
-
 
 	private void processaRequisicoes(HttpServletRequest request, HttpServletResponse response) {
 
@@ -65,9 +58,6 @@ public class MainController extends javax.servlet.http.HttpServlet {
 				}
 			} else if (identAcao.toLowerCase().equalsIgnoreCase("senha_email")) {
 				recuperaSenha(request, response);
-			} else if (identAcao.toLowerCase().equalsIgnoreCase("cadastro")) {
-				request.getSession().invalidate();
-				request.getRequestDispatcher("/WEB-INF/cadastro.html").forward(request, response);
 			} else if (request.getSession().getAttribute("username") == null) {
 				request.getSession().invalidate();
 				request.getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
@@ -80,6 +70,8 @@ public class MainController extends javax.servlet.http.HttpServlet {
 		}
 
 	}
+
+	
 
 	public void recuperaSenha(HttpServletRequest request, HttpServletResponse response) throws Exception {
 

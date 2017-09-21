@@ -1,5 +1,4 @@
 <%@page import="com.configs.Conexao"%>
-<%@page import="com.funcs.Sys_parametros"%>
 <%@page import="java.sql.Connection"%>
 <%@page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
@@ -33,10 +32,8 @@
 <link rel="stylesheet" type="text/css" href="css/tragoaqui.css" />
 <%
 		Connection conn = null;
-		Sys_parametros sys = null;
 		try {
 	 		conn = Conexao.getConexao();
-	 		sys = new Sys_parametros(conn);
 	 		conn.close();
 		} catch (Exception e) {
 
@@ -584,7 +581,6 @@
 	var menu = "";
 	var extraparam= "";
 	var applicacao = <%=session.getAttribute("app")%>;
-	var urlsystem = '<%=sys.getUrl_websocket()%>'; 
 	
 	$(document).ready(function() {
 <%boolean link = false;

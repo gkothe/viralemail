@@ -69,7 +69,7 @@ public class AcessoController implements SysController {
 			}
 			if (!(password.equals("-1")) && !(user.equals("-1"))) {
 
-				PreparedStatement stmt = conn.prepareStatement("select * from usuario WHERE  Binary desc_login = ? and Binary desc_senha = ? and flag_ativo = 'S' ");
+				PreparedStatement stmt = conn.prepareStatement("select * from loja WHERE  Binary desc_login = ? and Binary desc_senha = ? and flag_ativo = 'S' ");
 				stmt.setString(1, user);
 				stmt.setString(2, password);
 				ResultSet rs = stmt.executeQuery();
@@ -78,10 +78,9 @@ public class AcessoController implements SysController {
 
 					session = request.getSession(true);
 					session.setAttribute("username", rs.getString("desc_login"));
-					session.setAttribute("id_user", rs.getInt("id_usuario"));
-					session.setAttribute("cod_cidade", rs.getInt("cod_cidade"));
+					session.setAttribute("id_user", rs.getInt("id_loja"));
 
-					request.getRequestDispatcher("home?ac=campanhaInsert").forward(request, response);
+					request.getRequestDispatcher("home?ac=listaped").forward(request, response);
 
 				} else {
 					throw new Exception("Usuário e/ou senha inválidos.");

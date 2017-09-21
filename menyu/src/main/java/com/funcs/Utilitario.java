@@ -345,6 +345,10 @@ public class Utilitario {
 		return id;
 	}
 
+	
+	public void ex(String exception)throws Exception{
+		throw new Exception(exception);
+	}
 	public static int retornaIdinsertChaveSecundaria(String tabela, String nomechaveprimaria, String valchaveprimaria, String coluna, Connection conn) throws Exception {
 		String varname1 = "";
 		// so funciona para pk single

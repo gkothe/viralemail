@@ -16,10 +16,9 @@ import org.json.simple.JSONObject;
 
 import com.configs.Conexao;
 
-
 @SuppressWarnings("unchecked")
 @WebServlet(urlPatterns = { "/home/*" })
-//Logado
+// Logado
 public class HomeController extends javax.servlet.http.HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) {
@@ -56,17 +55,11 @@ public class HomeController extends javax.servlet.http.HttpServlet {
 					response.sendRedirect(request.getContextPath() + "/");
 				}
 			} else {
-
-				if (strTipo.equalsIgnoreCase("campanhaInsert")) {
-					
-				} 
 				if (strTipo.equalsIgnoreCase("listaped")) {
-				
+					ListaPedidos(request, response);
 				} else if (strTipo.equalsIgnoreCase("logout")) {
 					request.getSession().invalidate();
 					response.sendRedirect(request.getContextPath() + "/");
-					// request.getRequestDispatcher("").forward(request,
-					// response);
 					return;
 				} else if (strTipo.equalsIgnoreCase("ajax")) {
 					ajax(request, response);
@@ -78,6 +71,16 @@ public class HomeController extends javax.servlet.http.HttpServlet {
 				// exibeErro(request, response, ex);
 			} catch (Exception e) {
 			}
+		}
+	}
+	
+	private void ListaPedidos(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		try {
+			request.getRequestDispatcher("/WEB-INF/listaPedidos.html").forward(request, response);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
 		}
 	}
 
@@ -123,8 +126,8 @@ public class HomeController extends javax.servlet.http.HttpServlet {
 			conn.setAutoCommit(false);
 			String cmd = request.getParameter("cmd");
 
-			if (cmd.equalsIgnoreCase("insertCamapanha")) {
-			
+			if (cmd.equalsIgnoreCase("listarPedidos")) {
+
 			}
 
 			conn.commit();

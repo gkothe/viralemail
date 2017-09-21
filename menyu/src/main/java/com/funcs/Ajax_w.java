@@ -7,19 +7,27 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 
 import com.configs.Conexao;
 import com.cruds.HM_Categoria;
+import com.cruds.HM_Pedido;
+import com.cruds.HM_PedidoItem;
 import com.cruds.HM_Produtos;
 
 public class Ajax_w {
 
+	public Utilitario u = new Utilitario();
+	
 	public static void ajax_w(HttpServletRequest request, HttpServletResponse response) throws Exception {// ajax que nao precisam de login
 		PrintWriter out = response.getWriter();
 
@@ -44,6 +52,9 @@ public class Ajax_w {
 
 			if (cmd.equalsIgnoreCase("getProdutos")) {
 				funcs.getProdutos(request, response, conn);
+			}
+			if (cmd.equalsIgnoreCase("fazerPedido")) {
+				funcs.criarPedido(request, response, conn);
 			}
 
 			conn.commit();
@@ -73,6 +84,8 @@ public class Ajax_w {
 		PrintWriter out = response.getWriter();
 		JSONObject objjson = new JSONObject();
 
+		
+		
 		JSONArray lista = new JSONArray();
 		JSONObject categorias_obj = new JSONObject();
 		JSONArray prods_array = new JSONArray();
@@ -97,7 +110,8 @@ public class Ajax_w {
 				objjson.put("desc_abreviado", obj.getRsDescAbreviado() == null ? "" : obj.getRsDescAbreviado());
 				objjson.put("flag_ativo", obj.getRsFlagAtivo() == null ? "" : obj.getRsFlagAtivo());
 				objjson.put("qtd_images", obj.getRsQtdImages() == null ? "" : obj.getRsQtdImages());
-				objjson.put("val_unit", obj.getRsValUnit() == null ? 0 : Utilitario.df2.format(obj.getRsValUnit()));
+				objjson.put("val_unit", obj.getRsValUnit() == null ? 0 : "R$ " + Utilitario.df2.format(obj.getRsValUnit()));
+				objjson.put("val_unit_raw", obj.getRsValUnit() == null ? 0 : (obj.getRsValUnit()));
 				objjson.put("desc_key_words", obj.getRsDescKeyWords() == null ? "" : obj.getRsDescKeyWords());
 				prods_array.add(objjson);
 			}
@@ -110,6 +124,77 @@ public class Ajax_w {
 		}
 
 		retorno.put("lista", lista);
+		retorno.put("msg", "");
+		retorno.put("msgok", "ok");
+		System.out.println(retorno.toJSONString());
+		out.print(retorno.toJSONString());
+	}
+
+	public void criarPedido(HttpServletRequest request, HttpServletResponse response, Connection conn) throws Exception {
+		JSONObject retorno = new JSONObject();
+		PrintWriter out = response.getWriter();
+		JSONObject objjson = new JSONObject();
+		// P - Pendente
+		// A - Aceito
+		// E - Em preparo
+		// F- Finalizadop
+
+		String carrinhoStr = request.getParameter("carrinho") == null ? "" : request.getParameter("carrinho");
+		String mesa = request.getParameter("mesa") == null ? "" : request.getParameter("mesa");
+
+		if(mesa.equalsIgnoreCase("")){
+			u.ex("Mesa não informada.");
+		}
+		
+		JSONObject carrinho = (JSONObject) new JSONParser().parse(carrinhoStr);
+		Set keys = carrinho.keySet();
+		Iterator<String> it = keys.iterator();
+		
+		long id_pedido = 0;
+
+		HM_Produtos prod = new HM_Produtos(conn);
+		HM_Pedido pedido = new HM_Pedido(conn);
+		pedido.setIdLoja(1);
+		pedido.setIdUsuario(1l);
+		pedido.setDataPedido(Utilitario.getTimeStamp(new Date()));
+		pedido.setFlagStatus("P");
+		pedido.setValTotalprod(0.0);
+		// pedido.setNumPed(Long.parseLong(num_ped));
+		pedido.setNumMesaEntrega(mesa);
+		pedido.setFlagVizualizado("N");
+		pedido.setFlagMarcado("N");
+		pedido.insert();
+		id_pedido = pedido.getIdPedido();
+		HM_PedidoItem item = new HM_PedidoItem(conn);
+		double val_total = 0;
+		while (it.hasNext()) {
+			String key = it.next();
+//			if (carrinho.get(key) instanceof org.json.JSONObject) {
+				objjson = (JSONObject) carrinho.get(key);
+				prod = new HM_Produtos(conn);
+				prod.setIdProd(Integer.parseInt(objjson.get("id_prod").toString()));
+				prod.lista();
+				if (prod.next()) {
+					item = new HM_PedidoItem(conn);
+					item.setIdPedido(pedido.getIdPedido());
+					item.setValUnit(prod.getRsValUnit());
+					item.setIdProd(prod.getRsIdProd());
+					item.setQtdProd(Long.parseLong(objjson.get("qtd").toString()));
+					val_total = val_total + (prod.getRsValUnit() * Long.parseLong(objjson.get("qtd").toString()));
+					item.insert();
+
+				} else {
+					u.ex("Produto não encontrado.");
+				}
+//			}
+		}
+
+		pedido = new HM_Pedido(conn);
+		pedido.setIdPedido(id_pedido);
+		pedido.setValTotalprod(val_total);
+		pedido.update();
+		
+
 		retorno.put("msg", "");
 		retorno.put("msgok", "ok");
 		System.out.println(retorno.toJSONString());
