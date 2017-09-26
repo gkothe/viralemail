@@ -44,12 +44,25 @@ public class LeadController extends javax.servlet.http.HttpServlet {
 
 			String id = request.getParameter("ref");
 			String ac = request.getParameter("acao") == null ? "" : request.getParameter("acao");
+			
 
 			if (id == null) {
 				erroPage(request, response);
 			} else if (ac.equalsIgnoreCase("ajax_w")) {
 				Ajax_w.ajax_w(request, response);
-			} else {
+			} else if (ac.equalsIgnoreCase("camp")) {
+				if(id.equalsIgnoreCase("3")){
+					abreCampanha_id3(request, response);
+				}else if(id.equalsIgnoreCase("4")){
+					abreCampanha_id4(request, response);
+				}
+			} else if (ac.equalsIgnoreCase("thanks")) {
+				if(id.equalsIgnoreCase("3")){
+					thanksCampanha_id3(request, response);
+				}else if(id.equalsIgnoreCase("4")){
+					thanksCampanha_id4(request, response);
+				}
+			}else{
 				abreCampanha(request, response);
 			}
 
@@ -82,4 +95,59 @@ public class LeadController extends javax.servlet.http.HttpServlet {
 		}
 	}
 
+	
+	private void abreCampanha_id3(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		try {
+			request.setAttribute("css", "templates/landpage_lucy/fcss");
+			request.setAttribute("js", "templates/landpage_lucy/js");
+			request.setAttribute("img", "templates/landpage_lucy/img");
+			request.getRequestDispatcher("/templates/landpage_lucy/home.jsp").forward(request, response);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+		}
+	}
+	
+	private void thanksCampanha_id3(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		try {
+			request.setAttribute("css", "templates/landpage_lucy/fcss");
+			request.setAttribute("js", "templates/landpage_lucy/js");
+			request.setAttribute("img", "templates/landpage_lucy/img");
+			request.getRequestDispatcher("/templates/landpage_lucy/thanks.jsp").forward(request, response);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+		}
+	}
+	
+	
+	private void abreCampanha_id4(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		try {
+			request.setAttribute("css", "templates/landpage_up/css");
+			request.setAttribute("js", "");
+			request.setAttribute("img", "templates/landpage_up/img");
+			request.setAttribute("font", "templates/landpage_up/fonts");
+			request.getRequestDispatcher("/templates/landpage_up/home.jsp").forward(request, response);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+		}
+	}
+	
+	private void thanksCampanha_id4(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		try {
+			request.setAttribute("css", "templates/landpage_up/css");
+			request.setAttribute("js", "");
+			request.setAttribute("img", "templates/landpage_up/img");
+			request.setAttribute("font", "templates/landpage_up/fonts");
+			request.getRequestDispatcher("/templates/landpage_up/thanks.jsp").forward(request, response);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+		}
+	}
 }
