@@ -68,8 +68,11 @@ public class HomeController extends javax.servlet.http.HttpServlet {
 					insertPremio(request, response);
 				} else if (strTipo.equalsIgnoreCase("listaped")) {
 					dashpedidos(request, response);
-				}
-				if (strTipo.equalsIgnoreCase("listaped")) {
+				} else if (strTipo.equalsIgnoreCase("home")) {
+					home(request, response);
+				} else if (strTipo.equalsIgnoreCase("campanha_lista")) {
+					campanha_lista(request, response);
+				} else if (strTipo.equalsIgnoreCase("listaped")) {
 					dashpedidos(request, response);
 				} else if (strTipo.equalsIgnoreCase("logout")) {
 					request.getSession().invalidate();
@@ -139,11 +142,8 @@ public class HomeController extends javax.servlet.http.HttpServlet {
 			} else if (cmd.equalsIgnoreCase("insertPremio")) {
 				HM_UserPremios.insertPremio(request, response, conn, coduser);
 			} else if (cmd.equalsIgnoreCase("loadCampanha")) {
-				HM_Campanha.LoadCampanha(request, response, conn,coduser);
+				HM_Campanha.LoadCampanha(request, response, conn, coduser);
 			}
-			
-			
-			
 
 			conn.commit();
 		} catch (Exception ex) {
@@ -177,6 +177,16 @@ public class HomeController extends javax.servlet.http.HttpServlet {
 		}
 	}
 
+	private void home(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		try {
+			request.getRequestDispatcher("/WEB-INF/home.jsp").forward(request, response);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+		}
+	}
+
 	private void campanhaInsert(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		try {
 			request.getRequestDispatcher("/WEB-INF/camapanha_insert.html").forward(request, response);
@@ -197,6 +207,16 @@ public class HomeController extends javax.servlet.http.HttpServlet {
 		}
 	}
 
+	
+	private void campanha_lista(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		try {
+			request.getRequestDispatcher("/WEB-INF/campanha_lista.html").forward(request, response);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+		}
+	}
 	private void insertPremio(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		try {
 			request.getRequestDispatcher("/WEB-INF/insert_premio.html").forward(request, response);
@@ -207,6 +227,7 @@ public class HomeController extends javax.servlet.http.HttpServlet {
 		}
 	}
 
+	
 	private void dashpedidos(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		try {
 			request.getRequestDispatcher("/WEB-INF/dash1_pedidos.html").forward(request, response);
