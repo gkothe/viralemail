@@ -207,7 +207,7 @@ b, strong {
     margin-right:-260px;
     overflow-x: hidden;
     overflow-y:auto;
-    background:#41A1E1 url(../img/stripBG.png);
+    background:#41A1E1 ;
     z-index:99999999;
     -webkit-transition:all 0.4s ease 0s;
     -moz-transition:all 0.4s ease 0s;
@@ -323,7 +323,7 @@ b, strong {
     left:0;
     width:100%;
     background-color:#41A1E1;
-    background-image:url(../img/stripBG.png);
+    
     padding:0px;
 }
 .logo {
@@ -381,7 +381,7 @@ b, strong {
 /////////////////////////////////////////////////////////////////////*/
 
 #banner {
-    background:url(../img/shutterstock_64973002.png);
+    
     background-size:cover;
     padding-top:80px;
     background-attachment:fixed;
@@ -389,7 +389,7 @@ b, strong {
     
 }
 #banner_custom {
-    background:url(../img/shutterstock_64973002.png);
+    
     background-size:cover;
     padding-top:10px;
     background-attachment:fixed;
@@ -493,7 +493,7 @@ b, strong {
 .video-box {
     z-index: 2;
     height: 422px;
-    background: url('../img/shutterstock_1330842741.png');
+    
     background-size: cover;
     display: table;
     width: 100%;
@@ -572,7 +572,7 @@ b, strong {
 // 07 - Features
 /////////////////////////////////////////////////////////////////////*/
 #bigfeatures{
-    background-image: url(../img/forest-547363.png);
+    
     background-size: cover;
     color: #fff;
 }

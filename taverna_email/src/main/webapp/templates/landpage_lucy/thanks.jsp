@@ -12,18 +12,13 @@
 <!--favicon-->
 <link rel="shortcut icon" href="https://d2zav2bjdlctd5.cloudfront.net/theme_preview/lucy_pro/img/favicon.ico" type="image/x-icon">
 <link rel="icon" href="https://d2zav2bjdlctd5.cloudfront.net/theme_preview/lucy_pro/img/favicon.ico" type="image/x-icon">
+<link rel="import" href="resources.html">
 <!-- Stylesheets -->
-<link rel="stylesheet" type="text/css" href="${css}/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="${css}/ionicons.min.css">
-<link rel="stylesheet" type="text/css" href="${css}/owl.carousel.css">
-<link rel="stylesheet" type="text/css" href="${css}/owl.theme.css">
-<link rel="stylesheet" type="text/css" href="${css}/nivo-lightbox.css">
-<link rel="stylesheet" type="text/css" href="${css}/nivo-lightbox-theme.css">
-<link rel="stylesheet" type="text/css" href="${css}/magnific-popup.css">
 <link rel="stylesheet" type="text/css" href="${css}/animate.css">
 <link rel="stylesheet" type="text/css" href="${css}/style.css">
-<link rel="stylesheet" type="text/css" href="${css}/custom.css">
 <link href="${css}/googlefonts.css" rel="stylesheet" type="text/css">
+
 
 </head>
 <body id="home">
@@ -60,10 +55,12 @@
 			<div class="row ">
 				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center">
 					<div id="" class="wrap" style='text-align: right'>
-						<input type="email" style="max-width: 600px; height: 75px; display: inline" class="form-control subscription-form-control subscriber-email" placeholder="Link" name="srch-term" id="srch-term">
-						<a href="https://d2zav2bjdlctd5.cloudfront.net/theme_preview/lucy_pro/home.html#" style="margin-left: 30px; padding-top: 5px; width: 130px; height: 75px" class="btn btn-default btn-download">
-							<label style="position: absolute; top: 25px; left: 30px">Copiar </label>
+						<input style="max-width: 600px; height: 75px; display: inline" class="form-control subscription-form-control subscriber-email" placeholder="Link" name="ipt_link_1"  id="ipt_link_1">
+						<a   style="margin-left: 30px; padding-top: 5px; width: 130px; height: 75px" class="btn btn-default btn-download clip"  data-clipboard-target="#ipt_link_1">
+							<label style="position: absolute; top: 25px; left: 30px"    >Copiar </label>
 						</a>
+						
+						
 					</div>
 				</div>
 			</div>
@@ -101,12 +98,10 @@
 
 					<div id="" class="wrap" style='text-align: right'>
 
-						<input type="email" style="max-width: 600px; height: 75px; display: inline" class="form-control subscription-form-control subscriber-email" placeholder="Link" name="srch-term" id="srch-term">
-						<a href="https://d2zav2bjdlctd5.cloudfront.net/theme_preview/lucy_pro/home.html#" style="margin-left: 30px; padding-top: 5px; width: 130px; height: 75px" class="btn btn-default btn-download">
-
-							<label style="position: absolute; top: 25px; left: 30px">Copiar </label>
+						<input  style="max-width: 600px; height: 75px; display: inline" class="form-control subscription-form-control subscriber-email" placeholder="Link" name="ipt_link_2" id="ipt_link_2">
+						<a  style="margin-left: 30px; padding-top: 5px; width: 130px; height: 75px" class="btn btn-default btn-download clip"  data-clipboard-target="#ipt_link_2" >
+							<label style="position: absolute; top: 25px; left: 30px"  >Copiar </label>
 						</a>
-
 
 					</div>
 				</div>
@@ -124,8 +119,8 @@
 	<section id="footer" class="block">
 		<div class="container text-center">
 			<div class="footer-logo">
-				<a class="logo" href="https://d2zav2bjdlctd5.cloudfront.net/theme_preview/lucy_pro/home.html">
-					<img src="./Logo-footer.png" alt="">
+				<a class="logo" href="">
+					<img src="${img}/Logo-footer.png" alt="">
 				</a>
 			</div>
 			<div class="copyright">
@@ -136,21 +131,16 @@
 		<!-- container -->
 	</section>
 
-	<a id="back-to-top" href="https://d2zav2bjdlctd5.cloudfront.net/theme_preview/lucy_pro/home.html#" class="btn btn-primary btn-lg back-to-top" role="button" title="" data-toggle="tooltip" data-placement="left" data-original-title="Click to return on the top page" style="display: block;">
-		<span class="glyphicon glyphicon-chevron-up"></span>
-	</a>
 
-	<script src="${js}/jquery.min.js"></script>
-	<script src="${js}/bootstrap.min.js"></script>
-	<script src="${js}/wow.min.js"></script>
-	<script src="${js}/owl.carousel.js"></script>
-	<script src="${js}/nivo-lightbox.min.js"></script>
-	<script src="${js}/smoothscroll.js"></script>
-	<script src="${js}/jquery.ajaxchimp.min.js"></script>
-	<script src="${js}/script.js"></script>
-	<script src="${js}/contact.js"></script>
-	<script src="${js}/jquery.easy-ticker.js"></script>
-	<script src="${js}/jquery.magnific-popup.js"></script>
+
+	
+	<script type="text/javascript" src="js/utilitario.js"></script>
+	<script type="text/javascript" src="js/campanhas_temp/thanks_campanha_lucy.js"></script>
+	<input id="sys_formatador" type="hidden">
+	<input id="ref_campanha" type="hidden">
+	<input id="ref_lead" type="hidden">
+
+	<div id="resources_html"></div>
 
 </body>
 </html>

@@ -363,8 +363,14 @@ public class HM_Campanha extends Campanha {
 			objRetorno.put("sub_titulo_2", rs.getString("sub_titulo_2") == null ? "" : rs.getString("sub_titulo_2"));
 			objRetorno.put("desc_titulo_2", rs.getString("desc_titulo_2") == null ? "" : rs.getString("desc_titulo_2"));
 
-		} else {
-			throw new Exception("Erro. Campanha inválida");
+		}else{
+			objRetorno.put("id_landpage", "");
+			objRetorno.put("desc_titulo_1", "");
+			objRetorno.put("desc_sub_titulo_1", "");
+			objRetorno.put("url_video", "");
+			objRetorno.put("desc_campanha", "");
+			objRetorno.put("sub_titulo_2", "");
+			objRetorno.put("desc_titulo_2", "");
 		}
 
 		return objRetorno;

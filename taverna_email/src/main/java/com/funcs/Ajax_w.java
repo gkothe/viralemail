@@ -54,6 +54,10 @@ public class Ajax_w {
 				Ajax_w.LoadCampanhabyRef(request, response, conn);
 			} else if (cmd.equalsIgnoreCase("sendLead")) {
 				Ajax_w.SendLead(request, response, conn);
+			} else if (cmd.equalsIgnoreCase("LoadLeadRefById")) {
+				Ajax_w.LoadLeadRefById(request, response, conn);
+			} else if (cmd.equalsIgnoreCase("sendEmailsTemplate2")) {
+				Ajax_w.sendEmailsTemplate2(request, response, conn);
 			}
 
 			conn.commit();
@@ -76,6 +80,52 @@ public class Ajax_w {
 			} catch (Exception ex) {
 			}
 		}
+	}
+
+	public static void sendEmailsTemplate2(HttpServletRequest request, HttpServletResponse response, Connection conn) throws Exception {
+		// Load camapnha landpage
+		PrintWriter out = response.getWriter();
+		JSONObject objRetorno = new JSONObject();
+
+		String idlead = request.getParameter("leadid") == null ? "" : request.getParameter("leadid");
+		String email_adress_1 = request.getParameter("email_adress_1") == null ? "" : request.getParameter("email_adress_1");
+		String email_adress_2 = request.getParameter("email_adress_2") == null ? "" : request.getParameter("email_adress_2");
+		String email_adress_3 = request.getParameter("email_adress_3") == null ? "" : request.getParameter("email_adress_3");
+
+		if (idlead.equalsIgnoreCase("")) {
+			throw new Exception("Link inválido.");
+		}
+
+		HM_CampanhaLeads leads = new HM_CampanhaLeads(conn);
+		leads.setIdLead(Long.parseLong(idlead));
+		leads.lista();
+		if (leads.next()) {
+
+			String texto = "Olá, <br>  Você foi convidado etc, cliqe aqui <a href='" + leads.getRsDescLinkReferal() + "'> AQUI </a> ";
+			String titulo = "Taverna email invite";
+			if (!email_adress_1.equalsIgnoreCase("")) {
+				Utilitario.sendEmail(email_adress_1, texto, titulo, conn);
+			}
+
+			if (!email_adress_2.equalsIgnoreCase("")) {
+				Utilitario.sendEmail(email_adress_2, texto, titulo, conn);
+			}
+
+			if (!email_adress_3.equalsIgnoreCase("")) {
+				Utilitario.sendEmail(email_adress_3, texto, titulo, conn);
+			}
+
+		}
+
+		else {
+			throw new Exception("Campanha inexistente.");
+		}
+		
+		objRetorno.put("msgok", "ok");
+		objRetorno.put("msg", "Emails enviados");
+		
+		out.print(objRetorno.toJSONString());
+
 	}
 
 	public static void validarConta(HttpServletRequest request, HttpServletResponse response) {
@@ -316,16 +366,44 @@ public class Ajax_w {
 
 			JSONObject land = camp.getLandPage();
 
-			objRetorno.put("landpage", land);
-			objRetorno.put("landpagefeatures", camp.getLandPageFeatures(Long.parseLong(land.get("id_landpage").toString())));
-			objRetorno.put("landpageImage", camp.getLandPageImages(Long.parseLong(land.get("id_landpage").toString())));
-
+			if (!land.get("id_landpage").toString().equalsIgnoreCase("")) {
+				objRetorno.put("landpage", land);
+				objRetorno.put("landpagefeatures", camp.getLandPageFeatures(Long.parseLong(land.get("id_landpage").toString())));
+				objRetorno.put("landpageImage", camp.getLandPageImages(Long.parseLong(land.get("id_landpage").toString())));
+			} else {
+				objRetorno.put("landpage", "");
+				objRetorno.put("landpagefeatures", "");
+				objRetorno.put("landpageImage", "");
+			}
 			objRetorno.put("msgok", "ok");
 
 		} else {
 			throw new Exception("Campanha inexistente.");
 		}
 
+		out.print(objRetorno.toJSONString());
+
+	}
+
+	public static void LoadLeadRefById(HttpServletRequest request, HttpServletResponse response, Connection conn) throws Exception {
+		// Load camapnha landpage
+		PrintWriter out = response.getWriter();
+		JSONObject objRetorno = new JSONObject();
+		JSONObject param = Utilitario.getJsonFromRequest(request, response);
+		HM_CampanhaLeads camp = new HM_CampanhaLeads(conn);
+
+		if (param.get("l").toString().equalsIgnoreCase("")) {
+			throw new Exception("Link inválido.");
+		}
+
+		camp.setIdLead(Long.parseLong(param.get("l").toString()));
+		camp.lista();
+		if (camp.next()) {
+			objRetorno.put("link", camp.getRsDescLinkReferal());
+		} else {
+			throw new Exception("Link inválido.");
+		}
+		objRetorno.put("msgok", "ok");
 		out.print(objRetorno.toJSONString());
 
 	}
@@ -354,7 +432,12 @@ public class Ajax_w {
 		if (rs.next()) {
 
 			String lead = param.get("lead").toString();
-			String l_ref = param.get("lerf") == null ? "" : param.get("lerf").toString();
+
+			if (lead.equalsIgnoreCase("")) {
+				throw new Exception("Você deve inserir um email.");
+			}
+
+			String l_ref = param.get("lref") == null ? "" : param.get("lref").toString();
 
 			if (!l_ref.equalsIgnoreCase("")) {
 				if (!Utilitario.isNumeric(l_ref)) {
@@ -378,7 +461,7 @@ public class Ajax_w {
 
 			clead = new HM_CampanhaLeads(conn);
 			clead.setIdLead(id_lead);
-			clead.setDescLinkReferal(sys.getUrl_system() + "campanha?ref=" + param.get("ref").toString() + "&l=" + id_lead);
+			clead.setDescLinkReferal(sys.getUrl_system() + "campanha?acao=camp&ref=" + param.get("ref").toString() + "&l=" + id_lead);
 			if (!l_ref.equalsIgnoreCase("")) {
 				clead.setIdLeadReferencia((Long.parseLong(l_ref)));
 			}
@@ -423,9 +506,9 @@ public class Ajax_w {
 			}
 
 			objRetorno.put("ref", linkref);
-
 			objRetorno.put("msgok", "ok");
 			objRetorno.put("msg", "Seu link de referencia é " + linkref);
+			objRetorno.put("link_para", "campanha?acao=thanks&ref=" + param.get("ref").toString() + "&l=" + id_lead);
 
 		} else {
 			throw new Exception("Campanha inexistente.");

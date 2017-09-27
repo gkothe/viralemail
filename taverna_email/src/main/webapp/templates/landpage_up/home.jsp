@@ -5,6 +5,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<link rel="import" href="resources.html">
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>LandPAge.</title>
@@ -35,13 +36,13 @@
 							<div class="x-container max width" style="margin: 0px auto;padding: 0px;">
 								<div class="x-column x-sm cs-ta-center x-1-1" style="padding: 0px;">
 									<div class="x-raw-content">
-										<form name="upviralForm15501" id="" method="post" action="">
+										<form >
 											<div style="width: 100%;">
 												<div class="form-group uv_half1">
-													<input type="text" name="email" placeholder="Email Address" class="form-control inpEmail" value="">
+													<input  id="mail_lead"   type="text" name="email" placeholder="Email Address" class="form-control inpEmail" value="">
 												</div>
 												<div class="form-group uv_half2">
-													<input type="submit" name="upviralsubmit" value="Join for free" class="btnUpViralSubmit">
+													<input   id="enviar_email"  value="Join for free" class="btnUpViralSubmit">
 												</div>
 											</div>
 										</form>
@@ -101,11 +102,9 @@
 													email automations
 												</div>
 
-
 												<div class="mppointsL">
 													funnels
 												</div>
-
 
 												<div class="mppointsL">
 													a/b testing
@@ -144,22 +143,19 @@
 						<div id="x-section-5" class="x-section" style="margin: 0px;padding: 10px 0px 45px; background-color: transparent;">
 							<div class="x-container max width" style="margin: 0px auto;padding: 0px;">
 								<div class="x-column x-sm cs-ta-center x-1-1" style="padding: 0px;">
-									<h3 class="h-custom-headline h3"><span>Meet Victor!</span></h3><img style="height: 150px" class="x-img x-img-none" src="img/victor.jpg">
+									<h3 class="h-custom-headline h3"><span>Meet Victor!</span></h3><img style="height: 150px" class="x-img x-img-none" src="${img}/victor.jpg">
 									<div class="x-text font-20">
 										<p>Hey there! Iâm Wilco de Kreij, an online entrepreneur from the Netherlands. Over the last Â± 15 years Iâve launched
 											and sold various businesses successfully. Iâm super passionate about everything thatâs marketing related. Yep,
 											I get excited over things like automations, split-tests, funnels, which makes me a bit of a geekâ¦ but in a good
-											way, haha <img draggable="false" class="emoji" alt="ð" src="./upvral_complete_files/1f642.svg"></p>
+											way, haha </p>
 										<p>Iâm currently focused on <a href="http://upviral.com/" target="_blank">UpViral</a> &amp; <a href="http://connectio.io/"
 											 target="_blank">Connectio</a>, two software companies I own. In case you want to know more about me, have a look
-											at <a href="https://www.youtube.com/watch?v=R3TZfr6jPyE" target="_blank">this video</a>.</p>
+											at <a href="" target="_blank">this video</a>.</p>
 									</div>
 								</div>
 							</div>
-							<div class="x-container max width" style="margin: 0px auto;padding: 0px;">
-								<div class="x-column x-sm cs-ta-right textcenter_mobile x-1-2" style="padding: 0px;"><a class="x-img x-img-link x-img-none" href="http://upviral.com/" target="_blank" data-options="thumbnail: &#39;http://epicmarketingcontent.com/wp-content/uploads/2016/08/upviral_logo.png&#39;"><img src="./upvral_complete_files/upviral_logo.png"></a></div>
-								<div class="x-column x-sm cs-ta-left textcenter_mobile x-1-2" style="padding: 0px;"><a class="x-img x-img-link x-img-none" href="http://connectio.io/" target="_blank" data-options="thumbnail: &#39;http://epicmarketingcontent.com/wp-content/uploads/2016/08/connectio_logo.png&#39;"><img src="./upvral_complete_files/connectio_logo.png"></a></div>
-							</div>
+							
 						</div>
 						<div id="x-section-6" class="x-section bg-image" style="margin: 0px;padding: 10px 0px; background-image: url(http://epicmarketingcontent.com/wp-content/uploads/2016/08/optin_bg.jpg); background-color: transparent;"
 						 data-x-element="section" data-x-params="{&quot;type&quot;:&quot;image&quot;,&quot;parallax&quot;:false}">
@@ -173,21 +169,13 @@
 delivered to their inbox for free.</span></p>
 									</div>
 									<div class="x-raw-content">
-										<form name="upviralForm15501" id="" method="post" action="https://app.upviral.com/site/parse_new_users/call/ajax/campId/15501/reflink/J5140237">
+										<form >
 											<div style="width: 100%;">
 												<div class="form-group uv_half1">
-													<input type="text" name="email" placeholder="Email Address" class="form-control inpEmail noborder noshadow" value="">
+													<input type="text" id="mail_lead2" placeholder="Email Address" class="form-control inpEmail noborder noshadow" value="">
 												</div>
 												<div class="form-group uv_half2">
-													<input type="submit" name="upviralsubmit" value="Join for free" class="btnUpViralSubmit noshadow">
-													<div class="messenger_div">
-														<div class="fb-messenger-checkbox fb_iframe_widget" origin="http://epicmarketingcontent.com/?ref_id=J5140237" page_id="214881791856831" messenger_app_id="489928538064028" user_ref="519237" prechecked="true" allow_login="true" size="large" fb-xfbml-state="rendered"
-															fb-iframe-plugin-query="allow_login=true&amp;app_id=489928538064028&amp;container_width=456&amp;locale=en_US&amp;messenger_app_id=489928538064028&amp;origin=http%3A%2F%2Fepicmarketingcontent.com%2F%3Fref_id%3DJ5140237&amp;page_id=214881791856831&amp;prechecked=true&amp;sdk=joey&amp;size=large&amp;user_ref=519237">
-															<span style="vertical-align: top; width: 0px; height: 0px; overflow: hidden;">
-																<iframe name="f21df7ce11ecdf8" width="1000px" height="1000px" frameborder="0" allowtransparency="true" allowfullscreen="true" scrolling="no" title="fb:messenger_checkbox Facebook Social Plugin" src="./upvral_complete_files/messenger_checkbox(1).html" style="border: none; visibility: visible; width: 0px; height: 0px;"></iframe>
-															</span>
-														</div>
-													</div>
+													<input   id="enviar_email2" value="Join for free" class="btnUpViralSubmit noshadow">
 													
 												</div>
 											</div>
@@ -214,18 +202,19 @@ delivered to their inbox for free.</span></p>
 							</div>
 						</div>
 					</div>
-
-
 				</div>
-
 			</article>
-
-
 		</div>
-
-
 	</div>
 	<!-- END #top.site -->
+
+	<script type="text/javascript" src="js/utilitario.js"></script>
+	<script type="text/javascript" src="js/campanhas_temp/open_campanha_up.js"></script>
+	<input id="sys_formatador" type="hidden">
+	<input id="ref_campanha" type="hidden">
+	<input id="ref_lead" type="hidden">
+	<input id="leadid" type="hidden">
+	<div id="resources_html"></div>
 
 </body>
 

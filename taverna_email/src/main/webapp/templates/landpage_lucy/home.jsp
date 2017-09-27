@@ -3,28 +3,18 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ page isELIgnored="false"%>
 <!DOCTYPE html>
-<!-- saved from url=(0070)https://d2zav2bjdlctd5.cloudfront.net/theme_preview/lucy_pro/home.html -->
-<html lang="en" class=" js ">
+
+<html">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="import" href="resources.html">
 <title>${title}</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<!--favicon-->
-<link rel="shortcut icon" href="https://d2zav2bjdlctd5.cloudfront.net/theme_preview/lucy_pro/img/favicon.ico" type="image/x-icon">
-<link rel="icon" href="https://d2zav2bjdlctd5.cloudfront.net/theme_preview/lucy_pro/img/favicon.ico" type="image/x-icon">
-<!-- Stylesheets -->
-<link rel="stylesheet" type="text/css" href="${css}/bootstrap.min.css">
+
 <link rel="stylesheet" type="text/css" href="${css}/ionicons.min.css">
-<link rel="stylesheet" type="text/css" href="${css}/owl.carousel.css">
-<link rel="stylesheet" type="text/css" href="${css}/owl.theme.css">
-<link rel="stylesheet" type="text/css" href="${css}/nivo-lightbox.css">
-<link rel="stylesheet" type="text/css" href="${css}/nivo-lightbox-theme.css">
-<link rel="stylesheet" type="text/css" href="${css}/magnific-popup.css">
 <link rel="stylesheet" type="text/css" href="${css}/animate.css">
 <link rel="stylesheet" type="text/css" href="${css}/style.css">
-<link rel="stylesheet" type="text/css" href="${css}/custom.css">
 <link href="${css}/googlefonts.css" rel="stylesheet" type="text/css">
-
 
 </head>
 <body id="home">
@@ -80,8 +70,8 @@
 
 							<div id="" class="wrap" style='text-align: right'>
 
-								<input type="email" style="max-width: 600px; height: 75px; display: inline" class="form-control subscription-form-control subscriber-email" placeholder="Email" name="srch-term" id="srch-term">
-								<a href="https://d2zav2bjdlctd5.cloudfront.net/theme_preview/lucy_pro/home.html#" style="margin-left: 30px; padding-top: 5px; width: 130px; height: 75px" class="btn btn-default btn-download">
+								<input type="email" style="max-width: 600px; height: 75px; display: inline" class="form-control subscription-form-control subscriber-email" placeholder="Email" id="mail_lead">
+								<a id="enviar_email" style="margin-left: 30px; padding-top: 5px; width: 130px; height: 75px" class="btn btn-default btn-download">
 									<label style="position: absolute; top: 25px; left: 20px">Enviar </label>
 									<i class="ion-ios-arrow-thin-right icon-margin" style="position: absolute; top: 17px; left: 100x; font-size: 30px; margin-left: 25px;"></i>
 								</a>
@@ -257,8 +247,6 @@
 	</section>
 
 
-
-
 	<section id="subscribe" style="background-image: url('${img}/wp1822726.jpg');" st>
 		<div class="container">
 
@@ -275,8 +263,8 @@
 
 							<div id="" class="wrap" style='text-align: right'>
 
-								<input type="email" style="max-width: 600px; height: 75px; display: inline" class="form-control subscription-form-control subscriber-email" placeholder="Email" name="srch-term" id="srch-term">
-								<a href="https://d2zav2bjdlctd5.cloudfront.net/theme_preview/lucy_pro/home.html#" style="margin-left: 30px; padding-top: 5px; width: 130px; height: 75px" class="btn btn-default btn-download">
+								<input type="email" style="max-width: 600px; height: 75px; display: inline" class="form-control subscription-form-control subscriber-email" placeholder="Email" name="" id="mail_lead2">
+								<a id="enviar_email2" style="margin-left: 30px; padding-top: 5px; width: 130px; height: 75px" class="btn btn-default btn-download">
 									<label style="position: absolute; top: 25px; left: 20px">Enviar </label>
 									<i class="ion-ios-arrow-thin-right icon-margin" style="position: absolute; top: 17px; left: 100x; font-size: 30px; margin-left: 25px;"></i>
 								</a>
@@ -305,7 +293,7 @@
 	<section id="footer" class="block">
 		<div class="container text-center">
 			<div class="footer-logo">
-				<a class="logo" href="https://d2zav2bjdlctd5.cloudfront.net/theme_preview/lucy_pro/home.html">
+				<a class="logo" href="">
 					<img src="${img}/Logo-footer.png" alt="">
 				</a>
 			</div>
@@ -317,23 +305,14 @@
 		<!-- container -->
 	</section>
 
-	<a id="back-to-top" href="https://d2zav2bjdlctd5.cloudfront.net/theme_preview/lucy_pro/home.html#" class="btn btn-primary btn-lg back-to-top" role="button" title="" data-toggle="tooltip" data-placement="left" data-original-title="Click to return on the top page" style="display: block;">
-		<span class="glyphicon glyphicon-chevron-up"></span>
-	</a>
 
+	<script type="text/javascript" src="js/utilitario.js"></script>
+	<script type="text/javascript" src="js/campanhas_temp/open_campanha_lucy.js"></script>
+	<input id="sys_formatador" type="hidden">
+	<input id="ref_campanha" type="hidden">
+	<input id="ref_lead" type="hidden">
 
-	<script src="${js}/jquery.min.js"></script>
-	<script src="${js}/bootstrap.min.js"></script>
-	<script src="${js}/wow.min.js"></script>
-	<script src="${js}/owl.carousel.js"></script>
-	<script src="${js}/nivo-lightbox.min.js"></script>
-	<script src="${js}/smoothscroll.js"></script>
-	<script src="${js}/jquery.ajaxchimp.min.js"></script>
-	<script src="${js}/script.js"></script>
-	<script src="${js}/contact.js"></script>
-	<script src="${js}/jquery.easy-ticker.js"></script>
-	<script src="${js}/jquery.magnific-popup.js"></script>
-
+	<div id="resources_html"></div>
 
 </body>
 </html>

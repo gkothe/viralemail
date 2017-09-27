@@ -44,26 +44,25 @@ public class LeadController extends javax.servlet.http.HttpServlet {
 
 			String id = request.getParameter("ref");
 			String ac = request.getParameter("acao") == null ? "" : request.getParameter("acao");
-			
 
-			if (id == null) {
-				erroPage(request, response);
-			} else if (ac.equalsIgnoreCase("ajax_w")) {
+			if (ac.equalsIgnoreCase("ajax_w")) {
 				Ajax_w.ajax_w(request, response);
+			} else if (id == null) {
+				erroPage(request, response);
 			} else if (ac.equalsIgnoreCase("camp")) {
-				if(id.equalsIgnoreCase("3")){
+				if (id.equalsIgnoreCase("3")) {
 					abreCampanha_id3(request, response);
-				}else if(id.equalsIgnoreCase("4")){
+				} else if (id.equalsIgnoreCase("4")) {
 					abreCampanha_id4(request, response);
 				}
 			} else if (ac.equalsIgnoreCase("thanks")) {
-				if(id.equalsIgnoreCase("3")){
+				if (id.equalsIgnoreCase("3")) {
 					thanksCampanha_id3(request, response);
-				}else if(id.equalsIgnoreCase("4")){
+				} else if (id.equalsIgnoreCase("4")) {
 					thanksCampanha_id4(request, response);
 				}
-			}else{
-				abreCampanha(request, response);
+			} else {
+//				abreCampanha(request, response);
 			}
 
 		} catch (Exception ex) {
@@ -95,7 +94,6 @@ public class LeadController extends javax.servlet.http.HttpServlet {
 		}
 	}
 
-	
 	private void abreCampanha_id3(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		try {
 			request.setAttribute("css", "templates/landpage_lucy/fcss");
@@ -108,7 +106,7 @@ public class LeadController extends javax.servlet.http.HttpServlet {
 		} finally {
 		}
 	}
-	
+
 	private void thanksCampanha_id3(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		try {
 			request.setAttribute("css", "templates/landpage_lucy/fcss");
@@ -121,8 +119,7 @@ public class LeadController extends javax.servlet.http.HttpServlet {
 		} finally {
 		}
 	}
-	
-	
+
 	private void abreCampanha_id4(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		try {
 			request.setAttribute("css", "templates/landpage_up/css");
@@ -136,7 +133,7 @@ public class LeadController extends javax.servlet.http.HttpServlet {
 		} finally {
 		}
 	}
-	
+
 	private void thanksCampanha_id4(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		try {
 			request.setAttribute("css", "templates/landpage_up/css");
