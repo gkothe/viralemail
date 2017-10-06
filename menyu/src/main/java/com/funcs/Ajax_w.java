@@ -70,8 +70,8 @@ public class Ajax_w {
 				}
 			} else if (cmd.equalsIgnoreCase("cadastro")) {
 				inserirUser(request, response, conn, sys);
-			}else if (cmd.equalsIgnoreCase("rec_senha")) {
-				//inserirUser(request, response, conn, sys);
+			} else if (cmd.equalsIgnoreCase("recsenha")) {
+				recSenha(request, response, conn, sys);
 			}
 
 			conn.commit();
@@ -94,6 +94,32 @@ public class Ajax_w {
 			} catch (Exception ex) {
 			}
 		}
+	}
+
+	private static void recSenha(HttpServletRequest request, HttpServletResponse response, Connection conn, HM_SysParametros sys) throws Exception {
+
+		PrintWriter out = response.getWriter();
+		JSONObject objRetorno = new JSONObject();
+		String desc_email = request.getParameter("c_email") == null ? "" : request.getParameter("c_email");
+
+		if (desc_email.equalsIgnoreCase("")) {
+			throw new Exception("Você deve preencher o campo de email.");
+		}
+
+		PreparedStatement st = conn.prepareStatement("select * from  usuario where  Binary desc_email =  ? ");
+		st.setString(1, desc_email);
+		ResultSet rs = st.executeQuery();
+
+		if (rs.next()) {
+			String texto = " Olá,<br> Conforme solicitado, seguem abaixo seus dados de usuário:<br> Usuário: " + rs.getString("desc_user") + " <br> Senha: " + rs.getString("desc_senha");
+			Utilitario.sendEmail(desc_email, texto, "Menyu" + " - Recuperação de usuario e senha", conn);
+			objRetorno.put("msg", "ok");
+		} else {
+			throw new Exception("E-mail não encontrado.");
+		}
+		
+		out.print(objRetorno.toJSONString());
+
 	}
 
 	private static void inserirUser(HttpServletRequest request, HttpServletResponse response, Connection conn, HM_SysParametros sys) throws Exception {

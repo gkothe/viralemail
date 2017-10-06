@@ -249,8 +249,6 @@ public class MobileLogin {
 	private static JSONObject cadastrausuario(HttpServletRequest request, HttpServletResponse response, String tokentest, Connection conn, HM_SysParametros sys) throws Exception {
 		JSONObject objjson = new JSONObject();
 
-		
-
 		String url = "https://graph.facebook.com/me?fields=name,id,email&access_token=" + tokentest;
 		URL obj = new URL(url);
 		HttpURLConnection con = (HttpURLConnection) obj.openConnection();

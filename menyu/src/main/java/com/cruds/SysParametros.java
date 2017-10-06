@@ -65,6 +65,27 @@ public class SysParametros {
 	private String UrlWebsocket;
 	private String rsUrlWebsocket;
 	private boolean nullUrlWebsocket = false;
+	private String SysHostNameSmtp;
+	private String rsSysHostNameSmtp;
+	private boolean nullSysHostNameSmtp = false;
+	private Integer SysSmtpPort;
+	private Integer rsSysSmtpPort;
+	private boolean nullSysSmtpPort = false;
+	private String SysEmail;
+	private String rsSysEmail;
+	private boolean nullSysEmail = false;
+	private String SysSenha;
+	private String rsSysSenha;
+	private boolean nullSysSenha = false;
+	private String SysFromemail;
+	private String rsSysFromemail;
+	private boolean nullSysFromemail = false;
+	private String SysFromdesc;
+	private String rsSysFromdesc;
+	private boolean nullSysFromdesc = false;
+	private String SysTls;
+	private String rsSysTls;
+	private boolean nullSysTls = false;
 
 	public PreparedStatement getSt() {
 		return st;
@@ -458,6 +479,174 @@ public class SysParametros {
 		this.nullUrlWebsocket = var;
 	}
 
+	public String getSysHostNameSmtp() {
+		return SysHostNameSmtp;
+	}
+
+	public void setSysHostNameSmtp(String var) {
+		this.SysHostNameSmtp = var;
+	}
+
+	public String getRsSysHostNameSmtp() {
+		return rsSysHostNameSmtp;
+	}
+
+	public void setRsSysHostNameSmtp(String var) {
+		this.rsSysHostNameSmtp = var;
+	}
+
+	public boolean getNullSysHostNameSmtp() {
+		return nullSysHostNameSmtp;
+	}
+
+	public void setNullSysHostNameSmtp(boolean var) {
+		this.nullSysHostNameSmtp = var;
+	}
+
+	public Integer getSysSmtpPort() {
+		return SysSmtpPort;
+	}
+
+	public void setSysSmtpPort(Integer var) {
+		this.SysSmtpPort = var;
+	}
+
+	public Integer getRsSysSmtpPort() {
+		return rsSysSmtpPort;
+	}
+
+	public void setRsSysSmtpPort(Integer var) {
+		this.rsSysSmtpPort = var;
+	}
+
+	public boolean getNullSysSmtpPort() {
+		return nullSysSmtpPort;
+	}
+
+	public void setNullSysSmtpPort(boolean var) {
+		this.nullSysSmtpPort = var;
+	}
+
+	public String getSysEmail() {
+		return SysEmail;
+	}
+
+	public void setSysEmail(String var) {
+		this.SysEmail = var;
+	}
+
+	public String getRsSysEmail() {
+		return rsSysEmail;
+	}
+
+	public void setRsSysEmail(String var) {
+		this.rsSysEmail = var;
+	}
+
+	public boolean getNullSysEmail() {
+		return nullSysEmail;
+	}
+
+	public void setNullSysEmail(boolean var) {
+		this.nullSysEmail = var;
+	}
+
+	public String getSysSenha() {
+		return SysSenha;
+	}
+
+	public void setSysSenha(String var) {
+		this.SysSenha = var;
+	}
+
+	public String getRsSysSenha() {
+		return rsSysSenha;
+	}
+
+	public void setRsSysSenha(String var) {
+		this.rsSysSenha = var;
+	}
+
+	public boolean getNullSysSenha() {
+		return nullSysSenha;
+	}
+
+	public void setNullSysSenha(boolean var) {
+		this.nullSysSenha = var;
+	}
+
+	public String getSysFromemail() {
+		return SysFromemail;
+	}
+
+	public void setSysFromemail(String var) {
+		this.SysFromemail = var;
+	}
+
+	public String getRsSysFromemail() {
+		return rsSysFromemail;
+	}
+
+	public void setRsSysFromemail(String var) {
+		this.rsSysFromemail = var;
+	}
+
+	public boolean getNullSysFromemail() {
+		return nullSysFromemail;
+	}
+
+	public void setNullSysFromemail(boolean var) {
+		this.nullSysFromemail = var;
+	}
+
+	public String getSysFromdesc() {
+		return SysFromdesc;
+	}
+
+	public void setSysFromdesc(String var) {
+		this.SysFromdesc = var;
+	}
+
+	public String getRsSysFromdesc() {
+		return rsSysFromdesc;
+	}
+
+	public void setRsSysFromdesc(String var) {
+		this.rsSysFromdesc = var;
+	}
+
+	public boolean getNullSysFromdesc() {
+		return nullSysFromdesc;
+	}
+
+	public void setNullSysFromdesc(boolean var) {
+		this.nullSysFromdesc = var;
+	}
+
+	public String getSysTls() {
+		return SysTls;
+	}
+
+	public void setSysTls(String var) {
+		this.SysTls = var;
+	}
+
+	public String getRsSysTls() {
+		return rsSysTls;
+	}
+
+	public void setRsSysTls(String var) {
+		this.rsSysTls = var;
+	}
+
+	public boolean getNullSysTls() {
+		return nullSysTls;
+	}
+
+	public void setNullSysTls(boolean var) {
+		this.nullSysTls = var;
+	}
+
 	public void posicionaRs() throws Exception {
 		if (getSelect() == null) {
 			try {
@@ -530,6 +719,41 @@ public class SysParametros {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+			try {
+				rsSysHostNameSmtp = rs.getString("sys_host_name_smtp");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			try {
+				rsSysSmtpPort = rs.getInt("sys_smtp_port");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			try {
+				rsSysEmail = rs.getString("sys_email");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			try {
+				rsSysSenha = rs.getString("sys_senha");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			try {
+				rsSysFromemail = rs.getString("sys_fromemail");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			try {
+				rsSysFromdesc = rs.getString("sys_fromdesc");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			try {
+				rsSysTls = rs.getString("sys_tls");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -563,6 +787,13 @@ public class SysParametros {
 		rsDescWebappfolder = null;
 		rsFaceRedirectUriWebapp = null;
 		rsUrlWebsocket = null;
+		rsSysHostNameSmtp = null;
+		rsSysSmtpPort = null;
+		rsSysEmail = null;
+		rsSysSenha = null;
+		rsSysFromemail = null;
+		rsSysFromdesc = null;
+		rsSysTls = null;
 	}
 
 	public ResultSet lista() throws Exception {
@@ -618,6 +849,27 @@ public class SysParametros {
 		}
 		if (getUrlWebsocket() != null) {
 			sql.append(" and sys_parametros .url_websocket = ? ");
+		}
+		if (getSysHostNameSmtp() != null) {
+			sql.append(" and sys_parametros .sys_host_name_smtp = ? ");
+		}
+		if (getSysSmtpPort() != null) {
+			sql.append(" and sys_parametros .sys_smtp_port = ? ");
+		}
+		if (getSysEmail() != null) {
+			sql.append(" and sys_parametros .sys_email = ? ");
+		}
+		if (getSysSenha() != null) {
+			sql.append(" and sys_parametros .sys_senha = ? ");
+		}
+		if (getSysFromemail() != null) {
+			sql.append(" and sys_parametros .sys_fromemail = ? ");
+		}
+		if (getSysFromdesc() != null) {
+			sql.append(" and sys_parametros .sys_fromdesc = ? ");
+		}
+		if (getSysTls() != null) {
+			sql.append(" and sys_parametros .sys_tls = ? ");
 		}
 		if (getWhere() != null) {
 			sql.append(" and " + getWhere() + " ");
@@ -681,6 +933,34 @@ public class SysParametros {
 		}
 		if (getUrlWebsocket() != null) {
 			st.setString(contparam, getUrlWebsocket());
+			contparam++;
+		}
+		if (getSysHostNameSmtp() != null) {
+			st.setString(contparam, getSysHostNameSmtp());
+			contparam++;
+		}
+		if (getSysSmtpPort() != null) {
+			st.setInt(contparam, getSysSmtpPort());
+			contparam++;
+		}
+		if (getSysEmail() != null) {
+			st.setString(contparam, getSysEmail());
+			contparam++;
+		}
+		if (getSysSenha() != null) {
+			st.setString(contparam, getSysSenha());
+			contparam++;
+		}
+		if (getSysFromemail() != null) {
+			st.setString(contparam, getSysFromemail());
+			contparam++;
+		}
+		if (getSysFromdesc() != null) {
+			st.setString(contparam, getSysFromdesc());
+			contparam++;
+		}
+		if (getSysTls() != null) {
+			st.setString(contparam, getSysTls());
 			contparam++;
 		}
 		rs = st.executeQuery();
@@ -771,6 +1051,48 @@ public class SysParametros {
 		if (getNullUrlWebsocket()) {
 			sql.append(" ,  url_websocket = null ");
 		}
+		if (getSysHostNameSmtp() != null) {
+			sql.append(" ,  sys_host_name_smtp = ? ");
+		}
+		if (getNullSysHostNameSmtp()) {
+			sql.append(" ,  sys_host_name_smtp = null ");
+		}
+		if (getSysSmtpPort() != null) {
+			sql.append(" ,  sys_smtp_port = ? ");
+		}
+		if (getNullSysSmtpPort()) {
+			sql.append(" ,  sys_smtp_port = null ");
+		}
+		if (getSysEmail() != null) {
+			sql.append(" ,  sys_email = ? ");
+		}
+		if (getNullSysEmail()) {
+			sql.append(" ,  sys_email = null ");
+		}
+		if (getSysSenha() != null) {
+			sql.append(" ,  sys_senha = ? ");
+		}
+		if (getNullSysSenha()) {
+			sql.append(" ,  sys_senha = null ");
+		}
+		if (getSysFromemail() != null) {
+			sql.append(" ,  sys_fromemail = ? ");
+		}
+		if (getNullSysFromemail()) {
+			sql.append(" ,  sys_fromemail = null ");
+		}
+		if (getSysFromdesc() != null) {
+			sql.append(" ,  sys_fromdesc = ? ");
+		}
+		if (getNullSysFromdesc()) {
+			sql.append(" ,  sys_fromdesc = null ");
+		}
+		if (getSysTls() != null) {
+			sql.append(" ,  sys_tls = ? ");
+		}
+		if (getNullSysTls()) {
+			sql.append(" ,  sys_tls = null ");
+		}
 		sql.append(" where id_parametro =  " + getIdParametro() + "  ");
 		if (getWhere() != null) {
 			sql.append(" and " + getWhere() + " ");
@@ -827,6 +1149,34 @@ public class SysParametros {
 		}
 		if (getUrlWebsocket() != null) {
 			st.setString(contparam, getUrlWebsocket());
+			contparam++;
+		}
+		if (getSysHostNameSmtp() != null) {
+			st.setString(contparam, getSysHostNameSmtp());
+			contparam++;
+		}
+		if (getSysSmtpPort() != null) {
+			st.setInt(contparam, getSysSmtpPort());
+			contparam++;
+		}
+		if (getSysEmail() != null) {
+			st.setString(contparam, getSysEmail());
+			contparam++;
+		}
+		if (getSysSenha() != null) {
+			st.setString(contparam, getSysSenha());
+			contparam++;
+		}
+		if (getSysFromemail() != null) {
+			st.setString(contparam, getSysFromemail());
+			contparam++;
+		}
+		if (getSysFromdesc() != null) {
+			st.setString(contparam, getSysFromdesc());
+			contparam++;
+		}
+		if (getSysTls() != null) {
+			st.setString(contparam, getSysTls());
 			contparam++;
 		}
 		st.executeUpdate();
@@ -897,6 +1247,34 @@ public class SysParametros {
 			sql.append(" , url_websocket ");
 			values.append(", ? ");
 		}
+		if (getSysHostNameSmtp() != null) {
+			sql.append(" , sys_host_name_smtp ");
+			values.append(", ? ");
+		}
+		if (getSysSmtpPort() != null) {
+			sql.append(" , sys_smtp_port ");
+			values.append(", ? ");
+		}
+		if (getSysEmail() != null) {
+			sql.append(" , sys_email ");
+			values.append(", ? ");
+		}
+		if (getSysSenha() != null) {
+			sql.append(" , sys_senha ");
+			values.append(", ? ");
+		}
+		if (getSysFromemail() != null) {
+			sql.append(" , sys_fromemail ");
+			values.append(", ? ");
+		}
+		if (getSysFromdesc() != null) {
+			sql.append(" , sys_fromdesc ");
+			values.append(", ? ");
+		}
+		if (getSysTls() != null) {
+			sql.append(" , sys_tls ");
+			values.append(", ? ");
+		}
 		sql.append(" ) ");
 		values.append(" ) ");
 		sql.append(values.toString());
@@ -955,6 +1333,34 @@ public class SysParametros {
 		}
 		if (getUrlWebsocket() != null) {
 			st.setString(contparam, getUrlWebsocket());
+			contparam++;
+		}
+		if (getSysHostNameSmtp() != null) {
+			st.setString(contparam, getSysHostNameSmtp());
+			contparam++;
+		}
+		if (getSysSmtpPort() != null) {
+			st.setInt(contparam, getSysSmtpPort());
+			contparam++;
+		}
+		if (getSysEmail() != null) {
+			st.setString(contparam, getSysEmail());
+			contparam++;
+		}
+		if (getSysSenha() != null) {
+			st.setString(contparam, getSysSenha());
+			contparam++;
+		}
+		if (getSysFromemail() != null) {
+			st.setString(contparam, getSysFromemail());
+			contparam++;
+		}
+		if (getSysFromdesc() != null) {
+			st.setString(contparam, getSysFromdesc());
+			contparam++;
+		}
+		if (getSysTls() != null) {
+			st.setString(contparam, getSysTls());
 			contparam++;
 		}
 		if (st.executeUpdate() == 1) {

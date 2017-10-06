@@ -24,10 +24,13 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.mail.DefaultAuthenticator;
+import org.apache.commons.mail.HtmlEmail;
 import org.json.simple.JSONObject;
 
 import com.auth0.jwt.internal.org.apache.commons.codec.binary.Base64;
 import com.configs.Conexao;
+import com.cruds.HM_SysParametros;
 
 public class Utilitario {
 
@@ -44,6 +47,28 @@ public class Utilitario {
 
 	}
 
+	public static void sendEmail(String para, String html, String subject, Connection conn) throws Exception {
+		HM_SysParametros sys = new HM_SysParametros(conn, 1);
+		String rodape = "<br><br> Equipe Menyu ";
+		rodape = rodape + " " + sys.getSysFromemail() + " <br>";
+
+		System.setProperty("mail.mime.charset", "UTF-8");
+
+		HtmlEmail mailService = new HtmlEmail();
+		mailService.setHostName(sys.getRsSysHostNameSmtp());
+		mailService.setSmtpPort(sys.getRsSysSmtpPort());
+		mailService.setAuthenticator(new DefaultAuthenticator(sys.getRsSysEmail(), sys.getRsSysSenha()));
+		mailService.setFrom(sys.getRsSysFromemail(), sys.getRsSysFromdesc());
+		mailService.setStartTLSEnabled(sys.getRsSysTls().equalsIgnoreCase("S") ? true : false);
+		mailService.setSubject(subject);
+		mailService.setHtmlMsg(html + rodape);
+		mailService.addTo(para);
+		mailService.setCharset("utf-8");
+		mailService.send();
+
+		System.out.println("Email sent:" + new Date());
+	}
+
 	public static boolean isNumeric(String str) {
 		try {
 			double d = Double.parseDouble(str);
@@ -52,8 +77,6 @@ public class Utilitario {
 		}
 		return true;
 	}
-
-
 
 	public static String StringGen(int a, int b) {
 		SecureRandom random = new SecureRandom();
@@ -345,10 +368,10 @@ public class Utilitario {
 		return id;
 	}
 
-	
-	public void ex(String exception)throws Exception{
+	public void ex(String exception) throws Exception {
 		throw new Exception(exception);
 	}
+
 	public static int retornaIdinsertChaveSecundaria(String tabela, String nomechaveprimaria, String valchaveprimaria, String coluna, Connection conn) throws Exception {
 		String varname1 = "";
 		// so funciona para pk single
@@ -375,7 +398,7 @@ public class Utilitario {
 
 		return id;
 	}
-	
+
 	public static String encodeFileToBase64Binary(String pathfile) throws Exception {
 		File file = new File(pathfile);
 		String encodedfile = null;
@@ -393,16 +416,16 @@ public class Utilitario {
 	public static NumberFormat df3 = new DecimalFormat("#,###,##0.0", dfs);
 
 	public static void main(String[] args) {
-		 Connection conn = null;
+		Connection conn = null;
 
 		try {
 			conn = Conexao.getConexao();
-//			sendEmail("12312@asd.com", "oi","oi", conn);
-			
+			// sendEmail("12312@asd.com", "oi","oi", conn);
+
 		} catch (Exception e) {
 			System.out.println(e);
 			try {
-				 conn.close();
+				conn.close();
 			} catch (Exception es) { // TODO: handle exception } }
 			}
 
