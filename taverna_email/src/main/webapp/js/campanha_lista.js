@@ -12,8 +12,7 @@ $(window).resize(function() {
 
 $(document).ready(function() {
 
-
-	setAutocomplete("id_produto", "desc_produto");
+	configuraTabela("table_campanhas");
 
 	$('.data').datepicker({
 		format : 'dd/mm/yyyy',
@@ -30,12 +29,44 @@ $(document).ready(function() {
 	});
 
 
-	configuraTabela("table_campanhas");
-	
+
+	listaCampanhas();
 	
 });
 
+function listaCampanhas() {
+	var data = {}
+	data["cmd"] = 'listaCampanhas';
+	
+	$.blockUI({
+		message : 'Salvando...'
+	});
+	$.ajax({
+		type : "POST",
+		url : "?ac=ajax",
+		dataType : "json",
+		async : true,
+		data : data,
+		success : function(data) {
+				
+				$('#table_campanhas').bootstrapTable('load', data.rows);
+				$('#table_campanhas').bootstrapTable('resetView');
+				$('[data-toggle="tooltip"]').tooltip();
 
+		
+			$.unblockUI();
+		},
+		error : function(msg) {
+			$.unblockUI();
+		}
+	});
+}
+
+function visualizarCampanha(id){
+	
+	trocaPagbyRef("campanha_detail","N",undefined,id);
+	
+}
 
 function configuraTabela(table){
 	
@@ -53,35 +84,35 @@ function configuraTabela(table){
 	});
 
 	$(tabela).on('sort.bs.table reset-view.bs.table post-body.bs.table', function() {
-		$('th', $('#table_campanhas')).css('background-color', 'rgb(248, 248, 248)');
+		$('th', $('#'+table)).css('background-color', 'rgb(248, 248, 248)');
 	});
 
 	$(tabela).on('check.bs.table uncheck.bs.table check-all.bs.table uncheck-all.bs.table', function() {
-		$('#table_campanhas').bootstrapTable('updateFooter');
+		$('#'+table).bootstrapTable('updateFooter');
 	});
 
 	$(tabela).on('click-cell.bs.table', function(field, value, row, $element) {
-		//visualizarPedidoHistorico($element.ID_PEDIDO);
+		visualizarCampanha($element.id_campanha);
+		
 	});
 
 	$(tabela).on('page-change.bs.table', function(e, pag, size) {
-		$(".openpedido").click(function() {
-			//visualizarPedidoHistorico($(this).attr("data-valor"));
-		});
 
-		loadCampanhas(pag, size);
+
 	});
 
 	$(tabela).on('sort.bs.table', function(e, name, order) {
 		$("#sys_order").val(order);
 		$("#sys_name").val(name);
 
-		//loadCampanhas(1, 10);
-
 	});
 
-	$("#sys_name").val("NUM_PED");
+	$("#sys_name").val("data_criacao");
 	$("#sys_order").val("asc");
 	$(tabela).bootstrapTable('resetView');
+	
+
+	
+	
 	
 }

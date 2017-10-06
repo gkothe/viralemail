@@ -4,6 +4,7 @@ import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.text.SimpleDateFormat;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,12 +22,42 @@ public class HM_Campanha extends Campanha {
 		super(conn);
 	}
 
+	public static void listaCampanhas(HttpServletRequest request, HttpServletResponse response, Connection conn, long user) throws Exception {
+		// Load camapnha landpage
+		PrintWriter out = response.getWriter();
+		JSONObject objRetorno = new JSONObject();
+		JSONObject param = Utilitario.getJsonFromRequest(request, response);
+		JSONObject objjson = new JSONObject();
+
+		JSONArray array = new JSONArray();
+
+		HM_Campanha camobj = new HM_Campanha(conn);
+		camobj.setIdUsuario(user);
+		camobj.setLastSentence(" order by data_criacao desc ");
+		camobj.lista();
+
+		while (camobj.next()) {
+			objjson = new JSONObject();
+			objjson.put("id_campanha", camobj.getRsIdCampanha() == null ? 0 : camobj.getRsIdCampanha());
+			objjson.put("data_criacao", camobj.getRsDataCriacao() == null ? 0 : new SimpleDateFormat("dd/MM/yyyy HH:mm").format(camobj.getRsDataCriacao()));
+			objjson.put("link_inicial", camobj.getRsLinkInicial() == null ? "" : camobj.getRsLinkInicial());
+			objjson.put("desc_nome", camobj.getRsDescNome() == null ? "" : camobj.getRsDescNome());
+			objjson.put("desc_obs", camobj.getRsDescObs() == null ? "" : camobj.getRsDescObs());
+			objjson.put("flag_ativo", camobj.getRsFlagAtivo().equalsIgnoreCase("S") ? "Ativada" : "Desativada");
+			array.add(objjson);
+		}
+
+		objRetorno.put("rows", array);
+		out.print(objRetorno.toJSONString());
+
+	}
+
 	public static void LoadCampanha(HttpServletRequest request, HttpServletResponse response, Connection conn, long user) throws Exception {
 		// Load camapnha landpage
 		PrintWriter out = response.getWriter();
 		JSONObject objRetorno = new JSONObject();
 		JSONObject param = Utilitario.getJsonFromRequest(request, response);
-		ResultSet rs;
+
 		HM_Campanha camp = new HM_Campanha(conn);
 		camp.setIdCampanha(Long.parseLong(param.get("id").toString()));
 		camp.setIdUsuario(user);
@@ -38,12 +69,13 @@ public class HM_Campanha extends Campanha {
 			objRetorno.put("landpage", land);
 			objRetorno.put("landpagefeatures", camp.getLandPageFeatures(Long.parseLong(land.get("id_landpage").toString())));
 			objRetorno.put("landpageImage", camp.getLandPageImages(Long.parseLong(land.get("id_landpage").toString())));
-		
+
 			JSONObject thanks = camp.getThanksPage();
-			
+
 			objRetorno.put("thankspage", thanks);
 			objRetorno.put("thankspageImage", camp.getThanksPageImages(Long.parseLong(thanks.get("id_thankspage").toString())));
-			objRetorno.put("emails", camp.getEmails());;
+			objRetorno.put("emails", camp.getEmails());
+			;
 
 			objRetorno.put("msgok", "ok");
 
@@ -51,6 +83,39 @@ public class HM_Campanha extends Campanha {
 			throw new Exception("Campanha inexistente.");
 		}
 
+		out.print(objRetorno.toJSONString());
+
+	}
+
+	public static void LoadCampanhaDetails(HttpServletRequest request, HttpServletResponse response, Connection conn, long user) throws Exception {
+		// Load camapnha landpage
+		PrintWriter out = response.getWriter();
+		JSONObject objRetorno = new JSONObject();
+		JSONObject param = Utilitario.getJsonFromRequest(request, response);
+		JSONArray array = new JSONArray();
+		JSONObject objjson = new JSONObject();
+
+		HM_Campanha camp = new HM_Campanha(conn);
+		camp.setIdCampanha(Long.parseLong(param.get("id").toString()));
+		camp.setIdUsuario(user);
+		camp.lista();
+		if (camp.next()) {
+
+			HM_CampanhaLeads leads = new HM_CampanhaLeads(conn);
+			leads.setIdCampanha(camp.getRsIdCampanha());
+			leads.lista();
+			while (leads.next()) {
+				objjson = new JSONObject();
+				objjson.put("email", leads.getRsDescEmail());
+
+				array.add(objjson);
+			}
+		} else {
+			throw new Exception("Campanha inexistente.");
+		}
+
+		objRetorno.put("lista", array);
+		objRetorno.put("msgok", "ok");
 		out.print(objRetorno.toJSONString());
 
 	}
@@ -363,7 +428,7 @@ public class HM_Campanha extends Campanha {
 			objRetorno.put("sub_titulo_2", rs.getString("sub_titulo_2") == null ? "" : rs.getString("sub_titulo_2"));
 			objRetorno.put("desc_titulo_2", rs.getString("desc_titulo_2") == null ? "" : rs.getString("desc_titulo_2"));
 
-		}else{
+		} else {
 			objRetorno.put("id_landpage", "");
 			objRetorno.put("desc_titulo_1", "");
 			objRetorno.put("desc_sub_titulo_1", "");
@@ -412,11 +477,7 @@ public class HM_Campanha extends Campanha {
 
 		return objRetorno;
 	}
-	
-	
-	
-	
-	
+
 	public JSONArray getThanksPageImages(long thankspage) throws Exception { // TODO considerando que tem uma thanks só
 		JSONArray objRetorno = new JSONArray();
 		JSONObject obj = new JSONObject();
@@ -453,7 +514,6 @@ public class HM_Campanha extends Campanha {
 
 		return objRetorno;
 	}
-	
 
 	public JSONArray getLandPageFeatures(long landpage) throws Exception { // TODO considerando que tem uma landpage só
 		JSONArray objRetorno = new JSONArray();
@@ -504,7 +564,6 @@ public class HM_Campanha extends Campanha {
 
 		return retorno;
 	}
-	
 
 	public JSONArray getEmails() throws Exception { // TODO considerando que tem uma landpage só
 		JSONObject objjson = new JSONObject();
@@ -519,8 +578,8 @@ public class HM_Campanha extends Campanha {
 		obj.lista();
 		while (obj.next()) {
 			objjson = new JSONObject();
-//			objjson.put("id_email", obj.getRsIdEmail() == null ? 0 : obj.getRsIdEmail());
-//			objjson.put("id_campanha", obj.getRsIdCampanha() == null ? 0 : obj.getRsIdCampanha());
+			// objjson.put("id_email", obj.getRsIdEmail() == null ? 0 : obj.getRsIdEmail());
+			// objjson.put("id_campanha", obj.getRsIdCampanha() == null ? 0 : obj.getRsIdCampanha());
 			objjson.put("desc_email", obj.getRsDescEmail() == null ? "" : obj.getRsDescEmail());
 			objjson.put("desc_titulo", obj.getRsDescTitulo() == null ? "" : obj.getRsDescTitulo());
 			objjson.put("qtd_referencia", obj.getRsQtdReferencia() == null ? "" : obj.getRsQtdReferencia());
@@ -529,7 +588,5 @@ public class HM_Campanha extends Campanha {
 
 		return array;
 	}
-
-	
 
 }

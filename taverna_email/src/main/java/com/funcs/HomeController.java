@@ -72,6 +72,8 @@ public class HomeController extends javax.servlet.http.HttpServlet {
 					home(request, response);
 				} else if (strTipo.equalsIgnoreCase("campanha_lista")) {
 					campanha_lista(request, response);
+				} else if (strTipo.equalsIgnoreCase("campanha_detail")) {
+					campanha_details(request, response);
 				} else if (strTipo.equalsIgnoreCase("listaped")) {
 					dashpedidos(request, response);
 				} else if (strTipo.equalsIgnoreCase("logout")) {
@@ -143,7 +145,13 @@ public class HomeController extends javax.servlet.http.HttpServlet {
 				HM_UserPremios.insertPremio(request, response, conn, coduser);
 			} else if (cmd.equalsIgnoreCase("loadCampanha")) {
 				HM_Campanha.LoadCampanha(request, response, conn, coduser);
+			}else if (cmd.equalsIgnoreCase("listaCampanhas")) {
+				HM_Campanha.listaCampanhas(request, response, conn, coduser);
+			}else if (cmd.equalsIgnoreCase("loadCampanhaDetail")) {
+				HM_Campanha.LoadCampanhaDetails(request, response, conn, coduser);
 			}
+			
+			
 
 			conn.commit();
 		} catch (Exception ex) {
@@ -197,6 +205,16 @@ public class HomeController extends javax.servlet.http.HttpServlet {
 		}
 	}
 
+	private void campanha_details(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		try {
+			request.getRequestDispatcher("/WEB-INF/campanha_details.html").forward(request, response);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+		}
+	}
+
 	private void campanhaEdit(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		try {
 			request.getRequestDispatcher("/WEB-INF/camapanha_edit.html").forward(request, response);
@@ -206,7 +224,6 @@ public class HomeController extends javax.servlet.http.HttpServlet {
 		} finally {
 		}
 	}
-
 	
 	private void campanha_lista(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		try {

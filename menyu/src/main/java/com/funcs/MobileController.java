@@ -41,19 +41,21 @@ public class MobileController extends javax.servlet.http.HttpServlet {
 	private void processaRequisicoes(HttpServletRequest request, HttpServletResponse response) {
 
 		try {
-
-//			Map map = request.getParameterMap();
-//			for (Iterator iterator = map.keySet().iterator(); iterator.hasNext();) {
-//				String type = (String) iterator.next();
-//				System.out.println(type + " : " + request.getParameter(type));
-//			}
+//
+			Map map = request.getParameterMap();
+			for (Iterator iterator = map.keySet().iterator(); iterator.hasNext();) {
+				String type = (String) iterator.next();
+				System.out.println(type + " : " + request.getParameter(type));
+			}
 
 			request.setCharacterEncoding("UTF-8");
 
 			String identAcao = request.getParameter("acao") == null ? "" : request.getParameter("acao").toString().trim();
 
-			if (identAcao.equalsIgnoreCase("ajax_w")) {
+			if (identAcao.equalsIgnoreCase("ajax_w")) {//ajax sem auth token
 				Ajax_w.ajax_w(request, response);
+			}else if (identAcao.equalsIgnoreCase("ajax")) {//ajax com authtoken
+				Ajax.ajax(request, response);
 			} 
 
 		} catch (Exception e) {

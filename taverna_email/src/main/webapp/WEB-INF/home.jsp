@@ -93,15 +93,7 @@
 										<li>
 											<a linkmenu="campanha_lista" onMouseup="trocaPag(this,'N',event);" class="clickmenu">Campanhas</a>
 										</li>
-										<li>
-											<a linkmenu="listapedfechado" onMouseup="trocaPag(this,'N',event);" class="clickmenu">Histórico</a>
-										</li>
-										<li>
-											<a linkmenu="inserirpedido" onMouseup="trocaPag(this,'N',event);" class="clickmenu">Inserir pedido</a>
-										</li>
-										<li>
-											<a linkmenu="cancelpedido" onMouseup="trocaPag(this,'N',event);" class="clickmenu">Cancelar Pedido</a>
-										</li>
+										
 									</ul>
 								</li>
 
@@ -195,12 +187,15 @@
 
 		</div>
 	</div>
+	<input id="sys_formatador" type="hidden">
+	<input id="sys_order" type="hidden">
+	<input id="sys_name" type="hidden">
 
 	<input type="hidden" id="extra_paramfield">
 
 	<script src="js/jquery-3.2.1.min.js"></script>
 
-
+	<script type="text/javascript" src="js/utilitario.js"></script>
 	<script type="text/javascript" src="js/inputmask/inputmask.js"></script>
 	<script type="text/javascript" src="js/inputmask/inputmask.date.extensions.js"></script>
 	<script type="text/javascript" src="js/inputmask/jquery.inputmask.js"></script>
@@ -208,7 +203,7 @@
 	<script type="text/javascript" src="js/jquery-ui-1.10.4.custom/js/jquery.mask.min.js"></script>
 	<script type="text/javascript" src="js/jquery-ui-1.10.4.custom/js/autoNumeric.1.9.22.js" charset="utf-8"></script>
 	<script type="text/javascript" src="js/jquery-ui-1.10.4.custom/js/jquery.blockUI.js"></script>
-	<script type="text/javascript" src="js/copyclip.js"></script>	
+	<script type="text/javascript" src="js/copyclip.js"></script>
 	<script type="text/javascript" src="gentelella-master/build/js/custom.js"></script>
 	<script type="text/javascript" src="js/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="js/bootstrap-3.3.7-dist/js/jquery.bootstrap-growl.js"></script>

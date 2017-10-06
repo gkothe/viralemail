@@ -107,6 +107,24 @@ function trocaPag(pag, jsp, e, extraparam) {
 
 }
 
+function trocaPagbyRef(pag, jsp, e, extraparam) {
+
+	var link = pag;
+	var men = "";
+	if ($BODY.hasClass('nav-md')) {
+		men = "m"
+	} else {
+		men = "s"
+	}
+
+	if (extraparam == undefined) {
+		extraparam = "";
+	}
+
+	document.location.href = "home?link=" + link + "&jsp=" + jsp + "&m=" + men + "&extra=" + extraparam;
+
+}
+
 $(document).ready(function() {
 
 	$('#mainpage').load('home?ac=' + url);
@@ -118,8 +136,6 @@ $(document).ready(function() {
 	if (menu == "s") {
 		$('#menu_toggle').click();
 	}
-
-	
 
 	$(".clickmenu").click(function() {
 		if (active_menu != undefined) {

@@ -17,7 +17,7 @@
 	<div style="width: 95%; height: 100%" class="container bs-docs-container">
 
 
-		<!-- 				PEDIDOS FECHADOS ---------------------------------------------------------- -->
+		
 
 		<br>
 
@@ -35,21 +35,21 @@
 
 		<div class="row">
 			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-				<table id="table_campanhas" data-toggle="table" style="cursor: pointer;" data-height="300" data-locale="pt-BR" class="table_boots" data-minimum-count-columns="1" data-reorderable-columns="true" data-show-footer="true" data-pagination="true" data-page-list="[5,10,25,50,100]" data-page-size="10" data-pagination-first-text="Primeiro" data-side-pagination="server"
-					data-pagination-pre-text="Anterior" data-pagination-next-text="Próximo" data-pagination-last-text="Último">
+				<table style="cursor: pointer;" id="table_campanhas" data-toggle="table" data-height="350" data-locale="pt-BR"
+					class="table_boots" data-minimum-count-columns="1" data-reorderable-columns="false" data-pagination="true"
+					data-page-list="[5,10,25,50,100]" data-page-size="5" data-pagination-first-text="Primeiro"
+					data-pagination-pre-text="Anterior" data-pagination-next-text="Próximo" data-pagination-last-text="Último"
+					data-sort-order="asc">
 					<thead class="header">
 						<tr>
 
-							<th data-visible="false" data-field="ID_PEDIDO"></th>
-							<th data-field="NUM_PED" data-width="7%" data-sortable="true" data-align="center">Número</th>
-							<th data-field="data_formatada" data-width="20%" data-sortable="true" data-align="center">Data Ped.</th>
-							<th data-field="data_formatada_resposta" data-width="20%" data-sortable="true" data-align="center">Resposta</th>
-							<th data-field="DESC_BAIRRO" data-width="15%" data-sortable="true" data-align="center">Bairro</th>
-							<th data-field="VAL_TOTALPROD" data-width="15%" data-align="right" data-formatter="valorFormater" data-sortable="true">Valor</th>
-							<th data-field="FLAG_STATUS" data-formatter="statusFormater" data-width="10%" data-sortable="false" data-align="center">Situação</th>
-							<th data-sortable="false" data-width="10%" data-align="center" data-formatter="btnFormater">Opções</th>
-
-
+							<th data-visible="false" data-field=id_campanha></th>
+							<th data-field="link_inicial" data-width="5%" data-sortable="true" data-align="center">Código</th>
+							<th data-field="data_criacao" data-width="10%" data-sortable="true" data-align="center">Data Criação.</th>
+							<th data-field="desc_nome" data-width="20%" data-sortable="true" data-align="center">Nome</th>
+							<th data-field="desc_obs" data-width="30%" data-sortable="true" data-align="center">Obs</th>
+							<th data-field="flag_ativo" data-width="10%" data-sortable="true" data-align="center">Status</th>
+							
 						</tr>
 					</thead>
 					<tbody>
@@ -64,9 +64,7 @@
 
 </div>
 <br>
-<input id="sys_formatador" type="hidden">
-<input id="sys_order" type="hidden">
-<input id="sys_name" type="hidden">
+
 
 
 </html>
