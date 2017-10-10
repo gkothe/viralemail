@@ -5,10 +5,14 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Locale;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,6 +26,7 @@ import com.configs.Conexao;
 import com.cruds.HM_Categoria;
 import com.cruds.HM_Pedido;
 import com.cruds.HM_PedidoItem;
+import com.cruds.HM_ProdutoCustomItem;
 import com.cruds.HM_Produtos;
 import com.cruds.HM_SysParametros;
 import com.cruds.HM_Usuario;
@@ -29,6 +34,9 @@ import com.cruds.HM_Usuario;
 public class Ajax {
 
 	public Utilitario u = new Utilitario();
+	public static DecimalFormatSymbols dfs = new DecimalFormatSymbols(new Locale("pt", "BR"));
+	public static NumberFormat df = new DecimalFormat("###,###.#", dfs);
+	public static NumberFormat df2 = new DecimalFormat("#,###,##0.00", dfs);
 
 	public static void ajax(HttpServletRequest request, HttpServletResponse response) throws Exception {// ajax que nao precisam de login
 		PrintWriter out = response.getWriter();
@@ -69,7 +77,7 @@ public class Ajax {
 			if (cmd.equalsIgnoreCase("getProdutos")) {
 				funcs.getProdutos(request, response, conn);
 			} else if (cmd.equalsIgnoreCase("fazerPedido")) {
-				funcs.criarPedido(request, response, conn,cod_usuario);
+				funcs.criarPedido(request, response, conn, cod_usuario);
 			}
 
 			conn.commit();
@@ -94,18 +102,19 @@ public class Ajax {
 		}
 	}
 
-
 	public void getProdutos(HttpServletRequest request, HttpServletResponse response, Connection conn) throws Exception {
 		JSONObject retorno = new JSONObject();
 		PrintWriter out = response.getWriter();
 		JSONObject objjson = new JSONObject();
+		JSONObject obj_custom = new JSONObject();
 
 		JSONArray lista = new JSONArray();
 		JSONObject categorias_obj = new JSONObject();
 		JSONArray prods_array = new JSONArray();
-		JSONArray categ_array = new JSONArray();
+		JSONArray custons = new JSONArray();
 
 		HM_Produtos obj = new HM_Produtos(conn);
+		HM_ProdutoCustomItem customitem = new HM_ProdutoCustomItem(conn);
 		HM_Categoria categorias = new HM_Categoria(conn);
 		categorias.lista();
 		categorias.setLastSentence("order by desc_categoria");
@@ -127,6 +136,64 @@ public class Ajax {
 				objjson.put("val_unit", obj.getRsValUnit() == null ? 0 : "R$ " + Utilitario.df2.format(obj.getRsValUnit()));
 				objjson.put("val_unit_raw", obj.getRsValUnit() == null ? 0 : (obj.getRsValUnit()));
 				objjson.put("desc_key_words", obj.getRsDescKeyWords() == null ? "" : obj.getRsDescKeyWords());
+
+				if (obj.getRsIdCustom() != null && obj.getRsIdCustom() != 0) {
+
+					customitem = new HM_ProdutoCustomItem(conn);
+					customitem.setIdCustom(obj.getRsIdCustom());
+					customitem.lista();
+					custons = new JSONArray();
+					JSONArray vals = new JSONArray();
+
+					while (customitem.next()) {
+						obj_custom = new JSONObject();
+
+						obj_custom.put("desc_item", customitem.getRsDescItem());
+						obj_custom.put("flag_tipo", customitem.getRsFlagTipo());
+					
+
+						if (customitem.getRsFlagTipo() == 1) { // Faxa de valor Slider ex: de 0 a 100, 0~100, onde o val preço multiplica pelo valor escolhido da faxa.
+							String[] vals_precos = customitem.getRsValValidos().split("~");
+							obj_custom.put("val_sel", Integer.parseInt(vals_precos[0]));
+							obj_custom.put("val_min_f", df.format(Double.parseDouble(vals_precos[0])));
+							obj_custom.put("val_max_f", df.format(Double.parseDouble(vals_precos[1])));
+							obj_custom.put("val_min", Integer.parseInt(vals_precos[0]));
+							obj_custom.put("val_max", Integer.parseInt(vals_precos[1]));
+							obj_custom.put("val_mod", customitem.getRsValPreco());
+
+						} else if (customitem.getRsFlagTipo() == 2) { // Tipo 2 -> com opções, Ex: 200;400;600 , Val:0;3;5; Combo box
+							String[] vals_validos = customitem.getRsValValidos().split(";");
+							String[] vals_precos = customitem.getRsValPreco().split(";");
+
+							JSONObject preco_val_json = new JSONObject();
+
+							for (int i = 0; i < vals_precos.length; i++) {
+								preco_val_json = new JSONObject();
+								preco_val_json.put("opc", vals_validos[i]);
+								preco_val_json.put("val", vals_precos[i]);
+								preco_val_json.put("val_f", df2.format(Double.parseDouble(vals_precos[i])));
+								vals.add(preco_val_json);	
+							}
+							
+							
+							obj_custom.put("vals", vals);
+							obj_custom.put("val_sel", vals_validos[0]);
+						} else if (customitem.getRsFlagTipo() == 3) { // Tipo de Sim e Não, será um checkbox. Para diferentes opçõe se usa o tipo 2;
+
+							obj_custom.put("val_sel", false);
+							obj_custom.put("val", customitem.getRsValPreco());
+							obj_custom.put("val_f", df2.format(Double.parseDouble(customitem.getRsValPreco())));
+
+						}
+
+						custons.add(obj_custom);
+					}
+					objjson.put("custom_list", custons);
+					objjson.put("custom", true);
+				} else {
+					objjson.put("custom", false);
+				}
+
 				prods_array.add(objjson);
 			}
 			if (prods_array.size() > 0) {
@@ -143,7 +210,7 @@ public class Ajax {
 		out.print(retorno.toJSONString());
 	}
 
-	public void criarPedido(HttpServletRequest request, HttpServletResponse response, Connection conn,long cod_usuario) throws Exception {
+	public void criarPedido(HttpServletRequest request, HttpServletResponse response, Connection conn, long cod_usuario) throws Exception {
 		JSONObject retorno = new JSONObject();
 		PrintWriter out = response.getWriter();
 		JSONObject objjson = new JSONObject();
